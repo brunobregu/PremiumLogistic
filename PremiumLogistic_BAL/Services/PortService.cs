@@ -13,7 +13,7 @@ public class PortService : IPortService
     {
         var ports = await _unitOfWork.PortRepository.GetAllAsync();
         var result = _mapper.Map<List<PortDto>>(ports);
-        await _unitOfWork.CommitAsync();
+        //await _unitOfWork.CommitAsync();
         return result;
     }
 }

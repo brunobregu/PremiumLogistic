@@ -1,10 +1,15 @@
-﻿using System.Reflection.Metadata;
+﻿namespace PremiumLogistic_DomainModels.Models;
 
-namespace PremiumLogistic_DomainModels.Models;
-
-public class OrderDetails : CommonAttributes
+public class OrderDetails
 {
     public int Id { get; set; }
+    public bool Invalidated { get; set; } = false;
+    public DateTime? CreatedOn { get; set; }
+    [StringLength(50)]
+    public string? CreatedBy { get; set; }
+    public DateTime? UpdatedOn { get; set; }
+    [StringLength(50)]
+    public string? UpdatedBy { get; set; }
     public string VIN { get; set; }
     public string Make { get; set; }
     public string Model { get; set; }

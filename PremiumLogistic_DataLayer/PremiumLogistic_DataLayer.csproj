@@ -20,8 +20,4 @@
     <ProjectReference Include="..\PremiumLogistic_DomainModels\PremiumLogistic_DomainModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
-
 </Project>

@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PremiumLogistic_API", "PremiumLogistic_API\PremiumLogistic_API.csproj", "{E37D1157-78C6-4C83-BC82-D2B1286CA57D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PremiumLogistic_API", "PremiumLogistic_API\PremiumLogistic_API.csproj", "{E37D1157-78C6-4C83-BC82-D2B1286CA57D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PremiumLogistic_DataLayer", "PremiumLogistic_DataLayer\PremiumLogistic_DataLayer.csproj", "{0E828159-D55A-4324-92BE-BB161A8719D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PremiumLogistic_DataLayer", "PremiumLogistic_DataLayer\PremiumLogistic_DataLayer.csproj", "{0E828159-D55A-4324-92BE-BB161A8719D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PremiumLogistic_BAL", "PremiumLogistic_BAL\PremiumLogistic_BAL.csproj", "{428710D8-D3EE-44A1-A8AE-1224F89F8192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PremiumLogistic_BAL", "PremiumLogistic_BAL\PremiumLogistic_BAL.csproj", "{428710D8-D3EE-44A1-A8AE-1224F89F8192}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PremiumLogistic_DAL", "PremiumLogistic_DAL\PremiumLogistic_DAL.csproj", "{9893A2EB-2F98-4AD2-B3B5-AFFE3ED6461F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PremiumLogistic_DAL", "PremiumLogistic_DAL\PremiumLogistic_DAL.csproj", "{9893A2EB-2F98-4AD2-B3B5-AFFE3ED6461F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PremiumLogistic_DomainModels", "PremiumLogistic_DomainModels\PremiumLogistic_DomainModels.csproj", "{3DED6F4E-9B44-4D25-9B0B-76E9F6C2C36A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PremiumLogistic_DomainModels", "PremiumLogistic_DomainModels\PremiumLogistic_DomainModels.csproj", "{3DED6F4E-9B44-4D25-9B0B-76E9F6C2C36A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

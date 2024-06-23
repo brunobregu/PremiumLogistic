@@ -14,7 +14,7 @@ public class LocalTransportationService : ILocalTransportationService
     {
         var localPrices = await _unitOfWork.LocalTransportationRepository.GetWithOffsetPagination(pageNumber, pageSize);
         var result = _mapper.Map<PagedResponseOffsetDto<LocalTransportationDto>>(localPrices);
-        await _unitOfWork.CommitAsync();
+        //await _unitOfWork.CommitAsync();
 
         return result;
     }

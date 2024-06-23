@@ -18,7 +18,8 @@ public class AuditLogAttribute : ActionFilterAttribute
                 TimeAccessed = DateTime.Now,
                 AccessedBy = context.HttpContext.User.Identity.Name ?? "Anonymous",
                 Url = request.Path,
-                IP = request.HttpContext.Connection.RemoteIpAddress?.ToString()
+                IP = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
+                BodyRequest = await new StreamReader(request.Body).ReadToEndAsync()
             };
             await _auditLogsService.AddLogs(auditLog);
         }

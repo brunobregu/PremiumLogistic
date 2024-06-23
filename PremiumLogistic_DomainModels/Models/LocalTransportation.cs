@@ -1,8 +1,13 @@
 ﻿namespace PremiumLogistic_DomainModels.Models;
 
-public class LocalTransportation : CommonAttributes
+public class LocalTransportation
 {
     public int Id { get; set; }
+    public bool Invalidated { get; set; } = false;
+    public DateTime? CreatedOn { get; set; }
+    public string? CreatedBy { get; set; }
+    public DateTime? UpdatedOn { get; set; }
+    public string? UpdatedBy { get; set; }
     [Required]
     [StringLength(100)]
     public string AuctionLocation { get; set; }

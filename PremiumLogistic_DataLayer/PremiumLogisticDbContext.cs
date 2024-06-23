@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
-
-namespace PremiumLogistic_DataLayer;
+﻿namespace PremiumLogistic_DataLayer;
 
 public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
 {
@@ -36,7 +33,7 @@ public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
         .HasPrincipalKey(e => e.Id);
 
         #region InvalidatedQueryFilter
-        builder.Entity<Port>().HasQueryFilter(x => !x.Invalidated);
+            builder.Entity<Port>().HasQueryFilter(x => !x.Invalidated);
             builder.Entity<LocalTransportation>().HasQueryFilter(x => !x.Invalidated);
             builder.Entity<OrderDetails>().HasQueryFilter(x => !x.Invalidated);
         #endregion

@@ -7,7 +7,6 @@ public class UnitOfWork : IUnitOfWork
     public ILocalTransportationRepository LocalTransportationRepository { get; set; }
     public IAuditLogsRepository AuditLogsRepository { get; set; }
     public IContactRepository ContactRepository {  get; set; }
-    public IUserRepository AuthenticationRepository { get; set; }
     public IOrderDetailsRepository OrderDetailsRepository { get; set; }
 
 
@@ -18,7 +17,6 @@ public class UnitOfWork : IUnitOfWork
         LocalTransportationRepository = new LocalTransportationRepository(context);
         AuditLogsRepository = new AuditLogsRepository(context);
         ContactRepository = new ContactRepository(context);
-        AuthenticationRepository = new UserRepository(context);
         OrderDetailsRepository = new OrderDetailsRepository(context);
     }
     public int Commit()

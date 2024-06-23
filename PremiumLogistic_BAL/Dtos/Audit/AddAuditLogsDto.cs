@@ -6,4 +6,5 @@ public class AddAuditLogsDto
     public string IP { get; set; }
     public string Url { get; set; }
     public string AccessedBy { get; set; }
+    public string? BodyRequest { get; set; }
 }

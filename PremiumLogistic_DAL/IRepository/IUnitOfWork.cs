@@ -6,7 +6,6 @@ public interface IUnitOfWork
     ILocalTransportationRepository LocalTransportationRepository { get; }
     IAuditLogsRepository AuditLogsRepository { get; }
     IContactRepository ContactRepository { get; }
-    IUserRepository AuthenticationRepository { get; }
     IOrderDetailsRepository OrderDetailsRepository {  get; }
     void Dispose();
     Task<int> CommitAsync();

@@ -27,16 +27,9 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpGet("getUsersOfRole")]
-    public async Task<IActionResult> Get([FromQuery]string role)
+    public async Task<IActionResult> Get([FromQuery] string role)
     {
         var result = await _userService.GetUsersOfRole(role);
         return Ok(result);
     }
-
-    //[HttpGet("confirmEmail")]
-    //public async Task<IActionResult> ConfirmEmail(string token, string email)
-    //{
-    //    await _userService.ConfirmEmail(token, email);
-    //    return Ok();
-    //}
 }

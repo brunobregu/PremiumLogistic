@@ -1,6 +1,4 @@
-﻿using PremiumLogistic_API.Common.CustomTokenProviders;
-
-namespace PremiumLogistic_API;
+﻿namespace PremiumLogistic_API;
 
 public static class StartupConfigurations
 {
@@ -30,7 +28,6 @@ public static class StartupConfigurations
             services.AddTransient<ILocalTransportationRepository, LocalTransportationRepository>();
         services.AddTransient<IAuditLogsRepository, AuditLogsRepository>();
         services.AddTransient<IContactRepository, ContactRepository>();
-        services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IOrderDetailsRepository, OrderDetailsRepository>();
         #endregion
 
@@ -44,12 +41,7 @@ public static class StartupConfigurations
             //opt.SignIn.RequireConfirmedEmail = true;
             //opt.Tokens.EmailConfirmationTokenProvider = "emailconfirmation";
         }).AddEntityFrameworkStores<PremiumLogisticDbContext>()
-            .AddDefaultTokenProviders()
-            .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconfirmation");
-
-        services.Configure<EmailConfirmationTokenProviderOptions>(opt => {
-            opt.TokenLifespan = TimeSpan.FromDays(3);
-        });
+            .AddDefaultTokenProviders();
 
         //Add Authentication
         services.AddAuthentication(options =>
