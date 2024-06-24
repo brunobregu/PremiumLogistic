@@ -5,4 +5,7 @@ public interface IUserService
     Task Register(RegisterDto registerDto);
     Task<AuthResultDto> Login(LoginDto loginDto);
     Task<List<UsersOfRoleDto>> GetUsersOfRole(string role);
+    Task RequestPasswordReset(string email);
+    Task ResetPassword(ResetPasswordDto resetPasswordDto);
+    Task ChangePassword(ChangePasswordDto changePasswordDto, string email);
 }

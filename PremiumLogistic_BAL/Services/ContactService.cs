@@ -12,7 +12,6 @@ public class ContactService : IContactService
     public async Task AddContact(AddContactDto addContactDto)
     {
         var contacts = _mapper.Map<Contact>(addContactDto);
-        contacts.CreatedOn = DateTime.Now;
         _unitOfWork.ContactRepository.Insert(contacts);
         await _unitOfWork.CommitAsync();
     }

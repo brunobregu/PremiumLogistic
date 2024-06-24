@@ -9,5 +9,7 @@ public class ApplicationUser : IdentityUser
     public string? UpdatedBy { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public string? TemporaryPassword { get; set; }
+    public DateTime? TemporaryPasswordExpiration { get; set; }
     public ICollection<OrderDetails> OrderDetails { get; }
 }

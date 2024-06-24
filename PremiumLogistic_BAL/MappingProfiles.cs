@@ -10,7 +10,8 @@ public class MappingProfiles : Profile
         CreateMap<AddAuditLogsDto, AuditLogs>();
         CreateMap<AddContactDto, Contact>()
             .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
-        CreateMap<AddOrderDetailsDto, OrderDetails>();
+        CreateMap<AddOrderDetailsDto, OrderDetails>()
+            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
         CreateMap<ApplicationUser, UsersOfRoleDto>();
         CreateMap<OrderDetails, OrderDetailsDto>();
     }

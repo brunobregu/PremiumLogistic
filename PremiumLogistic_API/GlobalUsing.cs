@@ -24,3 +24,5 @@ global using Microsoft.AspNetCore.Authorization;
 global using PremiumLogistic_BAL.Dtos.Contact;
 global using PremiumLogistic_BAL.Common.Email;
 global using PremiumLogistic_BAL.Dtos.OrderDetails;
+global using System.Security.Claims;
+global using PremiumLogistic_BAL.Common.Exceptions;

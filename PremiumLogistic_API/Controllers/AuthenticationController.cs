@@ -13,6 +13,7 @@ public class AuthenticationController : ControllerBase
 
 
     [HttpPost("register")]
+    [Authorize]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         await _userService.Register(registerDto);
@@ -24,6 +25,29 @@ public class AuthenticationController : ControllerBase
     {
         var result = await _userService.Login(loginDto);
         return Ok(result);
+    }
+
+    [HttpPost("requestResetPassword")]
+    public async Task<IActionResult> RequestResetPassword([FromBody] string email)
+    {
+        await _userService.RequestPasswordReset(email);
+        return Ok();
+    }
+
+    [HttpPost("resetPassword")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto request)
+    {
+        await _userService.ResetPassword(request);
+        return Ok();
+    }
+
+    [HttpPost("changePassword")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto request)
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException("Something wrong! Please try again later!");
+        await _userService.ChangePassword(request, email);
+        return Ok();
     }
 
     [HttpGet("getUsersOfRole")]
