@@ -13,7 +13,6 @@ public class AuthenticationController : ControllerBase
 
 
     [HttpPost("register")]
-    [Authorize]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         await _userService.Register(registerDto);
@@ -25,6 +24,15 @@ public class AuthenticationController : ControllerBase
     {
         var result = await _userService.Login(loginDto);
         return Ok(result);
+    }
+
+    [HttpPost("addUser")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AddUser([FromBody] CreateUserDto createUserDto)
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException("Something wrong! Please try again later!");
+        await _userService.AddUser(createUserDto, email);
+        return Created(nameof(AddUser), $"User {createUserDto.Email} created");
     }
 
     [HttpPost("requestResetPassword")]
@@ -51,9 +59,27 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpGet("getUsersOfRole")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Get([FromQuery] string role)
     {
         var result = await _userService.GetUsersOfRole(role);
         return Ok(result);
+    }
+
+    [HttpGet("getRoles")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetRoles()
+    {
+        var result = await _userService.GetRoles();
+        return Ok(result);
+    }
+
+    [HttpPost("addRoles")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AddRoles(AddRoleDto addRoleDto)
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException("Something wrong! Please try again later!");
+        await _userService.AddRole(addRoleDto, email);
+        return Created(nameof(AddRoles), $"Role {addRoleDto.Name} created");
     }
 }

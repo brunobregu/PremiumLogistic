@@ -4,6 +4,8 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
+        CreateMap<RegisterDto, ApplicationUser>()
+            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now)); ;
         CreateMap<Port, PortDto>();
         CreateMap<LocalTransportation, LocalTransportationDto>();
         CreateMap(typeof(PagedResponseOffset<>), typeof(PagedResponseOffsetDto<>));
@@ -14,5 +16,10 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
         CreateMap<ApplicationUser, UsersOfRoleDto>();
         CreateMap<OrderDetails, OrderDetailsDto>();
+        CreateMap<IdentityRole, RolesDto>();
+        CreateMap<AddRoleDto, ApplicationRole>()
+            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+        CreateMap<CreateUserDto, ApplicationUser>()
+            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
     }
 }

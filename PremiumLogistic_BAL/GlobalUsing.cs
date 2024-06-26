@@ -24,3 +24,4 @@ global using MimeKit;
 global using MailKit.Net.Smtp;
 global using PremiumLogistic_BAL.Dtos.OrderDetails;
 global using PremiumLogistic_BAL.Common.Email;
+global using Microsoft.EntityFrameworkCore;

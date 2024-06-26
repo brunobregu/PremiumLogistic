@@ -1,4 +1,6 @@
-﻿namespace PremiumLogistic_DataLayer;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace PremiumLogistic_DataLayer;
 
 public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
 {
@@ -34,7 +36,7 @@ public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
 
         #region InvalidatedQueryFilter
             builder.Entity<Port>().HasQueryFilter(x => !x.Invalidated);
-            builder.Entity<LocalTransportation>().HasQueryFilter(x => !x.Invalidated);
+        builder.Entity<LocalTransportation>().HasQueryFilter(x => !x.Invalidated);
             builder.Entity<OrderDetails>().HasQueryFilter(x => !x.Invalidated);
         #endregion
     }

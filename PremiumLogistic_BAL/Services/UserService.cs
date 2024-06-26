@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Data;
 
 namespace PremiumLogistic_BAL.Services;
 
@@ -19,18 +19,22 @@ public class UserService : IUserService
         _configuration = configuration;
         _emailSender = emailSender;
     }
+
+    public async Task AddUser(CreateUserDto createUserDto, string email)
+    {
+        var newUser = _mapper.Map<ApplicationUser>(createUserDto);
+        newUser.UserName = createUserDto.Email;
+        newUser.CreatedBy = email;
+        var result = await _userManager.CreateAsync(newUser, createUserDto.Password);
+        if (!result.Succeeded)
+            throw new BadRequestException($"User could not be created!{result.Errors?.FirstOrDefault()?.Description}");
+
+        await _userManager.AddToRoleAsync(newUser, createUserDto.RoleName);
+    }
     public async Task Register(RegisterDto registerDto)
     {
-        ApplicationUser newUser = new ApplicationUser()
-        {
-            Email = registerDto.Email,
-            UserName = registerDto.Email,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            CreatedOn = DateTime.Now,
-            FirstName = registerDto.FirstName,
-            LastName = registerDto.LastName,
-        };
-
+        var newUser = _mapper.Map<ApplicationUser>(registerDto);
+        newUser.UserName = registerDto.Email;
         var result = await _userManager.CreateAsync(newUser, registerDto.Password);
         if (!result.Succeeded)
             throw new BadRequestException($"User could not be created!{result.Errors?.FirstOrDefault()?.Description}");
@@ -94,11 +98,28 @@ public class UserService : IUserService
         return _mapper.Map<List<UsersOfRoleDto>>(userRoles.ToList());
     }
 
+    public async Task<List<RolesDto>> GetRoles()
+    {
+        var roles = _roleManager.Roles;
+        return _mapper.Map<List<RolesDto>>(await roles.ToListAsync());
+    }
+
+    public async Task AddRole(AddRoleDto addRoleDto, string email)
+    {
+        var existRole = await _roleManager.FindByNameAsync(addRoleDto.Name);
+        if (existRole is not null)
+            throw new BadRequestException($"Role {addRoleDto.Name} exist.");
+
+        var addRole = _mapper.Map<ApplicationRole>(addRoleDto);
+        addRole.CreatedBy = email;
+        await _roleManager.CreateAsync(addRole);
+    }
+
     private async Task<AuthResultDto> GenerateJwtToken(ApplicationUser user)
     {
         var authClaims = new List<Claim>()
         {
-            new Claim(ClaimTypes.Name, user.FirstName + user.LastName),
+            new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Sub, user.Email),
