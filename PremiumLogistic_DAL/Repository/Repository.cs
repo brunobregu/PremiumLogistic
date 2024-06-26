@@ -140,6 +140,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         return val;
     }
 
+    public async Task<List<TEntity>> IncludeAsync(Expression<Func<TEntity, object>> includeExpression)
+    {
+        return await Dbset.Include(includeExpression).ToListAsync();
+    }
+
     public async Task<PagedResponseOffset<TEntity>> GetWithOffsetPagination(int pageNumber, int pageSize)
     {
         var totalRecords = await Dbset.AsNoTracking().CountAsync();

@@ -1,4 +1,7 @@
-﻿namespace PremiumLogistic_API;
+﻿using AutoMapper;
+using PremiumLogistic_BAL;
+
+namespace PremiumLogistic_API;
 
 public static class StartupConfigurations
 {
@@ -7,15 +10,19 @@ public static class StartupConfigurations
         services.AddDbContext<PremiumLogisticDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("PremiumLogisticCS")), ServiceLifetime.Transient);
         services.AddExceptionHandler<CustomExceptionHandler>();
 
-        var assemblies = new List<Assembly>
-        {
-            typeof(MappingProfiles).Assembly,
-        };
+        //var assemblies = new List<Assembly>
+        //{
+        //    typeof(MappingProfiles).Assembly,
+        //};
 
-        services.AddAutoMapper(assemblies, ServiceLifetime.Singleton);
+        //services.AddAutoMapper(assemblies, ServiceLifetime.Singleton);
+
+
+        services.AddAutoMapper(typeof(MappingProfiles));
+        
 
         #region services
-            services.AddTransient<IPortService, PortService>();
+        services.AddTransient<IPortService, PortService>();
             services.AddTransient<ILocalTransportationService, LocalTransportationService>();
         services.AddTransient<IContactService, ContactService>();
         services.AddTransient<IUserService, UserService>();

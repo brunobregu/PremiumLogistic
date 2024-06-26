@@ -1,6 +1,4 @@
-﻿
-
-namespace PremiumLogistic_BAL.Services;
+﻿namespace PremiumLogistic_BAL.Services;
 
 public class OrderDetailsService : IOrderDetailsService
 {
@@ -20,12 +18,18 @@ public class OrderDetailsService : IOrderDetailsService
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<OrderDetailsDto>> GetOrderDetails(string username)
+    public async Task<List<OrderDetailsDto>> GetOrderDetails(string email)
     {
-        var user = await _userManager.FindByNameAsync(username) ?? throw new Exception($"Username {username} not found");
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new Exception($"Email {email} not found");
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId == user.Id);
         var result = _mapper.Map<List<OrderDetailsDto>>(orderDetails);
-        //await _unitOfWork.CommitAsync();
+        return result;
+    }
+
+    public async Task<List<AllOrderDetailsDto>> GetAllOrderDetails()
+    {
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.IncludeAsync(c => c.User);
+        var result = _mapper.Map<List<AllOrderDetailsDto>>(orderDetails);
         return result;
     }
 }

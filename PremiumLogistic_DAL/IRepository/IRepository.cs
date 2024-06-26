@@ -16,5 +16,6 @@ public interface IRepository<TEntity> where TEntity : class
     Task<List<TEntity>> GetAllAsync();
     Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where);
     Task<List<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where);
+    Task<List<TEntity>> IncludeAsync(Expression<Func<TEntity, object>> includeExpression);
     Task<PagedResponseOffset<TEntity>> GetWithOffsetPagination(int pageNumber, int pageSize);
 }

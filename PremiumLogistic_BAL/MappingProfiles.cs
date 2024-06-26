@@ -21,5 +21,7 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
         CreateMap<CreateUserDto, ApplicationUser>()
             .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+        CreateMap<OrderDetails, AllOrderDetailsDto>()
+            .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
     }
 }
