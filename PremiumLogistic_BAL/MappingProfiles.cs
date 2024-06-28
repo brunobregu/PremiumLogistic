@@ -5,9 +5,8 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<RegisterDto, ApplicationUser>()
-            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now)); ;
-        CreateMap<Port, PortDto>();
-        CreateMap<LocalTransportation, LocalTransportationDto>();
+            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+        CreateMap<Transportation, LocalTransportationDto>();
         CreateMap(typeof(PagedResponseOffset<>), typeof(PagedResponseOffsetDto<>));
         CreateMap<AddAuditLogsDto, AuditLogs>();
         CreateMap<AddContactDto, Contact>()

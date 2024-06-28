@@ -3,8 +3,8 @@
 public class UnitOfWork : IUnitOfWork
 {
     private readonly PremiumLogisticDbContext _context;
-    public IPortRepository PortRepository { get; set; }
-    public ILocalTransportationRepository LocalTransportationRepository { get; set; }
+    public IOceanRepository OceanRepository { get; set; }
+    public ITransportationRepository TransportationRepository { get; set; }
     public IAuditLogsRepository AuditLogsRepository { get; set; }
     public IContactRepository ContactRepository {  get; set; }
     public IOrderDetailsRepository OrderDetailsRepository { get; set; }
@@ -13,8 +13,8 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(PremiumLogisticDbContext context)
     {
         _context = context;
-        PortRepository = new PortRepository(context);
-        LocalTransportationRepository = new LocalTransportationRepository(context);
+        OceanRepository = new OceanRepository(context);
+        TransportationRepository = new TransportationRepository(context);
         AuditLogsRepository = new AuditLogsRepository(context);
         ContactRepository = new ContactRepository(context);
         OrderDetailsRepository = new OrderDetailsRepository(context);

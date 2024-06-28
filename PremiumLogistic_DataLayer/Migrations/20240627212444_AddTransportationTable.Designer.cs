@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PremiumLogistic_DataLayer;
 
@@ -11,9 +12,11 @@ using PremiumLogistic_DataLayer;
 namespace PremiumLogistic_DataLayer.Migrations
 {
     [DbContext(typeof(PremiumLogisticDbContext))]
-    partial class PremiumLogisticDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240627212444_AddTransportationTable")]
+    partial class AddTransportationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -320,41 +323,6 @@ namespace PremiumLogistic_DataLayer.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("PremiumLogistic_DomainModels.Models.Ocean", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Elizabeth")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Houston")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Indianapolis")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Invalidated")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LosAngeles")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Port")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Savannah")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Oceans");
-                });
-
             modelBuilder.Entity("PremiumLogistic_DomainModels.Models.OrderDetails", b =>
                 {
                     b.Property<int>("Id")
@@ -465,8 +433,8 @@ namespace PremiumLogistic_DataLayer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)

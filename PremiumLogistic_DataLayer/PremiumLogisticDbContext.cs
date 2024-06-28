@@ -8,8 +8,8 @@ public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
     {
     }
 
-    public DbSet<Port> Ports { get; set; }
-    public DbSet<LocalTransportation> LocalTransportations { get; set; }
+    public DbSet<Ocean> Oceans { get; set; }
+    public DbSet<Transportation> Transportation { get; set; }
     public DbSet<AuditLogs> AuditLogs { get; set; }
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<OrderDetails> OrderDetails { get; set; }
@@ -35,8 +35,7 @@ public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
         .HasPrincipalKey(e => e.Id);
 
         #region InvalidatedQueryFilter
-            builder.Entity<Port>().HasQueryFilter(x => !x.Invalidated);
-        builder.Entity<LocalTransportation>().HasQueryFilter(x => !x.Invalidated);
+        builder.Entity<Transportation>().HasQueryFilter(x => !x.Invalidated);
             builder.Entity<OrderDetails>().HasQueryFilter(x => !x.Invalidated);
         #endregion
     }

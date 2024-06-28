@@ -10,7 +10,6 @@ global using PremiumLogistic_BAL.Services;
 global using PremiumLogistic_BAL;
 global using PremiumLogistic_DAL.IRepository;
 global using PremiumLogistic_DAL.Repository;
-global using System.Reflection;
 global using Microsoft.AspNetCore.Mvc.Filters;
 global using PremiumLogistic_API.Common.Filters;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;

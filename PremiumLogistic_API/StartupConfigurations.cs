@@ -22,8 +22,7 @@ public static class StartupConfigurations
         
 
         #region services
-        services.AddTransient<IPortService, PortService>();
-            services.AddTransient<ILocalTransportationService, LocalTransportationService>();
+            services.AddTransient<ITransportationService, TransportationService>();
         services.AddTransient<IContactService, ContactService>();
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IOrderDetailsService, OrderDetailsService>();
@@ -31,8 +30,8 @@ public static class StartupConfigurations
         #endregion
 
         #region repository
-        services.AddTransient<IPortRepository, PortRepository>();
-            services.AddTransient<ILocalTransportationRepository, LocalTransportationRepository>();
+        services.AddTransient<IOceanRepository, OceanRepository>();
+        services.AddTransient<ITransportationRepository, TransportationRepository>();
         services.AddTransient<IAuditLogsRepository, AuditLogsRepository>();
         services.AddTransient<IContactRepository, ContactRepository>();
         services.AddTransient<IOrderDetailsRepository, OrderDetailsRepository>();

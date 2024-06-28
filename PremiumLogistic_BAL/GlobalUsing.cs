@@ -11,7 +11,6 @@ global using System.ComponentModel.DataAnnotations;
 global using PremiumLogistic_BAL.Dtos.Audit;
 global using PremiumLogistic_BAL.Dtos.Contact;
 global using PremiumLogistic_BAL.Dtos.LocalTransportation;
-global using PremiumLogistic_BAL.Dtos.Port;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.IdentityModel.Tokens;
