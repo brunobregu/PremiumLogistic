@@ -12,7 +12,7 @@ public class OrderDetailsController : ControllerBase
         _orderDetailsService = orderDetailsService;
     }
 
-    [HttpPost("addOrderDetails")]
+    [HttpPost("add")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Add([FromBody] AddOrderDetailsDto addOrderDetailsDto)
     {

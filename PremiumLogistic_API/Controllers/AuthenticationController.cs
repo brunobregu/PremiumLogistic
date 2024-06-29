@@ -74,12 +74,12 @@ public class AuthenticationController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("addRoles")]
+    [HttpPost("addRole")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> AddRoles(AddRoleDto addRoleDto)
+    public async Task<IActionResult> AddRole(AddRoleDto addRoleDto)
     {
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException("Something wrong! Please try again later!");
         await _userService.AddRole(addRoleDto, email);
-        return Created(nameof(AddRoles), $"Role {addRoleDto.Name} created");
+        return Created(nameof(AddRole), $"Role {addRoleDto.Name} created");
     }
 }

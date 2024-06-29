@@ -31,8 +31,7 @@ public class TransportationService : ITransportationService
         return new PriceDto
         {
             Land = landPrice,
-            Ocean = oceanPrice,
-            Total = landPrice + oceanPrice
+            Ocean = oceanPrice
         };
     }
 }

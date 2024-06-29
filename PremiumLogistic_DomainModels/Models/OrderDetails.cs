@@ -20,11 +20,11 @@ public class OrderDetails
     public int InlandCargoloop { get; set; }
     public int OcCargoloop { get; set; }
     public int Broker { get; set; }
-    //public int ClientTotal { get; set; }
+    public int ClientTotal { get; set; }
     public int InlandDspch { get; set; }
     public int OcCost { get; set; }
-    //public int TotalCost { get; set; }
-    //public string Profit { get; set; }
+    public int TotalCost { get; set; }
+    public int Profit { get; set; }
     public int Storage { get; set; }
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; }

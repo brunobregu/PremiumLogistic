@@ -11,7 +11,7 @@ public class ContactController : ControllerBase
         _contactService = contactService;
     }
 
-    [HttpPost("addContact")]
+    [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] AddContactDto addContactDto)
     {
         await _contactService.AddContact(addContactDto);
