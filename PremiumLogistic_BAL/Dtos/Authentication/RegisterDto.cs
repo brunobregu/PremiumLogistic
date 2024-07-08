@@ -11,6 +11,7 @@ public class RegisterDto
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Email should be a valid email address")]
     public string Email { get; set; }
+    public string PhoneNumber { get; set; }
 
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; }

@@ -36,4 +36,21 @@ public class OrderDetailsController : ControllerBase
         var result = await _orderDetailsService.GetAllOrderDetails();
         return Ok(result);
     }
+
+    [HttpGet("details")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Details()
+    {
+        var result = await _orderDetailsService.Details();
+        return Ok(result);
+    }
+
+    [HttpGet("myDetails")]
+    [Authorize(Roles = "Client")]
+    public async Task<IActionResult> MyDetails()
+    {
+        var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
+        var result = await _orderDetailsService.MyDetails(email);
+        return Ok(result);
+    }
 }

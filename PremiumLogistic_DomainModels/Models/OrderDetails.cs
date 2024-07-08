@@ -28,6 +28,7 @@ public class OrderDetails
     public int Storage { get; set; }
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; }
+    public int ToBePaid { get; set; }
     public string UserId { get; set; }
     public ApplicationUser User { get; set; }
 }

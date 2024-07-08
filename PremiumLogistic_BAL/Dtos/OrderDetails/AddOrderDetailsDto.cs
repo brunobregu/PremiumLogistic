@@ -21,5 +21,6 @@ public class AddOrderDetailsDto
     [AllowedValues("Paid", "Not paid", "Partly Paid")]
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; }
+    public int ToBePaid => ClientTotal - PartlyPaid;
     public string UserId { get; set; }
 }
