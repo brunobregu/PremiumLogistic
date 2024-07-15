@@ -40,7 +40,7 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> RequestResetPassword([FromBody] string email)
     {
         await _userService.RequestPasswordReset(email);
-        return Ok();
+        return Ok($"Temporary password send to your email {email}");
     }
 
     [HttpPost("resetPassword")]

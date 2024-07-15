@@ -66,6 +66,7 @@ public class OrderDetailsController : ControllerBase
 
     [HttpPut("update")]
     [Authorize(Roles = "Admin")]
+    [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> Update(int id, AddOrderDetailsDto update)
     {
         var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
@@ -75,6 +76,7 @@ public class OrderDetailsController : ControllerBase
 
     [HttpDelete("delete")]
     [Authorize(Roles = "Admin")]
+    [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> Delete(int id)
     {
         await _orderDetailsService.DeleteOrderDetail(id);
