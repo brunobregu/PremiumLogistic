@@ -26,6 +26,7 @@ public class AuthenticationController : ControllerBase
         return Ok(result);
     }
 
+    [ServiceFilter(typeof(AuditLogAttribute))]
     [HttpPost("addUser")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddUser([FromBody] CreateUserDto createUserDto)
@@ -76,6 +77,7 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost("addRole")]
     [Authorize(Roles = "Admin")]
+    [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> AddRole(AddRoleDto addRoleDto)
     {
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException("Something wrong! Please try again later!");

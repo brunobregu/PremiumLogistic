@@ -25,3 +25,4 @@ global using PremiumLogistic_BAL.Common.Email;
 global using PremiumLogistic_BAL.Dtos.OrderDetails;
 global using System.Security.Claims;
 global using PremiumLogistic_BAL.Common.Exceptions;
+global using Newtonsoft.Json;

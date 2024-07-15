@@ -12,11 +12,13 @@ public class OrderDetailsController : ControllerBase
         _orderDetailsService = orderDetailsService;
     }
 
+    [ServiceFilter(typeof(AuditLogAttribute))]
     [HttpPost("add")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Add([FromBody] AddOrderDetailsDto addOrderDetailsDto)
     {
-        await _orderDetailsService.AddOrderDetails(addOrderDetailsDto);
+        var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
+        await _orderDetailsService.AddOrderDetails(addOrderDetailsDto, email);
         return Created(nameof(Add), "Order details added successfully");
     }
 
@@ -52,5 +54,30 @@ public class OrderDetailsController : ControllerBase
         var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
         var result = await _orderDetailsService.MyDetails(email);
         return Ok(result);
+    }
+
+    [HttpGet("orderById")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await _orderDetailsService.GetOrderDetailsById(id);
+        return Ok(result);
+    }
+
+    [HttpPut("update")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Update(int id, AddOrderDetailsDto update)
+    {
+        var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
+        await _orderDetailsService.UpdateOrderDetail(id, update, email);
+        return Ok($"Order with id {id} is updated successully");
+    }
+
+    [HttpDelete("delete")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _orderDetailsService.DeleteOrderDetail(id);
+        return Ok($"Order with id {id} is deleted successully");
     }
 }

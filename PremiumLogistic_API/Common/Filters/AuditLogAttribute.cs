@@ -19,7 +19,7 @@ public class AuditLogAttribute : ActionFilterAttribute
                 AccessedBy = context.HttpContext.User.Identity.Name ?? "Anonymous",
                 Url = request.Path,
                 IP = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
-                BodyRequest = await new StreamReader(request.Body).ReadToEndAsync()
+                BodyRequest = JsonConvert.SerializeObject(context.ActionArguments)
             };
             await _auditLogsService.AddLogs(auditLog);
         }

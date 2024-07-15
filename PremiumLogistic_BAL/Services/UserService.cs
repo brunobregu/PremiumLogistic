@@ -128,10 +128,7 @@ public class UserService : IUserService
 
         //Add User Roles
         var userRoles = await _userManager.GetRolesAsync(user);
-        foreach (var userRole in userRoles)
-        {
-            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-        }
+        authClaims.Add(new Claim(ClaimTypes.Role, userRoles.FirstOrDefault() ?? ""));
 
         var authSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]));
 
@@ -148,6 +145,7 @@ public class UserService : IUserService
         var response = new AuthResultDto()
         {
             Token = jwtToken,
+            Role = userRoles.FirstOrDefault() ?? ""
         };
 
         return response;
