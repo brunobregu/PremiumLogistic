@@ -37,8 +37,9 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task<OrderDetailsByIdDto> GetOrderDetailsById(int id)
     {
-        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException($"Order with Id {id} not found");
-        var result = _mapper.Map<OrderDetailsByIdDto>(orderDetails);
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.IncludeAsync(c => c.User);
+        var ordersById = orderDetails.Where(x => x.Id== id).FirstOrDefault() ?? throw new NotFoundException($"Order with Id {id} not found");
+        var result = _mapper.Map<OrderDetailsByIdDto>(ordersById);
         return result;
     }
 
