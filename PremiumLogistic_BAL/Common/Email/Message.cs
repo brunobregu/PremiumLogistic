@@ -10,7 +10,7 @@ public class Message
     {
         To = new List<MailboxAddress>();
 
-        To.AddRange(to.Select(x => new MailboxAddress("Test", x)));
+        To.AddRange(to.Select(x => new MailboxAddress("Premium Logistic", x)));
         Subject = subject;
         Content = content;
     }

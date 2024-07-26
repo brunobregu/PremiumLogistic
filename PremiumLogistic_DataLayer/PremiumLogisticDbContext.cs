@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace PremiumLogistic_DataLayer;
+﻿namespace PremiumLogistic_DataLayer;
 
 public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
 {
@@ -36,7 +34,8 @@ public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
 
         #region InvalidatedQueryFilter
         builder.Entity<Transportation>().HasQueryFilter(x => !x.Invalidated);
-            builder.Entity<OrderDetails>().HasQueryFilter(x => !x.Invalidated);
+        builder.Entity<Ocean>().HasQueryFilter(x => !x.Invalidated);
+        builder.Entity<OrderDetails>().HasQueryFilter(x => !x.Invalidated);
         #endregion
     }
 }

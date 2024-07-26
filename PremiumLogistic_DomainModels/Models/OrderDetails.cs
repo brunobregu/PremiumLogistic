@@ -10,25 +10,46 @@ public class OrderDetails
     public DateTime? UpdatedOn { get; set; }
     [StringLength(50)]
     public string? UpdatedBy { get; set; }
-    public string VIN { get; set; }
+    [Required]
+    public string VIN { get; set; } //shasia e makines
+    [Required]
     public string Make { get; set; }
+    [Required]
     public string Model { get; set; }
+    [Required]
     public int Year { get; set; }
-    public int Lot { get; set; }
-    public string DspOrderID { get; set; }
+    [Required]
+    public int Lot { get; set; } //nr identifikues ne coopart/iaai
+    [Required]
+    public string DspOrderID { get; set; } //nr gjurmimi per makinat qe marrin karrotrec
+    [Required]
+    public string Auction { get; set; }
+    public string? TrackingNumber { get; set; }
+    public CarStatus CarStatus { get; set; }
+    [Required]
     public string Port { get; set; }
-    public int InlandCargoloop { get; set; }
-    public int OcCargoloop { get; set; }
-    public int Broker { get; set; }
+    [Required]
+    public int InlandPrice { get; set; }
+    [Required]
+    public int OceanPrice { get; set; }
+    public int Broker { get; set; } //komision qe mban kompania
+    public int Storage { get; set; } //vonesat ne pagese
+    [Required]
     public int ClientTotal { get; set; }
-    public int InlandDspch { get; set; }
-    public int OcCost { get; set; }
+    [Required]
+    public int InlandCost { get; set; }
+    [Required]
+    public int OceanCost { get; set; }
+    [Required]
     public int TotalCost { get; set; }
+    [Required]
     public int Profit { get; set; }
-    public int Storage { get; set; }
-    public string PaymentStatus { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
     public int PartlyPaid { get; set; }
+    [Required]
     public int ToBePaid { get; set; }
+    [Required]
+    [StringLength(450)]
     public string UserId { get; set; }
     public ApplicationUser User { get; set; }
 }

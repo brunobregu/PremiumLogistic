@@ -1,4 +1,6 @@
-﻿namespace PremiumLogistic_BAL.Services;
+﻿using PremiumLogistic_DomainModels;
+
+namespace PremiumLogistic_BAL.Services;
 
 public class OrderDetailsService : IOrderDetailsService
 {
@@ -15,7 +17,7 @@ public class OrderDetailsService : IOrderDetailsService
     {
         var orderDetails = _mapper.Map<OrderDetails>(orderDetailsDto);
         orderDetails.CreatedBy = email;
-        orderDetails.ToBePaid = orderDetails.PaymentStatus == "Paid" ? 0 : orderDetails.ToBePaid;
+        //orderDetails.ToBePaid = orderDetails.PaymentStatus == PaymentStatus.PartlyPaid ? orderDetails.ToBePaid : 0;
         _unitOfWork.OrderDetailsRepository.Insert(orderDetails);
         await _unitOfWork.CommitAsync();
     }
@@ -55,18 +57,18 @@ public class OrderDetailsService : IOrderDetailsService
         orderDetails.Lot = updateOrderDetail.Lot;
         orderDetails.DspOrderID = updateOrderDetail.DspOrderID;
         orderDetails.Port = updateOrderDetail.Port;
-        orderDetails.InlandCargoloop = updateOrderDetail.InlandCargoloop;
-        orderDetails.OcCargoloop = updateOrderDetail.OcCargoloop;
+        orderDetails.InlandPrice = updateOrderDetail.InlandPrice;
+        orderDetails.OceanPrice = updateOrderDetail.OceanPrice;
         orderDetails.Broker = updateOrderDetail.Broker;
         orderDetails.ClientTotal = updateOrderDetail.ClientTotal;
-        orderDetails.InlandDspch = updateOrderDetail.InlandDspch;
-        orderDetails.OcCost = updateOrderDetail.OcCost;
+        orderDetails.InlandCost = updateOrderDetail.InlandCost;
+        orderDetails.OceanCost = updateOrderDetail.OceanCost;
         orderDetails.TotalCost = updateOrderDetail.TotalCost;
         orderDetails.Profit = updateOrderDetail.Profit;
         orderDetails.Storage = updateOrderDetail.Storage;
-        orderDetails.PaymentStatus = updateOrderDetail.PaymentStatus;
+        //orderDetails.PaymentStatus = updateOrderDetail.PaymentStatus;
         orderDetails.PartlyPaid = updateOrderDetail.PartlyPaid;
-        orderDetails.ToBePaid = updateOrderDetail.PaymentStatus == "Paid" ? 0 : updateOrderDetail.ToBePaid;
+        orderDetails.ToBePaid = updateOrderDetail.PaymentStatus == PaymentStatus.PartlyPaid ? updateOrderDetail.ToBePaid : 0;
 
         _unitOfWork.OrderDetailsRepository.Update(orderDetails);
         await _unitOfWork.CommitAsync();
@@ -88,9 +90,8 @@ public class OrderDetailsService : IOrderDetailsService
                         .Select(g => new DetailsDto
                         {
                             NumberOfOrders = g.Count(),
-                            SumClientTotal = g.Sum(o => o.ClientTotal),
-                            SumPartlyPaid = g.Sum(o => o.PartlyPaid),
-                            SumToBePaid = g.Sum(o => o.ToBePaid)
+                            ClientTotal = g.Sum(o => o.ClientTotal),
+                            ToBePaid = g.Sum(o => o.ToBePaid)
                         })
                         .FirstOrDefault();
         return details;
@@ -104,9 +105,8 @@ public class OrderDetailsService : IOrderDetailsService
                         .Select(g => new DetailsDto
                         {
                             NumberOfOrders = g.Count(),
-                            SumClientTotal = g.Sum(o => o.ClientTotal),
-                            SumPartlyPaid = g.Sum(o => o.PartlyPaid),
-                            SumToBePaid = g.Sum(o => o.ToBePaid)
+                            ClientTotal = g.Sum(o => o.ClientTotal),
+                            ToBePaid = g.Sum(o => o.ToBePaid)
                         })
                         .FirstOrDefault();
         return details;

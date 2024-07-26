@@ -14,7 +14,7 @@ public class OrderDetailsController : ControllerBase
 
     [ServiceFilter(typeof(AuditLogAttribute))]
     [HttpPost("add")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> Add([FromBody] AddOrderDetailsDto addOrderDetailsDto)
     {
         var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;

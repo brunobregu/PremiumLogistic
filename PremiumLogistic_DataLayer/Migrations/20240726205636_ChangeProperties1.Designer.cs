@@ -12,8 +12,8 @@ using PremiumLogistic_DataLayer;
 namespace PremiumLogistic_DataLayer.Migrations
 {
     [DbContext(typeof(PremiumLogisticDbContext))]
-    [Migration("20240627212444_AddTransportationTable")]
-    partial class AddTransportationTable
+    [Migration("20240726205636_ChangeProperties1")]
+    partial class ChangeProperties1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,13 +194,17 @@ namespace PremiumLogistic_DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("Invalidated")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -323,6 +327,42 @@ namespace PremiumLogistic_DataLayer.Migrations
                     b.ToTable("Contacts");
                 });
 
+            modelBuilder.Entity("PremiumLogistic_DomainModels.Models.Ocean", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Elizabeth")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Houston")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Indianapolis")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Invalidated")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LosAngeles")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Port")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Savannah")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Oceans");
+                });
+
             modelBuilder.Entity("PremiumLogistic_DomainModels.Models.OrderDetails", b =>
                 {
                     b.Property<int>("Id")
@@ -331,7 +371,17 @@ namespace PremiumLogistic_DataLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Auction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Broker")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientTotal")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -345,10 +395,10 @@ namespace PremiumLogistic_DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("InlandCargoloop")
+                    b.Property<int>("InlandCost")
                         .HasColumnType("int");
 
-                    b.Property<int>("InlandDspch")
+                    b.Property<int>("InlandPrice")
                         .HasColumnType("int");
 
                     b.Property<bool>("Invalidated")
@@ -365,25 +415,36 @@ namespace PremiumLogistic_DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OcCargoloop")
+                    b.Property<int>("OceanCost")
                         .HasColumnType("int");
 
-                    b.Property<int>("OcCost")
+                    b.Property<int>("OceanPrice")
                         .HasColumnType("int");
 
                     b.Property<int>("PartlyPaid")
                         .HasColumnType("int");
 
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("Port")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Profit")
+                        .HasColumnType("int");
+
                     b.Property<int>("Storage")
                         .HasColumnType("int");
+
+                    b.Property<int>("ToBePaid")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalCost")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrackingNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(50)
@@ -394,6 +455,7 @@ namespace PremiumLogistic_DataLayer.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("VIN")
@@ -408,44 +470,6 @@ namespace PremiumLogistic_DataLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("OrderDetails");
-                });
-
-            modelBuilder.Entity("PremiumLogistic_DomainModels.Models.Port", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Invalidated")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ports");
                 });
 
             modelBuilder.Entity("PremiumLogistic_DomainModels.Models.Transportation", b =>
