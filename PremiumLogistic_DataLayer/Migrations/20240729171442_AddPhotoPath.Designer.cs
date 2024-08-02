@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PremiumLogistic_DataLayer;
 
@@ -11,9 +12,11 @@ using PremiumLogistic_DataLayer;
 namespace PremiumLogistic_DataLayer.Migrations
 {
     [DbContext(typeof(PremiumLogisticDbContext))]
-    partial class PremiumLogisticDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240729171442_AddPhotoPath")]
+    partial class AddPhotoPath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -393,6 +396,7 @@ namespace PremiumLogistic_DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DocumentsPath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DspOrderID")
@@ -433,6 +437,7 @@ namespace PremiumLogistic_DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotosPath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Port")
@@ -441,9 +446,6 @@ namespace PremiumLogistic_DataLayer.Migrations
 
                     b.Property<int>("Profit")
                         .HasColumnType("int");
-
-                    b.Property<string>("Provider")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StorageCost")
                         .HasColumnType("int");
@@ -481,27 +483,6 @@ namespace PremiumLogistic_DataLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("OrderDetails");
-                });
-
-            modelBuilder.Entity("PremiumLogistic_DomainModels.Models.Provider", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Providers");
                 });
 
             modelBuilder.Entity("PremiumLogistic_DomainModels.Models.Transportation", b =>

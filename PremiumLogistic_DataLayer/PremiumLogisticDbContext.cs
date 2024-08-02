@@ -11,6 +11,7 @@ public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AuditLogs> AuditLogs { get; set; }
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<OrderDetails> OrderDetails { get; set; }
+    public DbSet<Provider> Providers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

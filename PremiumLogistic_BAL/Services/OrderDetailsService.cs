@@ -65,10 +65,10 @@ public class OrderDetailsService : IOrderDetailsService
         orderDetails.OceanCost = updateOrderDetail.OceanCost;
         orderDetails.TotalCost = updateOrderDetail.TotalCost;
         orderDetails.Profit = updateOrderDetail.Profit;
-        orderDetails.Storage = updateOrderDetail.Storage;
+        //orderDetails.Storage = updateOrderDetail.Storage;
         //orderDetails.PaymentStatus = updateOrderDetail.PaymentStatus;
         orderDetails.PartlyPaid = updateOrderDetail.PartlyPaid;
-        orderDetails.ToBePaid = updateOrderDetail.PaymentStatus == PaymentStatus.PartlyPaid ? updateOrderDetail.ToBePaid : 0;
+        orderDetails.ToBePaid = updateOrderDetail.PaymentStatus == "Partly Paid" ? updateOrderDetail.ToBePaid : 0;
 
         _unitOfWork.OrderDetailsRepository.Update(orderDetails);
         await _unitOfWork.CommitAsync();

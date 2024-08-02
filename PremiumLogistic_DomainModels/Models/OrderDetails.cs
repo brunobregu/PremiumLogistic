@@ -25,7 +25,8 @@ public class OrderDetails
     [Required]
     public string Auction { get; set; }
     public string? TrackingNumber { get; set; }
-    public CarStatus CarStatus { get; set; }
+    public string CarStatus { get; set; }
+    public string? Provider { get; set; }
     [Required]
     public string Port { get; set; }
     [Required]
@@ -33,21 +34,24 @@ public class OrderDetails
     [Required]
     public int OceanPrice { get; set; }
     public int Broker { get; set; } //komision qe mban kompania
-    public int Storage { get; set; } //vonesat ne pagese
+    public int ClientStorage { get; set; } //vonesat ne pagese
     [Required]
     public int ClientTotal { get; set; }
     [Required]
     public int InlandCost { get; set; }
     [Required]
     public int OceanCost { get; set; }
+    public int StorageCost { get; set; } //vonesat ne pagese
     [Required]
     public int TotalCost { get; set; }
     [Required]
     public int Profit { get; set; }
-    public PaymentStatus PaymentStatus { get; set; }
+    public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; }
     [Required]
     public int ToBePaid { get; set; }
+    public string? PhotosPath { get; set; }
+    public string? DocumentsPath { get; set; }
     [Required]
     [StringLength(450)]
     public string UserId { get; set; }

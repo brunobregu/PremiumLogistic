@@ -67,7 +67,7 @@ public class AuthenticationController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("getRoles")]
+    [HttpPost("getRoles")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetRoles()
     {

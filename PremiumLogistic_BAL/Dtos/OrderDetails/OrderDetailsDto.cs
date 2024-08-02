@@ -6,12 +6,10 @@ public record OrderDetailsDto(
     string Model,
     int Year,
     int Lot,
-    string DspOrderID,
+    string Auction,
+    string TrackingNumber,
     string Port,
-    int InlandCargoloop,
-    int OcCargoloop,
-    int Broker,
-    int Storage,
+    int ClientTotal,
     string PaymentStatus,
     int PartlyPaid
 );

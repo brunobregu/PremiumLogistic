@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Http.Features;
+using PremiumLogistic_BAL.Common;
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var emailConfig = builder.Configuration
@@ -5,8 +8,20 @@ var emailConfig = builder.Configuration
         .Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 
+var generalConfig = builder.Configuration
+        .GetSection("GeneralConfigs")
+        .Get<GeneralConfigs>();
+builder.Services.AddSingleton(generalConfig);
+
 builder.Services.AddControllers();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+builder.Services.Configure<FormOptions>(o => {
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IAuditLogsService, AuditLogsService>();
 builder.Services.AddScoped<AuditLogAttribute>();

@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using System.Data;
 
 namespace PremiumLogistic_BAL.Services;
 
@@ -21,7 +23,7 @@ public class UserService : IUserService
     }
 
     public async Task AddUser(CreateUserDto createUserDto, string email)
-    {
+    {       
         var newUser = _mapper.Map<ApplicationUser>(createUserDto);
         newUser.UserName = createUserDto.Email;
         newUser.CreatedBy = email;
@@ -100,6 +102,35 @@ public class UserService : IUserService
 
     public async Task<List<RolesDto>> GetRoles()
     {
+        //var formFileCollection = new FormFileCollection();
+        //formFileCollection.Add(documents[0]);
+        //formFileCollection.Add(documents[1]);
+        //string[] filePath = new string[2]
+        //{
+        //    "C:\\Users\\b.bregu\\source\\repos\\CV.pdf",
+        //    "C:\\Users\\b.bregu\\source\\repos\\CV1.pdf"
+        //};
+        //var formFileCollection = new FormFileCollection();
+        //for (int i = 0; i< 2; i++)
+        //{
+        //    if (!string.IsNullOrEmpty(filePath[i]) && File.Exists(filePath[i]))
+        //    {
+        //        var fileName = Path.GetFileName(filePath[i]);
+        //        using (var fileStream = new FileStream(filePath[i], FileMode.Open, FileAccess.Read))
+        //        {
+        //            IFormFile file1 = new FormFile(fileStream, 0, fileStream.Length, "file1", fileName)
+        //            {
+        //                Headers = new HeaderDictionary(),
+        //                ContentType = "application/pdf" // Replace with actual content type if known
+        //            };
+        //            formFileCollection.Add(file1);
+        //        }
+        //    }
+        //}
+        //IEnumerable<string> emails = new string[] { "b.bregu@teamsystem.com" };
+        //Message message = new Message(emails, "Reset password", $"Your files here:", formFileCollection);
+        //await _emailSender.SendEmail(message);
+
         var roles = _roleManager.Roles;
         return _mapper.Map<List<RolesDto>>(await roles.ToListAsync());
     }

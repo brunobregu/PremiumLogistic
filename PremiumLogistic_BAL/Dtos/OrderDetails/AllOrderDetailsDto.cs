@@ -6,6 +6,7 @@ public class AllOrderDetailsDto
     public string VIN { get; set; }
     public string Make { get; set; }
     public string Model { get; set; }
+    public int Year { get; set; }
     public int Lot { get; set; }
     public string DspOrderID { get; set; }
     public string Auction { get; set; }
@@ -15,6 +16,5 @@ public class AllOrderDetailsDto
     public int TotalCost { get; set; }
     public string PaymentStatus { get; set; }
     public string? TrackingNumber { get; set; }
-    public int PartlyPaid { get; set; }
     public string Fullname { get; set; }
 }

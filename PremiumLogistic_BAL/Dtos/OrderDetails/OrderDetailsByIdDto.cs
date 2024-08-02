@@ -15,7 +15,8 @@ public class OrderDetailsByIdDto
     public int Broker { get; set; }
     public int InlandDspch { get; set; }
     public int OcCost { get; set; }
-    public int Storage { get; set; }
+    public int ClientStorage { get; set; }
+    public int StorageCost { get; set; }
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; }
     public string UserId { get; set; }
