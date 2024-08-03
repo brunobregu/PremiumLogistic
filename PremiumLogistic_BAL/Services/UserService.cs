@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
-using System.Data;
-
-namespace PremiumLogistic_BAL.Services;
+﻿namespace PremiumLogistic_BAL.Services;
 
 public class UserService : IUserService
 {
@@ -12,7 +8,8 @@ public class UserService : IUserService
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
     private readonly IEmailSender _emailSender;
-    public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailSender emailSender)
+    private readonly IStringLocalizer<Resource> _localizer;
+    public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailSender emailSender, IStringLocalizer<Resource> localizer)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -20,6 +17,7 @@ public class UserService : IUserService
         _roleManager = roleManager;
         _configuration = configuration;
         _emailSender = emailSender;
+        _localizer = localizer;
     }
 
     public async Task AddUser(CreateUserDto createUserDto, string email)
@@ -27,11 +25,17 @@ public class UserService : IUserService
         var newUser = _mapper.Map<ApplicationUser>(createUserDto);
         newUser.UserName = createUserDto.Email;
         newUser.CreatedBy = email;
-        var result = await _userManager.CreateAsync(newUser, createUserDto.Password);
-        if (!result.Succeeded)
-            throw new BadRequestException($"User could not be created!{result.Errors?.FirstOrDefault()?.Description}");
+        var resultUser = await _userManager.CreateAsync(newUser, createUserDto.Password);
+        if (!resultUser.Succeeded)
+            throw new BadRequestException(string.Format(_localizer["UserNotCreated"], resultUser.Errors?.FirstOrDefault()?.Description));
 
-        await _userManager.AddToRoleAsync(newUser, createUserDto.RoleName);
+        var resultRole = await _userManager.AddToRoleAsync(newUser, createUserDto.RoleName);
+        if (!resultRole.Succeeded)
+            throw new BadRequestException(string.Format(_localizer["UserNotCreated"], resultRole.Errors?.FirstOrDefault()?.Description));
+        
+        IEnumerable<string> emails = new string[] { createUserDto.Email };
+        Message message = new Message(emails, "Kredencialet tuaja - Your credentials", string.Format(_configuration["GeneralConfigs:AddUser"], createUserDto.Email, createUserDto.Password));
+        await _emailSender.SendEmail(message);
     }
     public async Task Register(RegisterDto registerDto)
     {
@@ -39,7 +43,7 @@ public class UserService : IUserService
         newUser.UserName = registerDto.Email;
         var result = await _userManager.CreateAsync(newUser, registerDto.Password);
         if (!result.Succeeded)
-            throw new BadRequestException($"User could not be created!{result.Errors?.FirstOrDefault()?.Description}");
+            throw new BadRequestException(string.Format(_localizer["UserNotCreated"], result.Errors?.FirstOrDefault()?.Description));
 
         await _userManager.AddToRoleAsync(newUser, "Client");
     }
@@ -50,30 +54,30 @@ public class UserService : IUserService
         if (user is not null && await _userManager.CheckPasswordAsync(user, loginDto.Password))
             return await GenerateJwtToken(user);
         else
-            throw new BadRequestException("Please check your credentials");
+            throw new BadRequestException(_localizer["CheckCredentials"]);
     }
 
     public async Task RequestPasswordReset(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException("User not found.");
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"]);
         user.TemporaryPassword = GenerateRandomPassword();
-        user.TemporaryPasswordExpiration = DateTime.Now.AddMinutes(5);
+        user.TemporaryPasswordExpiration = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["GeneralConfigs:PasswordExpire"]));
         var updateResult = await _userManager.UpdateAsync(user);
         if (updateResult.Succeeded)
         {
             IEnumerable<string> emails = new string[] { email };
-            Message message = new Message(emails, "Reset password", $"Your password is {user.TemporaryPassword}");
+            Message message = new Message(emails, "Reset password", string.Format(_localizer["TempPass"], user.TemporaryPassword));
             await _emailSender.SendEmail(message);
         } 
     }
 
     public async Task ResetPassword(ResetPasswordDto resetPasswordDto)
     {
-        var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email) ?? throw new BadRequestException("User not found.");
+        var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email) ?? throw new BadRequestException(_localizer["UserNotFound"]);
         if(user.TemporaryPassword != resetPasswordDto.TemporaryPassword)
-            throw new BadRequestException("Temporary password is incorrect.");
+            throw new BadRequestException(_localizer["TempPassIncorrect"]);
         if(user.TemporaryPasswordExpiration <= DateTime.Now)
-            throw new BadRequestException("Temporary password has expired.Please try again");
+            throw new BadRequestException(_localizer["TempPassExpire"]);
 
         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         var resetResult = await _userManager.ResetPasswordAsync(user, resetToken, resetPasswordDto.NewPassword);
@@ -87,50 +91,21 @@ public class UserService : IUserService
 
     public async Task ChangePassword(ChangePasswordDto changePasswordDto, string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException("User not found.");
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"]);
         var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
         if(!result.Succeeded)
             throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
     }
     public async Task<List<UsersOfRoleDto>> GetUsersOfRole(string role)
     {
-        var existRole = await _roleManager.FindByNameAsync(role) ?? throw new NotFoundException("Role doesn't exist");
-        var userRoles = await _userManager.GetUsersInRoleAsync(existRole.Name) ?? throw new NotFoundException($"There are not any users in role {role}");
+        var existRole = await _roleManager.FindByNameAsync(role) ?? throw new NotFoundException(_localizer["RoleNotExist"]);
+        var userRoles = await _userManager.GetUsersInRoleAsync(existRole.Name) ?? throw new NotFoundException(string.Format(_localizer["NotUserInRole"], role));
 
         return _mapper.Map<List<UsersOfRoleDto>>(userRoles.ToList());
     }
 
     public async Task<List<RolesDto>> GetRoles()
     {
-        //var formFileCollection = new FormFileCollection();
-        //formFileCollection.Add(documents[0]);
-        //formFileCollection.Add(documents[1]);
-        //string[] filePath = new string[2]
-        //{
-        //    "C:\\Users\\b.bregu\\source\\repos\\CV.pdf",
-        //    "C:\\Users\\b.bregu\\source\\repos\\CV1.pdf"
-        //};
-        //var formFileCollection = new FormFileCollection();
-        //for (int i = 0; i< 2; i++)
-        //{
-        //    if (!string.IsNullOrEmpty(filePath[i]) && File.Exists(filePath[i]))
-        //    {
-        //        var fileName = Path.GetFileName(filePath[i]);
-        //        using (var fileStream = new FileStream(filePath[i], FileMode.Open, FileAccess.Read))
-        //        {
-        //            IFormFile file1 = new FormFile(fileStream, 0, fileStream.Length, "file1", fileName)
-        //            {
-        //                Headers = new HeaderDictionary(),
-        //                ContentType = "application/pdf" // Replace with actual content type if known
-        //            };
-        //            formFileCollection.Add(file1);
-        //        }
-        //    }
-        //}
-        //IEnumerable<string> emails = new string[] { "b.bregu@teamsystem.com" };
-        //Message message = new Message(emails, "Reset password", $"Your files here:", formFileCollection);
-        //await _emailSender.SendEmail(message);
-
         var roles = _roleManager.Roles;
         return _mapper.Map<List<RolesDto>>(await roles.ToListAsync());
     }
@@ -139,7 +114,7 @@ public class UserService : IUserService
     {
         var existRole = await _roleManager.FindByNameAsync(addRoleDto.Name);
         if (existRole is not null)
-            throw new BadRequestException($"Role {addRoleDto.Name} exist.");
+            throw new BadRequestException(string.Format(_localizer["RoleExist"], addRoleDto.Name));
 
         var addRole = _mapper.Map<ApplicationRole>(addRoleDto);
         addRole.CreatedBy = email;

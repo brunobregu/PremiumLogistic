@@ -26,6 +26,7 @@ public static class StartupConfigurations
         services.AddTransient<IContactService, ContactService>();
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IOrderDetailsService, OrderDetailsService>();
+        services.AddTransient<IProviderService, ProviderService>();
         //services.AddTransient<IEmailSender, EmailSender>();
         #endregion
 
@@ -35,6 +36,7 @@ public static class StartupConfigurations
         services.AddTransient<IAuditLogsRepository, AuditLogsRepository>();
         services.AddTransient<IContactRepository, ContactRepository>();
         services.AddTransient<IOrderDetailsRepository, OrderDetailsRepository>();
+        services.AddTransient<IProviderRepository, ProviderRepository>();
         #endregion
 
         services.AddTransient<IUnitOfWork, UnitOfWork>();

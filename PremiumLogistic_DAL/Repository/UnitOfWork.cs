@@ -8,6 +8,7 @@ public class UnitOfWork : IUnitOfWork
     public IAuditLogsRepository AuditLogsRepository { get; set; }
     public IContactRepository ContactRepository {  get; set; }
     public IOrderDetailsRepository OrderDetailsRepository { get; set; }
+    public IProviderRepository ProviderRepository { get; set; }
 
 
     public UnitOfWork(PremiumLogisticDbContext context)
@@ -18,6 +19,7 @@ public class UnitOfWork : IUnitOfWork
         AuditLogsRepository = new AuditLogsRepository(context);
         ContactRepository = new ContactRepository(context);
         OrderDetailsRepository = new OrderDetailsRepository(context);
+        ProviderRepository = new ProviderRepository(context);
     }
     public int Commit()
     {

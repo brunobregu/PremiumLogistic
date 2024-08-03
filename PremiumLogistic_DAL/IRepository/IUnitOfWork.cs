@@ -7,6 +7,7 @@ public interface IUnitOfWork
     IAuditLogsRepository AuditLogsRepository { get; }
     IContactRepository ContactRepository { get; }
     IOrderDetailsRepository OrderDetailsRepository {  get; }
+    IProviderRepository ProviderRepository { get; }
     void Dispose();
     Task<int> CommitAsync();
     int Commit();

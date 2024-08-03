@@ -1,17 +1,17 @@
-﻿using PremiumLogistic_DomainModels;
-
-namespace PremiumLogistic_BAL.Services;
+﻿namespace PremiumLogistic_BAL.Services;
 
 public class OrderDetailsService : IOrderDetailsService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly UserManager<ApplicationUser> _userManager;
-    public OrderDetailsService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager)
+    private readonly IStringLocalizer<Resource> _localizer;
+    public OrderDetailsService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, IStringLocalizer<Resource> localizer)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _userManager = userManager;
+        _localizer = localizer;
     }
     public async Task AddOrderDetails(AddOrderDetailsDto orderDetailsDto, string email)
     {
@@ -24,7 +24,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task<List<OrderDetailsDto>> GetOrderDetails(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException($"Email {email} not found");
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"], email));
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId == user.Id);
         var result = _mapper.Map<List<OrderDetailsDto>>(orderDetails);
         return result;
@@ -40,14 +40,14 @@ public class OrderDetailsService : IOrderDetailsService
     public async Task<OrderDetailsByIdDto> GetOrderDetailsById(int id)
     {
         var orderDetails = await _unitOfWork.OrderDetailsRepository.IncludeAsync(c => c.User);
-        var ordersById = orderDetails.Where(x => x.Id== id).FirstOrDefault() ?? throw new NotFoundException($"Order with Id {id} not found");
+        var ordersById = orderDetails.Where(x => x.Id== id).FirstOrDefault() ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
         var result = _mapper.Map<OrderDetailsByIdDto>(ordersById);
         return result;
     }
 
     public async Task UpdateOrderDetail(int id, AddOrderDetailsDto updateOrderDetail, string email)
     {
-        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException($"Order with Id {id} not found");
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
         orderDetails.UpdatedOn = DateTime.Now;
         orderDetails.UpdatedBy = email;
         orderDetails.VIN = updateOrderDetail.VIN;
@@ -76,7 +76,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task DeleteOrderDetail(int id)
     {
-        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException($"Order with Id {id} not found");
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
         orderDetails.Invalidated = true;
         
         _unitOfWork.OrderDetailsRepository.Update(orderDetails);
@@ -99,7 +99,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task<DetailsDto> MyDetails(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException($"Email {email} not found");
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"], email));
         var myDetails = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId == user.Id);
         var details = myDetails.GroupBy(o => 1)
                         .Select(g => new DetailsDto

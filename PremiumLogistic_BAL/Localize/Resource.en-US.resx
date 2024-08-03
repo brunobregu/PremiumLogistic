@@ -117,7 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Test" xml:space="preserve">
-    <value>Test message</value>
+  <data name="CheckCredentials" xml:space="preserve">
+    <value>Please check your credentials!</value>
+  </data>
+  <data name="ContactAdded" xml:space="preserve">
+    <value>Contact added successfully!</value>
+  </data>
+  <data name="EmailNotFound" xml:space="preserve">
+    <value>Email {0} not found!</value>
+  </data>
+  <data name="NotUserInRole" xml:space="preserve">
+    <value>There are not any users in role {0}!</value>
+  </data>
+  <data name="OrderNotFound" xml:space="preserve">
+    <value>Order with id {0} not found!</value>
+  </data>
+  <data name="RoleCreated" xml:space="preserve">
+    <value>Role {0} created!</value>
+  </data>
+  <data name="RoleExist" xml:space="preserve">
+    <value>Role {0} exist!</value>
+  </data>
+  <data name="RoleNotExist" xml:space="preserve">
+    <value>Role doesn't exist!</value>
+  </data>
+  <data name="TempPass" xml:space="preserve">
+    <value>Your temporary password is {0}.</value>
+  </data>
+  <data name="TempPassExpire" xml:space="preserve">
+    <value>Temporary password has expired.Please try again!</value>
+  </data>
+  <data name="TempPassIncorrect" xml:space="preserve">
+    <value>Temporary password is incorrect!</value>
+  </data>
+  <data name="TempPassSend" xml:space="preserve">
+    <value>Temporary password send to your email {0}</value>
+  </data>
+  <data name="TerminalNotExist" xml:space="preserve">
+    <value>Terminal {0} doesn't exist!</value>
+  </data>
+  <data name="TryAgain" xml:space="preserve">
+    <value>Something wrong! Please try again later!</value>
+  </data>
+  <data name="UserCreated" xml:space="preserve">
+    <value>User {0} created!</value>
+  </data>
+  <data name="UserNotCreated" xml:space="preserve">
+    <value>User could not be created!{0}</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found!</value>
+  </data>
+  <data name="ZipNotExist" xml:space="preserve">
+    <value>Zip {0} doesn't exist!</value>
   </data>
 </root>

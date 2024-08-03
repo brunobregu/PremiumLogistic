@@ -24,4 +24,6 @@ global using MailKit.Net.Smtp;
 global using PremiumLogistic_BAL.Dtos.OrderDetails;
 global using PremiumLogistic_BAL.Common.Email;
 global using Microsoft.EntityFrameworkCore;
-global using PremiumLogistic_DomainModels;
+global using System.Data;
+global using Microsoft.Extensions.Localization;
+global using PremiumLogistic_BAL.Localize;

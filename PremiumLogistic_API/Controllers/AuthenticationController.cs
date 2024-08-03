@@ -1,4 +1,6 @@
-﻿namespace PremiumLogistic_API.Controllers;
+﻿using PremiumLogistic_BAL.Dtos.Authentication;
+
+namespace PremiumLogistic_API.Controllers;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
@@ -18,13 +20,12 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         await _userService.Register(registerDto);
-        return Created(nameof(Register), $"User {registerDto.Email} created");
+        return Created(nameof(Register), string.Format(_localizer["UserCreated"], registerDto.Email));
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
-        var value = _localizer["Test"];
         var result = await _userService.Login(loginDto);
         return Ok(result);
     }
@@ -34,16 +35,16 @@ public class AuthenticationController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddUser([FromBody] CreateUserDto createUserDto)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException("Something wrong! Please try again later!");
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
         await _userService.AddUser(createUserDto, email);
-        return Created(nameof(AddUser), $"User {createUserDto.Email} created");
+        return Created(nameof(AddUser), string.Format(_localizer["UserCreated"], createUserDto.Email));
     }
 
     [HttpPost("requestResetPassword")]
     public async Task<IActionResult> RequestResetPassword([FromBody] string email)
     {
         await _userService.RequestPasswordReset(email);
-        return Ok($"Temporary password send to your email {email}");
+        return Ok(string.Format(_localizer["TempPassSend"], email));
     }
 
     [HttpPost("resetPassword")]
@@ -57,7 +58,7 @@ public class AuthenticationController : ControllerBase
     [Authorize]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto request)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException("Something wrong! Please try again later!");
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
         await _userService.ChangePassword(request, email);
         return Ok();
     }
@@ -83,8 +84,8 @@ public class AuthenticationController : ControllerBase
     [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> AddRole(AddRoleDto addRoleDto)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException("Something wrong! Please try again later!");
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
         await _userService.AddRole(addRoleDto, email);
-        return Created(nameof(AddRole), $"Role {addRoleDto.Name} created");
+        return Created(nameof(AddRole), string.Format(_localizer["RoleCreated"]));
     }
 }

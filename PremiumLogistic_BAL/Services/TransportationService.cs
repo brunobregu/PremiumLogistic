@@ -4,16 +4,18 @@ public class TransportationService : ITransportationService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IStringLocalizer<Resource> _localizer;
 
-    public TransportationService(IUnitOfWork unitOfWork, IMapper mapper)
+    public TransportationService(IUnitOfWork unitOfWork, IMapper mapper, IStringLocalizer<Resource> localizer)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _localizer = localizer;
     }
     public async Task<TransportationDto> GetPrice(string zip, string terminal)
     {
-        var localPrices = await _unitOfWork.TransportationRepository.GetAsync(x => x.Zip == zip) ?? throw new NotFoundException("Zip doesn't exist");
-        var oceanPrices = await _unitOfWork.OceanRepository.GetAsync(x => x.Port == terminal) ?? throw new NotFoundException("Terminal doesn't exist");
+        var localPrices = await _unitOfWork.TransportationRepository.GetAsync(x => x.Zip == zip) ?? throw new NotFoundException(string.Format(_localizer["ZipNotExist"], zip));
+        var oceanPrices = await _unitOfWork.OceanRepository.GetAsync(x => x.Port == terminal) ?? throw new NotFoundException(string.Format(_localizer["Terminal doesn't exist"], terminal));
         var transportationDto = new TransportationDto
         {
             Savannah = CreatePriceDto(localPrices.Savannah, oceanPrices.Savannah),
