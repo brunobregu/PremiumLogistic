@@ -55,7 +55,7 @@ public class OrderDetailsService : IOrderDetailsService
         orderDetails.Model = updateOrderDetail.Model;
         orderDetails.Year = updateOrderDetail.Year;
         orderDetails.Lot = updateOrderDetail.Lot;
-        orderDetails.DspOrderID = updateOrderDetail.DspOrderID;
+        //orderDetails.DspOrderID = updateOrderDetail.DspOrderID;
         orderDetails.Port = updateOrderDetail.Port;
         orderDetails.InlandPrice = updateOrderDetail.InlandPrice;
         orderDetails.OceanPrice = updateOrderDetail.OceanPrice;

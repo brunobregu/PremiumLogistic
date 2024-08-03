@@ -21,10 +21,11 @@ public class OrderDetails
     [Required]
     public int Lot { get; set; } //nr identifikues ne coopart/iaai
     [Required]
-    public string DspOrderID { get; set; } //nr gjurmimi per makinat qe marrin karrotrec
+    public string OrderID { get; set; } //nr gjurmimi per makinat qe marrin karrotrec
     [Required]
     public string Auction { get; set; }
     public string? TrackingNumber { get; set; }
+    [Required]
     public string CarStatus { get; set; }
     public string? Provider { get; set; }
     [Required]
@@ -47,6 +48,7 @@ public class OrderDetails
     [Required]
     public int Profit { get; set; }
     public string PaymentStatus { get; set; }
+    [Required]
     public int PartlyPaid { get; set; }
     [Required]
     public int ToBePaid { get; set; }

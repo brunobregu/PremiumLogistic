@@ -7,14 +7,14 @@ public class Ocean
     [Required]
     [StringLength(50)]
     public string Port { get; set; }
-    [Range(0, Int32.MinValue)]
+    [Required]
     public int Savannah { get; set; }
-    [Range(0, Int32.MinValue)]
+    [Required]
     public int Elizabeth { get; set; }
-    [Range(0, Int32.MinValue)]
+    [Required]
     public int Houston { get; set; }
-    [Range(0, Int32.MinValue)]
+    [Required]
     public int LosAngeles { get; set; }
-    [Range(0, Int32.MinValue)]
+    [Required]
     public int Indianapolis { get; set; }
 }
