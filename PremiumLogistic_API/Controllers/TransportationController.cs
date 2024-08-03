@@ -1,7 +1,7 @@
 ﻿namespace PremiumLogistic_API.Controllers;
 
 [ApiController]
-[Route("api/v{v:apiVersion}/[controller]")]
+[Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
 public class TransportationController : ControllerBase
 {

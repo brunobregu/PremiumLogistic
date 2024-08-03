@@ -1,14 +1,16 @@
 ﻿namespace PremiumLogistic_API.Controllers;
 
 [ApiController]
-[Route("api/v{v:apiVersion}/[controller]")]
+[Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
 public class ContactController : ControllerBase
 {
     private readonly IContactService _contactService;
-    public ContactController(IContactService contactService)
+    private readonly IStringLocalizer<Resource> _localizer;
+    public ContactController(IContactService contactService, IStringLocalizer<Resource> localizer)
     {
         _contactService = contactService;
+        _localizer = localizer;
     }
 
     [HttpPost("add")]

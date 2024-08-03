@@ -1,15 +1,18 @@
 ﻿namespace PremiumLogistic_API.Controllers;
 
 [ApiController]
-[Route("api/v{v:apiVersion}/[controller]")]
+[Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
 public class OrderDetailsController : ControllerBase
 {
     private const string emailType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
     private readonly IOrderDetailsService _orderDetailsService;
-    public OrderDetailsController(IOrderDetailsService orderDetailsService)
+    private readonly IStringLocalizer<Resource> _localizer;
+    public OrderDetailsController(IOrderDetailsService orderDetailsService, IStringLocalizer<Resource> localizer)
     {
         _orderDetailsService = orderDetailsService;
+        _localizer = localizer;
+
     }
 
     [ServiceFilter(typeof(AuditLogAttribute))]

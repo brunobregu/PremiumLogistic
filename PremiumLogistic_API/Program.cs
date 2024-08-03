@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Http.Features;
-using PremiumLogistic_BAL.Common;
-
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var emailConfig = builder.Configuration
@@ -12,6 +9,27 @@ var generalConfig = builder.Configuration
         .GetSection("GeneralConfigs")
         .Get<GeneralConfigs>();
 builder.Services.AddSingleton(generalConfig);
+
+builder.Services.AddLocalization();
+builder.Services.Configure<RequestLocalizationOptions>(
+    options =>
+    {
+        var supportedCultures = new List<CultureInfo>
+        {
+            new CultureInfo("en-US"),
+            new CultureInfo("sq-AL")
+        };
+
+        options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+        options.SupportedCultures = supportedCultures;
+        options.SupportedUICultures = supportedCultures;
+        options.RequestCultureProviders = new[] { new RouteDataRequestCultureProvider { IndexOfCulture = 3, IndexofUICulture = 3 } };
+    });
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.ConstraintMap.Add("culture", typeof(LanguageRouteConstraint));
+});
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -43,19 +61,19 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer"
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{}
-                    }
-                });
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
 });
 builder.Services.AddCors();
 
@@ -85,6 +103,7 @@ app.UseCors(builder =>
     .AllowAnyMethod()
     .AllowAnyHeader();
 });
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 app.UseHttpsRedirection();
 

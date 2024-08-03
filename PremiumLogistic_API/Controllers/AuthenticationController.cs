@@ -1,14 +1,16 @@
 ﻿namespace PremiumLogistic_API.Controllers;
 
 [ApiController]
-[Route("api/v{v:apiVersion}/[controller]")]
+[Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
 public class AuthenticationController : ControllerBase
 {
     private readonly IUserService _userService;
-    public AuthenticationController(IUserService userService)
+    private readonly IStringLocalizer<Resource> _localizer;
+    public AuthenticationController(IUserService userService, IStringLocalizer<Resource> localizer)
     {
         _userService = userService;
+        _localizer = localizer;
     }
 
 
@@ -22,6 +24,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
+        var value = _localizer["Test"];
         var result = await _userService.Login(loginDto);
         return Ok(result);
     }
