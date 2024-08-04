@@ -8,6 +8,8 @@ public interface IUnitOfWork
     IContactRepository ContactRepository { get; }
     IOrderDetailsRepository OrderDetailsRepository {  get; }
     IProviderRepository ProviderRepository { get; }
+    IAuctionRepository AuctionRepository { get; }
+    IPortRepository PortRepository { get; }
     void Dispose();
     Task<int> CommitAsync();
     int Commit();

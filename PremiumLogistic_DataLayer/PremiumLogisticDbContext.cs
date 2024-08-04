@@ -12,6 +12,8 @@ public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<OrderDetails> OrderDetails { get; set; }
     public DbSet<Provider> Providers { get; set; }
+    public DbSet<Auction> Auctions { get; set; }
+    public DbSet<Port> Ports { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -34,10 +36,12 @@ public class PremiumLogisticDbContext : IdentityDbContext<ApplicationUser>
         .HasPrincipalKey(e => e.Id);
 
         #region InvalidatedQueryFilter
-        builder.Entity<Transportation>().HasQueryFilter(x => !x.Invalidated);
-        builder.Entity<Ocean>().HasQueryFilter(x => !x.Invalidated);
-        builder.Entity<OrderDetails>().HasQueryFilter(x => !x.Invalidated);
-        builder.Entity<Provider>().HasQueryFilter(x => !x.Invalidated);
+            builder.Entity<Transportation>().HasQueryFilter(x => !x.Invalidated);
+            builder.Entity<Ocean>().HasQueryFilter(x => !x.Invalidated);
+            builder.Entity<OrderDetails>().HasQueryFilter(x => !x.Invalidated);
+            builder.Entity<Provider>().HasQueryFilter(x => !x.Invalidated);
+            builder.Entity<Auction>().HasQueryFilter(x => !x.Invalidated);
+            builder.Entity<Port>().HasQueryFilter(x => !x.Invalidated);
         #endregion
     }
 }
