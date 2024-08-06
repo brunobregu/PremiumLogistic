@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Localize\Resource.en-US.resx">
+    <EmbeddedResource Update="Localize\Resource.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Localize\Resource.sq-AL.resx">
+    <EmbeddedResource Update="Localize\Resource.sq.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>

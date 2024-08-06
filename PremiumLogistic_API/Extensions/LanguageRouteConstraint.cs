@@ -9,6 +9,6 @@ public class LanguageRouteConstraint : IRouteConstraint
             return false;
 
         var culture = values["culture"].ToString();
-        return culture == "en-US" || culture == "sq-AL";
+        return culture == "en" || culture == "sq";
     }
 }

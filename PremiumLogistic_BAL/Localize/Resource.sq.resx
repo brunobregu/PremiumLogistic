@@ -129,6 +129,9 @@
   <data name="NotUserInRole" xml:space="preserve">
     <value>Nuk ndodhet asnjë përdorues në rolin {0}!</value>
   </data>
+  <data name="OederAdded" xml:space="preserve">
+    <value>Detajet e porosisë u shtuan me sukses!</value>
+  </data>
   <data name="OrderNotFound" xml:space="preserve">
     <value>Porosia me id {0} nuk u gjet!</value>
   </data>

@@ -18,12 +18,11 @@ public class OrderDetailsService : IOrderDetailsService
         var orderDetails = _mapper.Map<OrderDetails>(orderDetailsDto);
         orderDetails.CreatedBy = email;
         orderDetails.CarStatus = "Dispatch";
-        //orderDetails.ToBePaid = orderDetails.PaymentStatus == PaymentStatus.PartlyPaid ? orderDetails.ToBePaid : 0;
         _unitOfWork.OrderDetailsRepository.Insert(orderDetails);
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<OrderDetailsDto>> GetOrderDetails(string email)
+    public async Task<List<OrderDetailsDto>> MyOrders(string email)
     {
         var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"], email));
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId == user.Id);

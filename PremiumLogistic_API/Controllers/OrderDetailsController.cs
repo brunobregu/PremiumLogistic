@@ -5,7 +5,6 @@
 [ApiVersion("1.0")]
 public class OrderDetailsController : ControllerBase
 {
-    private const string emailType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
     private readonly IOrderDetailsService _orderDetailsService;
     private readonly IStringLocalizer<Resource> _localizer;
     public OrderDetailsController(IOrderDetailsService orderDetailsService, IStringLocalizer<Resource> localizer)
@@ -20,17 +19,17 @@ public class OrderDetailsController : ControllerBase
     [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> Add([FromBody] AddOrderDetailsDto addOrderDetailsDto)
     {
-        var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
         await _orderDetailsService.AddOrderDetails(addOrderDetailsDto, email);
-        return Created(nameof(Add), "Order details added successfully");
+        return Created(nameof(Add), _localizer["OederAdded"]);
     }
 
     [HttpGet("myOrders")]
     [Authorize(Roles ="Client")]
     public async Task<IActionResult> MyOrders()
     {
-        var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
-        var result = await _orderDetailsService.GetOrderDetails(email);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var result = await _orderDetailsService.MyOrders(email);
         return Ok(result);
     }
 
@@ -54,7 +53,7 @@ public class OrderDetailsController : ControllerBase
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> MyDetails()
     {
-        var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
         var result = await _orderDetailsService.MyDetails(email);
         return Ok(result);
     }
@@ -72,7 +71,7 @@ public class OrderDetailsController : ControllerBase
     [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> Update(int id, AddOrderDetailsDto update)
     {
-        var email = User.Claims.FirstOrDefault(x => x.Type == emailType)?.Value;
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
         await _orderDetailsService.UpdateOrderDetail(id, update, email);
         return Ok($"Order with id {id} is updated successully");
     }

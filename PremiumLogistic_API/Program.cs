@@ -16,11 +16,11 @@ builder.Services.Configure<RequestLocalizationOptions>(
     {
         var supportedCultures = new List<CultureInfo>
         {
-            new CultureInfo("en-US"),
-            new CultureInfo("sq-AL")
+            new CultureInfo("en"),
+            new CultureInfo("sq")
         };
 
-        options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+        options.DefaultRequestCulture = new RequestCulture(culture: "en", uiCulture: "en");
         options.SupportedCultures = supportedCultures;
         options.SupportedUICultures = supportedCultures;
         options.RequestCultureProviders = new[] { new RouteDataRequestCultureProvider { IndexOfCulture = 3, IndexofUICulture = 3 } };
