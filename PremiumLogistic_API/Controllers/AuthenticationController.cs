@@ -1,6 +1,4 @@
-﻿using PremiumLogistic_BAL.Dtos.Authentication;
-
-namespace PremiumLogistic_API.Controllers;
+﻿namespace PremiumLogistic_API.Controllers;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]

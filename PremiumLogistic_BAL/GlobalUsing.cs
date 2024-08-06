@@ -27,3 +27,6 @@ global using Microsoft.EntityFrameworkCore;
 global using System.Data;
 global using Microsoft.Extensions.Localization;
 global using PremiumLogistic_BAL.Localize;
+global using PremiumLogistic_BAL.Dtos.Auction;
+global using PremiumLogistic_BAL.Dtos.Port;
+global using PremiumLogistic_BAL.Dtos.Provider;

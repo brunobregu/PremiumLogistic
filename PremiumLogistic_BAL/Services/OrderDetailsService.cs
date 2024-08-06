@@ -17,6 +17,7 @@ public class OrderDetailsService : IOrderDetailsService
     {
         var orderDetails = _mapper.Map<OrderDetails>(orderDetailsDto);
         orderDetails.CreatedBy = email;
+        orderDetails.CarStatus = "Dispatch";
         //orderDetails.ToBePaid = orderDetails.PaymentStatus == PaymentStatus.PartlyPaid ? orderDetails.ToBePaid : 0;
         _unitOfWork.OrderDetailsRepository.Insert(orderDetails);
         await _unitOfWork.CommitAsync();

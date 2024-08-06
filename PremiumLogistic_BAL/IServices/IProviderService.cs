@@ -2,4 +2,5 @@
 
 public interface IProviderService
 {
+    Task<List<ProviderDto>> Get();
 }

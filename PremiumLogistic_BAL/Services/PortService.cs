@@ -8,6 +8,11 @@ public class PortService : IPortService
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-
+    }
+    public async Task<List<PortDto>> Get()
+    {
+        var ports = await _unitOfWork.PortRepository.GetAllAsync();
+        var result = _mapper.Map<List<PortDto>>(ports);
+        return result;
     }
 }

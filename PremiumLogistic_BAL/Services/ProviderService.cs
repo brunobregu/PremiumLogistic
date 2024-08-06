@@ -8,6 +8,12 @@ public class ProviderService : IProviderService
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+    }
 
+    public async Task<List<ProviderDto>> Get()
+    {
+        var providers = await _unitOfWork.ProviderRepository.GetAllAsync();
+        var result = _mapper.Map<List<ProviderDto>>(providers);
+        return result;
     }
 }

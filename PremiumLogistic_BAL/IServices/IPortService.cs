@@ -2,4 +2,5 @@
 
 public interface IPortService
 {
+    Task<List<PortDto>> Get();
 }
