@@ -77,10 +77,10 @@ public class OrderDetailsController : ControllerBase
         return Ok($"Order with id {id} is updated successully");
     }
 
-    [HttpPut("updateStatus")]
-    [Authorize(Roles = "Admin, Account Manager")]
-    [ServiceFilter(typeof(AuditLogAttribute))]
-    public async Task<IActionResult> UpdateStatus(int id, )
+    //[HttpPut("updateStatus")]
+    //[Authorize(Roles = "Admin, Account Manager")]
+    //[ServiceFilter(typeof(AuditLogAttribute))]
+    //public async Task<IActionResult> UpdateStatus(int id, )
 
     [HttpDelete("delete")]
     [Authorize(Roles = "Admin, Account Manager")]
