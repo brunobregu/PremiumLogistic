@@ -4,6 +4,6 @@
     {
         public string CarStatus { get; set; }
         public string TrackingNumber { get; set; }
-        public List<UploadDocumentsDTO> UploadDocumentsDTOs { get; set; }
+        public List<UpdateCarStatusDto> UploadDocumentsDTOs { get; set; }
     }
 }

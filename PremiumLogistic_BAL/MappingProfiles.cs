@@ -36,11 +36,14 @@ public class MappingProfiles : Profile
         CreateMap<OrderDetails, OrderDetailsDto>();
 
         CreateMap<OrderDetails, AllOrderDetailsDto>()
-            .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
+            .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
 
         CreateMap<OrderDetails, OrderDetailsByIdDto>()
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+
+        CreateMap<OrderDetails, MyOrderDetailsByIdDto>();
         #endregion
 
         #region Port

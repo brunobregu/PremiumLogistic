@@ -9,5 +9,9 @@ public interface IOrderDetailsService
     Task<DetailsDto> Details();
     Task<DetailsDto> MyDetails(string email);
     Task UpdateOrderDetail(int id, AddOrderDetailsDto updateOrderDetail, string email);
-    Task DeleteOrderDetail(int id);
+    Task DeleteOrderDetail(int id, string email);
+    Task<List<AllOrderDetailsDto>> GetAllOrderDetailsByClient(string userId);
+    Task<DetailsDto> DetailsByClient(string userId);
+    Task UpdateCarStatus(int id, UpdateCarStatusDto updateOrderDetail, string email);
+    Task<MyOrderDetailsByIdDto> MyOrderDetailsById(int id);
 }

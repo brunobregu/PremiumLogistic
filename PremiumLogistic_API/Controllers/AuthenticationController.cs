@@ -86,4 +86,5 @@ public class AuthenticationController : ControllerBase
         await _userService.AddRole(addRoleDto, email);
         return Created(nameof(AddRole), string.Format(_localizer["RoleCreated"]));
     }
+
 }

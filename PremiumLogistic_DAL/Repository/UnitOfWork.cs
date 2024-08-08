@@ -11,6 +11,7 @@ public class UnitOfWork : IUnitOfWork
     public IProviderRepository ProviderRepository { get; set; }
     public IAuctionRepository AuctionRepository { get; set; }
     public IPortRepository PortRepository { get; set; }
+    public IUserRepository UserRepository { get; set; }
 
 
     public UnitOfWork(PremiumLogisticDbContext context)
@@ -24,6 +25,7 @@ public class UnitOfWork : IUnitOfWork
         ProviderRepository = new ProviderRepository(context);
         AuctionRepository = new AuctionRepository(context);
         PortRepository = new PortRepository(context);
+        UserRepository = new UserRepository(context);
     }
     public int Commit()
     {

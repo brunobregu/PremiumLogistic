@@ -10,6 +10,7 @@ public interface IUnitOfWork
     IProviderRepository ProviderRepository { get; }
     IAuctionRepository AuctionRepository { get; }
     IPortRepository PortRepository { get; }
+    IUserRepository UserRepository { get; }
     void Dispose();
     Task<int> CommitAsync();
     int Commit();

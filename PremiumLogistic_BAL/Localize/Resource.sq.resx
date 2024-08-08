@@ -117,23 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CarStatusUpdated" xml:space="preserve">
+    <value>Statusi i makinës u përditësua me sukses në {0} për porosinë me id {1}!</value>
+  </data>
   <data name="CheckCredentials" xml:space="preserve">
     <value>Ju lutemi verifikoni kredencialet tuaja!</value>
   </data>
   <data name="ContactAdded" xml:space="preserve">
     <value>Kontakti u shtua me sukses!</value>
   </data>
+  <data name="DeleteOrder" xml:space="preserve">
+    <value>Porosia me id {0} u fshi me sukses!</value>
+  </data>
+  <data name="DocsAllowedFormat" xml:space="preserve">
+    <value>Dokumenti {0} nuk është një format i lejuar. Formati i lejuar i dokumentit është .pdf!</value>
+  </data>
+  <data name="DocsMaxSize" xml:space="preserve">
+    <value>Dokumentat duhet të jenë më pak se 5MB!</value>
+  </data>
+  <data name="DocumentsNrUpload" xml:space="preserve">
+    <value>Ju duhet të ngarkoni 2 dokumenta!</value>
+  </data>
   <data name="EmailNotFound" xml:space="preserve">
     <value>Email {0} nuk u gjet!</value>
+  </data>
+  <data name="InvalidCarStatus" xml:space="preserve">
+    <value>Statusi i makinës nuk është i vlefshëm!</value>
+  </data>
+  <data name="MaxPhotoRequired" xml:space="preserve">
+    <value>Ju nuk duhet të ngarkoni më shumë se 10 foto!</value>
+  </data>
+  <data name="MaxPhotosSize" xml:space="preserve">
+    <value>Të gjitha fotot duhet të jenë më pak se 5MB!</value>
   </data>
   <data name="NotUserInRole" xml:space="preserve">
     <value>Nuk ndodhet asnjë përdorues në rolin {0}!</value>
   </data>
-  <data name="OederAdded" xml:space="preserve">
+  <data name="OrderAdded" xml:space="preserve">
     <value>Detajet e porosisë u shtuan me sukses!</value>
   </data>
   <data name="OrderNotFound" xml:space="preserve">
     <value>Porosia me id {0} nuk u gjet!</value>
+  </data>
+  <data name="PhotoAllowedFormat" xml:space="preserve">
+    <value>Foto {0} nuk është në formatin e lejuar! Formatet e lejuara janë .jpg, .jpeg, .png!</value>
+  </data>
+  <data name="PhotoRequired" xml:space="preserve">
+    <value>Ju duhet të ngarkoni të paktën një foto!</value>
+  </data>
+  <data name="ProviderNotFound" xml:space="preserve">
+    <value>Ofruesi me emrin {0} nuk u gjet!</value>
   </data>
   <data name="RoleCreated" xml:space="preserve">
     <value>Roli {0} u krijua me sukses!</value>
@@ -158,6 +191,9 @@
   </data>
   <data name="Terminal doesn't exist" xml:space="preserve">
     <value>Terminali {0} nuk ekziston!</value>
+  </data>
+  <data name="TrackingNrRequired" xml:space="preserve">
+    <value>Numri i gjurmimit është i detyrueshëm!</value>
   </data>
   <data name="TryAgain" xml:space="preserve">
     <value>Diçka shkoi gabim! Lutemi provoni përsëri më vonë!</value>
