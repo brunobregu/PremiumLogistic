@@ -75,7 +75,7 @@ public class OrderDetailsController : ControllerBase
     }
 
     [HttpGet("orderById")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> GetById([FromQuery] int id)
     {
         var result = await _orderDetailsService.GetOrderDetailsById(id);
@@ -118,5 +118,13 @@ public class OrderDetailsController : ControllerBase
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
         await _orderDetailsService.DeleteOrderDetail(id, email);
         return Ok(string.Format(_localizer["DeleteOrder"], id));
+    }
+
+    [HttpGet("viewPhotosOfOrder")]
+    [Authorize(Roles = "Client, Admin, Account Manager")]
+    public async Task<IActionResult> ViewPhotosOfOrder([FromQuery] int id)
+    {
+        //var result = _orderDetailsService.
+        return Ok();
     }
 }

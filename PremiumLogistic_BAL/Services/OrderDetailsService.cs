@@ -59,7 +59,7 @@ public class OrderDetailsService : IOrderDetailsService
     public async Task<MyOrderDetailsByIdDto> MyOrderDetailsById(int id)
     {
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
-        var link = await _unitOfWork.ProviderRepository.GetAsync(x => x.Name == orderDetails.Provider) ?? throw new NotFoundException(string.Format(_localizer["ProviderNotFound"], orderDetails.Provider));
+        var link = await _unitOfWork.ProviderRepository.GetAsync(x => x.Name == orderDetails.Provider);
         var result = _mapper.Map<MyOrderDetailsByIdDto>(orderDetails);
         result.Link = link.Link;
         return result;
@@ -174,6 +174,11 @@ public class OrderDetailsService : IOrderDetailsService
         
     }
 
+    public async Task ViewPhotosOfOrder(int id)
+    {
+
+    }
+
     private async Task ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email)
     {
         ValidatePhotos(updateCarStatus);
@@ -268,8 +273,6 @@ public class OrderDetailsService : IOrderDetailsService
         order.DocumentsPath = null;
         _unitOfWork.OrderDetailsRepository.Update(order);
         await _unitOfWork.CommitAsync();
-
-        
     }
 
     private bool ValidateCorrectCarStatus(string status, string updatedStatus)
