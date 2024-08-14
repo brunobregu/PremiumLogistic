@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CarStatusUpdated" xml:space="preserve">
-    <value>Car status is updated successfully!</value>
-  </data>
   <data name="CheckCredentials" xml:space="preserve">
     <value>Please check your credentials!</value>
   </data>
@@ -162,6 +159,9 @@
   <data name="LNRequired" xml:space="preserve">
     <value>Lastname is required!</value>
   </data>
+  <data name="MakeRequired" xml:space="preserve">
+    <value>Make is required!</value>
+  </data>
   <data name="MaxPhotoRequired" xml:space="preserve">
     <value>At most 10 photos are allowed!</value>
   </data>
@@ -173,6 +173,9 @@
   </data>
   <data name="MessageRequired" xml:space="preserve">
     <value>Message is required!</value>
+  </data>
+  <data name="ModelRequired" xml:space="preserve">
+    <value>Model is required!</value>
   </data>
   <data name="NewPassRequired" xml:space="preserve">
     <value>New password is required!</value>
@@ -254,6 +257,9 @@
   </data>
   <data name="ValidEmail" xml:space="preserve">
     <value>Email should be a valid email address</value>
+  </data>
+  <data name="VINRequired" xml:space="preserve">
+    <value>VIN is required!</value>
   </data>
   <data name="ZipNotExist" xml:space="preserve">
     <value>Zip {0} doesn't exist!</value>

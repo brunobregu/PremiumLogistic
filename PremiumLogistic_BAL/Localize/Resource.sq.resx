@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CarStatusUpdated" xml:space="preserve">
-    <value>Statusi i makinës u përditësua me sukses!</value>
-  </data>
   <data name="CheckCredentials" xml:space="preserve">
     <value>Ju lutemi verifikoni kredencialet tuaja!</value>
   </data>
@@ -162,6 +159,9 @@
   <data name="LNRequired" xml:space="preserve">
     <value>Mbiemri është fushë e detyrueshme!</value>
   </data>
+  <data name="MakeRequired" xml:space="preserve">
+    <value>Make është fushë e detyrueshme!</value>
+  </data>
   <data name="MaxPhotoRequired" xml:space="preserve">
     <value>Ju nuk duhet të ngarkoni më shumë se 10 foto!</value>
   </data>
@@ -173,6 +173,9 @@
   </data>
   <data name="MessageRequired" xml:space="preserve">
     <value>Mesazhi është fushë e detyrueshme!</value>
+  </data>
+  <data name="ModelRequired" xml:space="preserve">
+    <value>Model është fushë e detyrueshme!</value>
   </data>
   <data name="NewPassRequired" xml:space="preserve">
     <value>Password-i i ri është fushë e detyrueshme!</value>
@@ -254,6 +257,9 @@
   </data>
   <data name="ValidEmail" xml:space="preserve">
     <value>Email duhet të jetë një adresë e vlefshme!</value>
+  </data>
+  <data name="VINRequired" xml:space="preserve">
+    <value>VIN është fushë e detyrueshme!</value>
   </data>
   <data name="ZipNotExist" xml:space="preserve">
     <value>Zip {0} nuk ekziston!</value>

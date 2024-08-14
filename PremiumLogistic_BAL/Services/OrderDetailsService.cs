@@ -42,6 +42,13 @@ public class OrderDetailsService : IOrderDetailsService
         return result;
     }
 
+    public async Task<List<ClientsWithOrdersDto>> ClientsWithOrders()
+    {
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.IncludeAsync(c => c.User);
+        var result = _mapper.Map<List<ClientsWithOrdersDto>>(orderDetails).DistinctBy(u => u.UserId).ToList();
+        return result;
+    }
+
     public async Task<List<AllOrderDetailsDto>> GetAllOrderDetailsByClient(string userId)
     {
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId == userId);
@@ -162,7 +169,7 @@ public class OrderDetailsService : IOrderDetailsService
         return details;
     }
 
-    public async Task UpdateCarStatus(int id, UpdateCarStatusDto updateCarStatus, string email)
+    public async Task<string> UpdateCarStatus(int id, UpdateCarStatusDto updateCarStatus, string email)
     {
         var order = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         string nextStatus = GetNextCarStatus(order.CarStatus);
@@ -184,6 +191,7 @@ public class OrderDetailsService : IOrderDetailsService
             default:
                 throw new BadRequestException(_localizer["InvalidCarStatus"].Value);
         }
+        return nextStatus;
     }
 
     public async Task ViewPhotosOfOrder(int id)

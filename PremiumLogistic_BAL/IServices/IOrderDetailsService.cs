@@ -13,6 +13,7 @@ public interface IOrderDetailsService
     Task DeleteOrderDetail(int id, string email);
     Task<List<AllOrderDetailsDto>> GetAllOrderDetailsByClient(string userId);
     Task<DetailsDto> DetailsByClient(string userId);
-    Task UpdateCarStatus(int id, UpdateCarStatusDto updateOrderDetail, string email);
+    Task<string> UpdateCarStatus(int id, UpdateCarStatusDto updateOrderDetail, string email);
     Task<MyOrderDetailsByIdDto> MyOrderDetailsById(int id);
+    Task<List<ClientsWithOrdersDto>> ClientsWithOrders();
 }

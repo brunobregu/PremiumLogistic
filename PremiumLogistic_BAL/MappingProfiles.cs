@@ -39,6 +39,10 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
 
+        CreateMap<OrderDetails, ClientsWithOrdersDto>()
+            .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+
         CreateMap<OrderDetails, OrderDetailsByIdDto>()
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));

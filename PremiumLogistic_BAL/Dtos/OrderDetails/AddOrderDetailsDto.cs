@@ -2,11 +2,11 @@
 
 public class AddOrderDetailsDto
 {
-    [Required(ErrorMessage = "VIN is required")]
+    [Required(ErrorMessage = "VINRequired")]
     public string VIN { get; set; }
-    [Required(ErrorMessage = "Make is required")]
+    [Required(ErrorMessage = "MakeRequired")]
     public string Make { get; set; }
-    [Required(ErrorMessage = "Model is required")]
+    [Required(ErrorMessage = "ModelRequired")]
     public string Model { get; set; }
     [Required(ErrorMessage = "Year is required")]
     [Range(1900, int.MaxValue, ErrorMessage = "Year must be at least 1900")]
@@ -38,7 +38,7 @@ public class AddOrderDetailsDto
     public int StorageCost { get; set; } = 0;
     public int TotalCost => InlandCost + OceanCost + StorageCost;
     public int Profit => ClientTotal - TotalCost;
-    [AllowedValues("Not Paid", "Partly Paid", "Paid")]
+    [AllowedValues("Not Paid", "Partly Paid", "Paid", ErrorMessage = "Allowed values for payment status are: Not Paid, Partly Paid, Paid")]
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; } = 0;
     public int ToBePaid => PaymentStatus == "Paid" ? 0 : ClientTotal - PartlyPaid;

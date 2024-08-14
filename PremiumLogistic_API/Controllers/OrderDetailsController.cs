@@ -41,6 +41,14 @@ public class OrderDetailsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("clientsWithOrders")]
+    [Authorize(Roles = "Admin, Account Manager")]
+    public async Task<IActionResult> ClientsWithOrders()
+    {
+        var result = await _orderDetailsService.ClientsWithOrders();
+        return Ok(result);
+    }
+
     [HttpGet("ordersByClient")]
     [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> OrdersByClient([FromQuery] string userId)
@@ -118,8 +126,8 @@ public class OrderDetailsController : ControllerBase
     public async Task<IActionResult> UpdateCarStatus([FromQuery] int id, [FromForm] UpdateCarStatusDto statusDto)
     {
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
-        await _orderDetailsService.UpdateCarStatus(id, statusDto, email);
-        return Ok(_localizer["CarStatusUpdated"].Value);
+        var result = await _orderDetailsService.UpdateCarStatus(id, statusDto, email);
+        return Ok(result);
     }
 
     //api per fshirjen e nje porosie
