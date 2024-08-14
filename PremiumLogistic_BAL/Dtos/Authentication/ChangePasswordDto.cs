@@ -2,10 +2,10 @@
 
 public class ChangePasswordDto
 {
-    [Required(ErrorMessage = "Old password is required")]
+    [Required(ErrorMessage = "OldPassRequired")]
     public string OldPassword { get; set; }
-    [Required(ErrorMessage = "Old password is required")]
+    [Required(ErrorMessage = "NewPassRequired")]
     public string NewPassword { get; set; }
-    [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+    [Compare("NewPassword", ErrorMessage = "ComparePass")]
     public string ConfirmPassword { get; set; }
 }

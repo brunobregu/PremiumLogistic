@@ -123,6 +123,9 @@
   <data name="CheckCredentials" xml:space="preserve">
     <value>Ju lutemi verifikoni kredencialet tuaja!</value>
   </data>
+  <data name="ComparePass" xml:space="preserve">
+    <value>Password-i i ri dhe password-i i vjetër duhet të jenë të njëjtë!</value>
+  </data>
   <data name="ContactAdded" xml:space="preserve">
     <value>Kontakti u shtua me sukses!</value>
   </data>
@@ -141,11 +144,23 @@
   <data name="EmailNotFound" xml:space="preserve">
     <value>Email {0} nuk u gjet!</value>
   </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Email është fushë e detyrueshme!</value>
+  </data>
+  <data name="FNMaxChar" xml:space="preserve">
+    <value>Fusha emri duhet të jetë deri në 50 karaktere i gjatë!</value>
+  </data>
   <data name="FNRequired" xml:space="preserve">
-    <value>E detyrueshme!</value>
+    <value>Emri është fushë e detyrueshme!</value>
   </data>
   <data name="InvalidCarStatus" xml:space="preserve">
     <value>Statusi i makinës nuk është i vlefshëm!</value>
+  </data>
+  <data name="LNMaxChar" xml:space="preserve">
+    <value>Fusha mbiemri duhet të jetë deri në 50 karaktere i gjatë!</value>
+  </data>
+  <data name="LNRequired" xml:space="preserve">
+    <value>Mbiemri është fushë e detyrueshme!</value>
   </data>
   <data name="MaxPhotoRequired" xml:space="preserve">
     <value>Ju nuk duhet të ngarkoni më shumë se 10 foto!</value>
@@ -153,8 +168,20 @@
   <data name="MaxPhotosSize" xml:space="preserve">
     <value>Të gjitha fotot duhet të jenë më pak se 5MB!</value>
   </data>
+  <data name="MessageMaxChar" xml:space="preserve">
+    <value>Fusha mesazhi duhet të jetë deri në 250 karaktere i gjatë!</value>
+  </data>
+  <data name="MessageRequired" xml:space="preserve">
+    <value>Mesazhi është fushë e detyrueshme!</value>
+  </data>
+  <data name="NewPassRequired" xml:space="preserve">
+    <value>Password-i i ri është fushë e detyrueshme!</value>
+  </data>
   <data name="NotUserInRole" xml:space="preserve">
     <value>Nuk ndodhet asnjë përdorues në rolin {0}!</value>
+  </data>
+  <data name="OldPassRequired" xml:space="preserve">
+    <value>Password-i i vjetër është fushë e detyrueshme!</value>
   </data>
   <data name="OrderAdded" xml:space="preserve">
     <value>Detajet e porosisë u shtuan me sukses!</value>
@@ -164,6 +191,9 @@
   </data>
   <data name="OrderUpdated" xml:space="preserve">
     <value>Porosia me id {0} u përditësua me sukses!</value>
+  </data>
+  <data name="PassRequired" xml:space="preserve">
+    <value>Password-i është fushë e detyrueshme!</value>
   </data>
   <data name="PhotoAllowedFormat" xml:space="preserve">
     <value>Foto {0} nuk është në formatin e lejuar! Formatet e lejuara janë .jpg, .jpeg, .png!</value>
@@ -180,14 +210,23 @@
   <data name="RoleExist" xml:space="preserve">
     <value>Roli {0} ekziston!</value>
   </data>
+  <data name="RoleMaxChar" xml:space="preserve">
+    <value>Emri i rolit duhet të jetë deri në 256 karaktere i gjatë!</value>
+  </data>
   <data name="RoleNotExist" xml:space="preserve">
     <value>Roli nuk ekziston!</value>
+  </data>
+  <data name="RoleRequired" xml:space="preserve">
+    <value>Roli është fushë e detyrueshme!</value>
   </data>
   <data name="TempPass" xml:space="preserve">
     <value>Password-i juaj i përkohshëm është {0}.</value>
   </data>
   <data name="TempPassExpire" xml:space="preserve">
     <value>Password-i i përkohshëm ka skaduar! Lutemi provoni përsëri!</value>
+  </data>
+  <data name="TempPassFormat" xml:space="preserve">
+    <value>Formati i password-it të përkohshëm i gabuar! Formati i duhur: XXX-XXX, ku X është një karakter ose një numër!</value>
   </data>
   <data name="TempPassIncorrect" xml:space="preserve">
     <value>Password-i i përkohshëm nuk është i saktë!</value>
@@ -212,6 +251,9 @@
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>Përdoruesi nuk u gjet!</value>
+  </data>
+  <data name="ValidEmail" xml:space="preserve">
+    <value>Email duhet të jetë një adresë e vlefshme!</value>
   </data>
   <data name="ZipNotExist" xml:space="preserve">
     <value>Zip {0} nuk ekziston!</value>

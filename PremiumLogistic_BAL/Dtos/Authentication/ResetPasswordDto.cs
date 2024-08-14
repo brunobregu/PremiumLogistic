@@ -2,12 +2,12 @@
 
 public class ResetPasswordDto
 {
-    [EmailAddress(ErrorMessage = "Email is not a valid email")]
+    [EmailAddress(ErrorMessage = "ValidEmail")]
     public string Email { get; set; }
-    [RegularExpression("^[A-Z0-9]{3}-[A-Z0-9]{3}$", ErrorMessage = "Invalid password format. Password must be in the format XXX-XXX where X is an uppercase letter or a number.")]
+    [RegularExpression("^[A-Z0-9]{3}-[A-Z0-9]{3}$", ErrorMessage = "TempPassFormat")]
     public string TemporaryPassword { get; set; }
-    [Required(ErrorMessage = "Password is required")]
+    [Required(ErrorMessage = "PassRequired")]
     public string NewPassword { get; set; }
-    [Compare("NewPassword")]
+    [Compare("NewPassword", ErrorMessage = "ComparePass")]
     public string ConfirmNewPassword { get; set; }
 }

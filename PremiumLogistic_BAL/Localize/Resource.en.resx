@@ -123,6 +123,9 @@
   <data name="CheckCredentials" xml:space="preserve">
     <value>Please check your credentials!</value>
   </data>
+  <data name="ComparePass" xml:space="preserve">
+    <value>The new password and old password do not match!</value>
+  </data>
   <data name="ContactAdded" xml:space="preserve">
     <value>Contact added successfully!</value>
   </data>
@@ -141,11 +144,23 @@
   <data name="EmailNotFound" xml:space="preserve">
     <value>Email {0} not found!</value>
   </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Email is required!</value>
+  </data>
+  <data name="FNMaxChar" xml:space="preserve">
+    <value>Firstname should be at most 50 characters!</value>
+  </data>
   <data name="FNRequired" xml:space="preserve">
-    <value>Required!</value>
+    <value>Firstname is required!</value>
   </data>
   <data name="InvalidCarStatus" xml:space="preserve">
     <value>Car status not valid!</value>
+  </data>
+  <data name="LNMaxChar" xml:space="preserve">
+    <value>Lastname should be at most 50 characters!</value>
+  </data>
+  <data name="LNRequired" xml:space="preserve">
+    <value>Lastname is required!</value>
   </data>
   <data name="MaxPhotoRequired" xml:space="preserve">
     <value>At most 10 photos are allowed!</value>
@@ -153,8 +168,20 @@
   <data name="MaxPhotosSize" xml:space="preserve">
     <value>All photos need to be less than 5MB!</value>
   </data>
+  <data name="MessageMaxChar" xml:space="preserve">
+    <value>Message should be at most 250 characters!</value>
+  </data>
+  <data name="MessageRequired" xml:space="preserve">
+    <value>Message is required!</value>
+  </data>
+  <data name="NewPassRequired" xml:space="preserve">
+    <value>New password is required!</value>
+  </data>
   <data name="NotUserInRole" xml:space="preserve">
     <value>There are not any users in role {0}!</value>
+  </data>
+  <data name="OldPassRequired" xml:space="preserve">
+    <value>Old password is required!</value>
   </data>
   <data name="OrderAdded" xml:space="preserve">
     <value>Order details added successfully!</value>
@@ -164,6 +191,9 @@
   </data>
   <data name="OrderUpdated" xml:space="preserve">
     <value>Order with id {0} is updated successully!</value>
+  </data>
+  <data name="PassRequired" xml:space="preserve">
+    <value>Password is required!</value>
   </data>
   <data name="PhotoAllowedFormat" xml:space="preserve">
     <value>Photo {0} is not an allowed format! Allowed formats of photo are .jpg, .jpeg, .png!</value>
@@ -180,14 +210,23 @@
   <data name="RoleExist" xml:space="preserve">
     <value>Role {0} exist!</value>
   </data>
+  <data name="RoleMaxChar" xml:space="preserve">
+    <value>Role name must be at most 256 characters!</value>
+  </data>
   <data name="RoleNotExist" xml:space="preserve">
     <value>Role doesn't exist!</value>
+  </data>
+  <data name="RoleRequired" xml:space="preserve">
+    <value>Role name is required!</value>
   </data>
   <data name="TempPass" xml:space="preserve">
     <value>Your temporary password is {0}.</value>
   </data>
   <data name="TempPassExpire" xml:space="preserve">
     <value>Temporary password has expired.Please try again!</value>
+  </data>
+  <data name="TempPassFormat" xml:space="preserve">
+    <value>Invalid password format. Password must be in the format XXX-XXX where X is an uppercase letter or a number!</value>
   </data>
   <data name="TempPassIncorrect" xml:space="preserve">
     <value>Temporary password is incorrect!</value>
@@ -212,6 +251,9 @@
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>User not found!</value>
+  </data>
+  <data name="ValidEmail" xml:space="preserve">
+    <value>Email should be a valid email address</value>
   </data>
   <data name="ZipNotExist" xml:space="preserve">
     <value>Zip {0} doesn't exist!</value>

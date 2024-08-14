@@ -2,18 +2,18 @@
 
 public class CreateUserDto
 {
-    [Required(ErrorMessage = "Firstname is required")]
-    [StringLength(50, ErrorMessage = "Firstname should be at most 50 characters")]
+    [Required(ErrorMessage = "FNRequired")]
+    [StringLength(50, ErrorMessage = "FNMaxChar")]
     public string FirstName { get; set; }
-    [Required(ErrorMessage = "Lastname is required")]
-    [StringLength(50, ErrorMessage = "Lastname should be at most 50 characters")]
+    [Required(ErrorMessage = "LNRequired")]
+    [StringLength(50, ErrorMessage = "LNMaxChar")]
     public string LastName { get; set; }
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Email should be a valid email address")]
+    [Required(ErrorMessage = "EmailRequired")]
+    [EmailAddress(ErrorMessage = "ValidEmail")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Password is required")]
+    [Required(ErrorMessage = "PassRequired")]
     public string Password { get; set; }
-    [Required(ErrorMessage = "Role is required")]
+    [Required(ErrorMessage = "RoleRequired")]
     public string RoleName { get; set; }
 }

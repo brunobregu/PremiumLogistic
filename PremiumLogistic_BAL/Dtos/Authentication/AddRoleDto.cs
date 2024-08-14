@@ -2,7 +2,7 @@
 
 public class AddRoleDto
 {
-    [Required(ErrorMessage = "Role name is required.")]
-    [StringLength(256, ErrorMessage = "Role name must be at most 256 characters.")]
+    [Required(ErrorMessage = "RoleRequired")]
+    [StringLength(256, ErrorMessage = "RoleMaxChar")]
     public string Name { get; set; }
 }

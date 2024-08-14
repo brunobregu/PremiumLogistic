@@ -70,7 +70,7 @@ public class OrderDetailsService : IOrderDetailsService
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         var link = await _unitOfWork.ProviderRepository.GetAsync(x => x.Name == orderDetails.Provider);
         var result = _mapper.Map<MyOrderDetailsByIdDto>(orderDetails);
-        result.Link = link.Link;
+        result.Link = link is null ? "" : link.Link;
         return result;
     }
 

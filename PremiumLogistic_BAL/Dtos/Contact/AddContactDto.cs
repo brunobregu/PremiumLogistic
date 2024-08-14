@@ -2,16 +2,16 @@
 
 public class AddContactDto
 {
-    [Required(ErrorMessage = "First name is required")]
-    [StringLength(50, ErrorMessage = "First name should be at most 50 characters")]
+    [Required(ErrorMessage = "FNRequired")]
+    [StringLength(50, ErrorMessage = "FNMaxChar")]
     public string FirstName { get; set; }
-    [Required(ErrorMessage = "Last name is required")]
-    [StringLength(50, ErrorMessage = "Last name should be at most 50 characters")]
+    [Required(ErrorMessage = "LNRequired")]
+    [StringLength(50, ErrorMessage = "LNMaxChar")]
     public string LastName { get; set; }
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Email should be a valid email address")]
+    [Required(ErrorMessage = "EmailRequired")]
+    [EmailAddress(ErrorMessage = "ValidEmail")]
     public string Email { get; set; }
-    [Required(ErrorMessage = "Message is required")]
-    [StringLength(250, ErrorMessage = "Message should be at most 250 characters")]
+    [Required(ErrorMessage = "MessageRequired")]
+    [StringLength(250, ErrorMessage = "MessageMaxChar")]
     public string Message { get; set; }
 }

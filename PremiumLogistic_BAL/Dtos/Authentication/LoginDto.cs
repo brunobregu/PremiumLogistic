@@ -2,10 +2,10 @@
 
 public class LoginDto
 {
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Email should be a valid email address")]
+    [Required(ErrorMessage = "EmailRequired")]
+    [EmailAddress(ErrorMessage = "ValidEmail")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Password is required")]
+    [Required(ErrorMessage = "PassRequired")]
     public string Password { get; set; }
 }
