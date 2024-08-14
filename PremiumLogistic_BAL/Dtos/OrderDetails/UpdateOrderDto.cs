@@ -1,6 +1,6 @@
 ﻿namespace PremiumLogistic_BAL.Dtos.OrderDetails;
 
-public class AddOrderDetailsDto
+public class UpdateOrderDto
 {
     [Required(ErrorMessage = "VIN is required")]
     public string VIN { get; set; }
@@ -15,18 +15,19 @@ public class AddOrderDetailsDto
     public int Lot { get; set; }
     [Required(ErrorMessage = "Order id is required")]
     public string OrderID { get; set; }
+    public string? TrackingNumber { get; set; }
     [Required(ErrorMessage = "Auction is required")]
     public string Auction { get; set; }
     [Required(ErrorMessage = "Port is required")]
     public string Port { get; set; }
-    public string? Provider { get; set; }
+    public string Provider { get; set; }
     [Required(ErrorMessage = "Inland price is required")]
     [Range(1, int.MaxValue, ErrorMessage = "Inland price must be at least 1")]
     public int InlandPrice { get; set; }
     [Required(ErrorMessage = "Ocean price is required")]
     [Range(1, int.MaxValue, ErrorMessage = "Ocean price must be at least 1")]
     public int OceanPrice { get; set; }
-    public int Broker { get; set; } = 0;
+    public int Broker { get; set; }
     public int ClientStorage { get; set; } = 0;
     public int ClientTotal => InlandPrice + OceanPrice + Broker + ClientStorage;
     [Required(ErrorMessage = "Inland cost is required")]

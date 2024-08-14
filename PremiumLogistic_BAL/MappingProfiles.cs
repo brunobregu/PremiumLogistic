@@ -43,6 +43,10 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
 
+        CreateMap<OrderDetails, AdminOrderDetailsByIdDto>()
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+
         CreateMap<OrderDetails, MyOrderDetailsByIdDto>();
         #endregion
 

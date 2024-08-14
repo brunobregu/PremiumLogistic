@@ -6,9 +6,10 @@ public interface IOrderDetailsService
     Task<List<OrderDetailsDto>> MyOrders(string username);
     Task<List<AllOrderDetailsDto>> GetAllOrderDetails();
     Task<OrderDetailsByIdDto> GetOrderDetailsById(int id);
+    Task<AdminOrderDetailsByIdDto> GetOrderDetailsByIdForAdmin(int id);
     Task<DetailsDto> Details();
     Task<DetailsDto> MyDetails(string email);
-    Task UpdateOrderDetail(int id, AddOrderDetailsDto updateOrderDetail, string email);
+    Task UpdateOrderDetail(int id, UpdateOrderDto updateOrderDetail, string email);
     Task DeleteOrderDetail(int id, string email);
     Task<List<AllOrderDetailsDto>> GetAllOrderDetailsByClient(string userId);
     Task<DetailsDto> DetailsByClient(string userId);

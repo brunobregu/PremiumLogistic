@@ -20,6 +20,7 @@ public class OrderDetailsService : IOrderDetailsService
     public async Task AddOrderDetails(AddOrderDetailsDto orderDetailsDto, string email)
     {
         var orderDetails = _mapper.Map<OrderDetails>(orderDetailsDto);
+        orderDetails.PartlyPaid = orderDetailsDto.PartlyPaid;
         orderDetails.CreatedBy = email;
         orderDetails.CarStatus = "Dispatch";
         _unitOfWork.OrderDetailsRepository.Insert(orderDetails);
@@ -28,7 +29,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task<List<OrderDetailsDto>> MyOrders(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"], email));
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"].Value, email));
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId == user.Id);
         var result = _mapper.Map<List<OrderDetailsDto>>(orderDetails);
         return result;
@@ -51,23 +52,32 @@ public class OrderDetailsService : IOrderDetailsService
     public async Task<OrderDetailsByIdDto> GetOrderDetailsById(int id)
     {
         var orderDetails = await _unitOfWork.OrderDetailsRepository.IncludeAsync(c => c.User);
-        var ordersById = orderDetails.Where(x => x.Id== id).FirstOrDefault() ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
+        var ordersById = orderDetails.Where(x => x.Id== id).FirstOrDefault() ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         var result = _mapper.Map<OrderDetailsByIdDto>(ordersById);
+        return result;
+    }
+
+    public async Task<AdminOrderDetailsByIdDto> GetOrderDetailsByIdForAdmin(int id)
+    {
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.IncludeAsync(c => c.User);
+        var ordersById = orderDetails.Where(x => x.Id == id).FirstOrDefault() ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
+        var result = _mapper.Map<AdminOrderDetailsByIdDto>(ordersById);
         return result;
     }
 
     public async Task<MyOrderDetailsByIdDto> MyOrderDetailsById(int id)
     {
-        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         var link = await _unitOfWork.ProviderRepository.GetAsync(x => x.Name == orderDetails.Provider);
         var result = _mapper.Map<MyOrderDetailsByIdDto>(orderDetails);
         result.Link = link.Link;
         return result;
     }
 
-    public async Task UpdateOrderDetail(int id, AddOrderDetailsDto updateOrderDetail, string email)
+    public async Task UpdateOrderDetail(int id, UpdateOrderDto updateOrderDetail, string email)
     {
-        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
+        
         orderDetails.UpdatedOn = DateTime.Now;
         orderDetails.UpdatedBy = email;
         orderDetails.VIN = updateOrderDetail.VIN;
@@ -75,20 +85,24 @@ public class OrderDetailsService : IOrderDetailsService
         orderDetails.Model = updateOrderDetail.Model;
         orderDetails.Year = updateOrderDetail.Year;
         orderDetails.Lot = updateOrderDetail.Lot;
-        //orderDetails.DspOrderID = updateOrderDetail.DspOrderID;
+        orderDetails.OrderID = updateOrderDetail.OrderID;
+        orderDetails.Auction = updateOrderDetail.Auction;
+        orderDetails.TrackingNumber = updateOrderDetail.TrackingNumber;
         orderDetails.Port = updateOrderDetail.Port;
         orderDetails.InlandPrice = updateOrderDetail.InlandPrice;
         orderDetails.OceanPrice = updateOrderDetail.OceanPrice;
         orderDetails.Broker = updateOrderDetail.Broker;
+        orderDetails.ClientStorage = updateOrderDetail.ClientStorage;
         orderDetails.ClientTotal = updateOrderDetail.ClientTotal;
         orderDetails.InlandCost = updateOrderDetail.InlandCost;
         orderDetails.OceanCost = updateOrderDetail.OceanCost;
+        orderDetails.StorageCost = updateOrderDetail.StorageCost;
         orderDetails.TotalCost = updateOrderDetail.TotalCost;
         orderDetails.Profit = updateOrderDetail.Profit;
-        //orderDetails.Storage = updateOrderDetail.Storage;
-        //orderDetails.PaymentStatus = updateOrderDetail.PaymentStatus;
+        orderDetails.PaymentStatus = updateOrderDetail.PaymentStatus;
         orderDetails.PartlyPaid = updateOrderDetail.PartlyPaid;
-        orderDetails.ToBePaid = updateOrderDetail.PaymentStatus == "Partly Paid" ? updateOrderDetail.ToBePaid : 0;
+        orderDetails.UserId = updateOrderDetail.UserId;
+        orderDetails.Provider = updateOrderDetail.Provider;
 
         _unitOfWork.OrderDetailsRepository.Update(orderDetails);
         await _unitOfWork.CommitAsync();
@@ -96,7 +110,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task DeleteOrderDetail(int id, string email)
     {
-        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
+        var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         orderDetails.Invalidated = true;
         orderDetails.UpdatedBy = email;
         orderDetails.UpdatedOn = DateTime.Now;
@@ -135,7 +149,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task<DetailsDto> MyDetails(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"], email));
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"].Value, email));
         var myDetails = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId == user.Id);
         var details = myDetails.GroupBy(o => 1)
                         .Select(g => new DetailsDto
@@ -150,28 +164,26 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task UpdateCarStatus(int id, UpdateCarStatusDto updateCarStatus, string email)
     {
-        var order = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"], id));
-        if (!ValidateCorrectCarStatus(order.CarStatus, updateCarStatus.Status))
-            throw new BadRequestException(_localizer["InvalidCarStatus"]);
+        var order = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
+        string nextStatus = GetNextCarStatus(order.CarStatus);
 
-        switch (updateCarStatus.Status)
+        switch (nextStatus)
         {
             case "At terminal":
-                await ChangeStatusToAtTerminal(order, updateCarStatus, email);
+                await ChangeStatusToAtTerminal(order, updateCarStatus, email, nextStatus);
                 break;
             case "Booked":
-                await ChangeStatusToBooked(order, updateCarStatus.Status, email);
+                await ChangeStatusToBooked(order, nextStatus, email);
                 break;
             case "Loaded":
-                await ChangeStatusToLoaded(order, updateCarStatus, email);
+                await ChangeStatusToLoaded(order, updateCarStatus, email, nextStatus);
                 break;
             case "Delivered":
-                await ChangeStatusToDelivered(order, updateCarStatus.Status, email);
+                await ChangeStatusToDelivered(order, nextStatus, email);
                 break;
             default:
-                throw new BadRequestException(_localizer["InvalidCarStatus"]);
+                throw new BadRequestException(_localizer["InvalidCarStatus"].Value);
         }
-        
     }
 
     public async Task ViewPhotosOfOrder(int id)
@@ -179,7 +191,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     }
 
-    private async Task ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email)
+    private async Task ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email, string nextStatus)
     {
         ValidatePhotos(updateCarStatus);
         
@@ -197,7 +209,7 @@ public class OrderDetailsService : IOrderDetailsService
         }
 
         order.PhotosPath = uploadPath;
-        order.CarStatus = updateCarStatus.Status;
+        order.CarStatus = nextStatus;
         order.UpdatedBy = email;
         order.UpdatedOn = DateTime.Now;
         _unitOfWork.OrderDetailsRepository.Update(order);
@@ -219,10 +231,10 @@ public class OrderDetailsService : IOrderDetailsService
         await _unitOfWork.CommitAsync();
     }
 
-    private async Task ChangeStatusToLoaded(OrderDetails order, UpdateCarStatusDto updatStatusCar, string email)
+    private async Task ChangeStatusToLoaded(OrderDetails order, UpdateCarStatusDto updatStatusCar, string email, string nextStatus)
     {
         if(string.IsNullOrEmpty(updatStatusCar.TrackingNumber))
-            throw new BadRequestException(_localizer["TrackingNrRequired"]);
+            throw new BadRequestException(_localizer["TrackingNrRequired"].Value);
         ValidateDocuments(updatStatusCar);
 
         var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Documents", order.Id.ToString());
@@ -237,7 +249,7 @@ public class OrderDetailsService : IOrderDetailsService
             using var stream = new FileStream(filePath, FileMode.Create);
             await item.CopyToAsync(stream);
         }
-        order.CarStatus = updatStatusCar.Status;
+        order.CarStatus = nextStatus;
         order.TrackingNumber = updatStatusCar.TrackingNumber;
         order.DocumentsPath = uploadPath;
         order.UpdatedBy = email;
@@ -275,7 +287,7 @@ public class OrderDetailsService : IOrderDetailsService
         await _unitOfWork.CommitAsync();
     }
 
-    private bool ValidateCorrectCarStatus(string status, string updatedStatus)
+    private string GetNextCarStatus(string currentStatus)
     {
         var statusTransitions = new Dictionary<string, string>
         {
@@ -285,35 +297,35 @@ public class OrderDetailsService : IOrderDetailsService
             { "Loaded", "Delivered" }
         };
 
-        if (statusTransitions.TryGetValue(status, out string nextStatus))
-            return updatedStatus == nextStatus;
+        if (statusTransitions.TryGetValue(currentStatus, out string nextStatus))
+            return nextStatus;
 
-        throw new BadRequestException(_localizer["InvalidCarStatus"]);
+        throw new BadRequestException(_localizer["InvalidCarStatus"].Value);
     }
 
     private void ValidatePhotos(UpdateCarStatusDto updateCarStatus)
     {
         if (updateCarStatus.Photos is null)
-            throw new BadRequestException(_localizer["PhotoRequired"]);
+            throw new BadRequestException(_localizer["PhotoRequired"].Value);
         if (updateCarStatus.Photos.Count > 10)
-            throw new BadRequestException(_localizer["MaxPhotoRequired"]);
+            throw new BadRequestException(_localizer["MaxPhotoRequired"].Value);
         if(updateCarStatus.Photos.Sum(file => file.Length) > 5 * 1024 * 1024)
-            throw new BadRequestException(_localizer["MaxPhotosSize"]);
+            throw new BadRequestException(_localizer["MaxPhotosSize"].Value);
         string[] allowedExtensions = new string[] { ".jpg", ".jpeg", ".png" };
         foreach (var file in updateCarStatus.Photos)
         {
             var extension = Path.GetExtension(file.FileName).ToLower();
             if (!allowedExtensions.Contains(extension))
-                throw new BadRequestException(string.Format(_localizer["PhotoAllowedFormat"], file.FileName));
+                throw new BadRequestException(string.Format(_localizer["PhotoAllowedFormat"].Value, file.FileName));
         }  
     }
 
     private void ValidateDocuments(UpdateCarStatusDto updateCarStatus)
     {
         if(updateCarStatus.Documents is null || updateCarStatus.Documents.Count != 2)
-            throw new BadRequestException(_localizer["DocsNrUpload"]);
+            throw new BadRequestException(_localizer["DocsNrUpload"].Value);
         if (updateCarStatus.Documents.Sum(file => file.Length) > 5 * 1024 * 1024)
-            throw new BadRequestException(_localizer["DocsMaxSize"]);
+            throw new BadRequestException(_localizer["DocsMaxSize"].Value);
 
         string[] allowedExtensions = new string[] { ".pdf" };
         foreach (var file in updateCarStatus.Documents)
@@ -321,7 +333,7 @@ public class OrderDetailsService : IOrderDetailsService
             var extension = Path.GetExtension(file.FileName).ToLower();
             if (!allowedExtensions.Contains(extension))
             {
-                throw new BadRequestException(string.Format(_localizer["DocsAllowedFormat"], file.FileName));
+                throw new BadRequestException(string.Format(_localizer["DocsAllowedFormat"].Value, file.FileName));
             }
         }
     }

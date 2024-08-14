@@ -13,22 +13,22 @@ public class OrderDetailsController : ControllerBase
         _localizer = localizer;
 
     }
-
+    //api per shtimin e nje porosie
     [ServiceFilter(typeof(AuditLogAttribute))]
     [HttpPost("add")]
     [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> Add([FromBody] AddOrderDetailsDto addOrderDetailsDto)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _orderDetailsService.AddOrderDetails(addOrderDetailsDto, email);
-        return Created(nameof(Add), _localizer["OrderAdded"]);
+        return Created(nameof(Add), _localizer["OrderAdded"].Value);
     }
 
     [HttpGet("myOrders")]
     [Authorize(Roles ="Client")]
     public async Task<IActionResult> MyOrders()
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         var result = await _orderDetailsService.MyOrders(email);
         return Ok(result);
     }
@@ -69,11 +69,12 @@ public class OrderDetailsController : ControllerBase
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> MyDetails()
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         var result = await _orderDetailsService.MyDetails(email);
         return Ok(result);
     }
 
+    //api per marrjen e detajeve qe do te shfaqen per update
     [HttpGet("orderById")]
     [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> GetById([FromQuery] int id)
@@ -90,39 +91,61 @@ public class OrderDetailsController : ControllerBase
         return Ok(result);
     }
 
+    //api per te pare detajet e porosise admini
+    [HttpGet("adminOrderDetailsById")]
+    [Authorize(Roles = "Admin, Account Manager")]
+    public async Task<IActionResult> AdminOrderDetailsById([FromQuery] int id)
+    {
+        var result = await _orderDetailsService.GetOrderDetailsByIdForAdmin(id);
+        return Ok(result);
+    }
+
+    //api per perditesimin e porosise
     [HttpPut("update")]
     [Authorize(Roles = "Admin, Account Manager")]
     [ServiceFilter(typeof(AuditLogAttribute))]
-    public async Task<IActionResult> Update([FromQuery] int id, [FromBody] AddOrderDetailsDto update)
+    public async Task<IActionResult> Update([FromQuery] int id, [FromBody] UpdateOrderDto update)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _orderDetailsService.UpdateOrderDetail(id, update, email);
-        return Ok($"Order with id {id} is updated successully");
+        return Ok(string.Format(_localizer["OrderUpdated"].Value, id));
     }
 
+    //api per ndryshimin e statusit te makines
     [HttpPut("updateCarStatus")]
     [Authorize(Roles = "Admin, Account Manager")]
     [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> UpdateCarStatus([FromQuery] int id, [FromForm] UpdateCarStatusDto statusDto)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _orderDetailsService.UpdateCarStatus(id, statusDto, email);
-        return Ok(string.Format(_localizer["CarStatusUpdated"], statusDto.Status, id));
+        return Ok(_localizer["CarStatusUpdated"].Value);
     }
 
+    //api per fshirjen e nje porosie
     [HttpDelete("delete")]
     [Authorize(Roles = "Admin, Account Manager")]
     [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> Delete([FromQuery] int id)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _orderDetailsService.DeleteOrderDetail(id, email);
-        return Ok(string.Format(_localizer["DeleteOrder"], id));
+        return Ok(string.Format(_localizer["DeleteOrder"].Value, id));
     }
 
-    [HttpGet("viewPhotosOfOrder")]
+    //api per te shfaqur fotot
+    [HttpGet("viewPhotos")]
     [Authorize(Roles = "Client, Admin, Account Manager")]
-    public async Task<IActionResult> ViewPhotosOfOrder([FromQuery] int id)
+    public async Task<IActionResult> ViewPhotos([FromQuery] int id)
+    {
+        //var result = _orderDetailsService.
+        return Ok();
+    }
+
+    //api per te shfaqur dokumentat
+    [HttpGet("viewDocuments")]
+    [Authorize(Roles = "Client, Admin, Account Manager")]
+    public async Task<IActionResult> ViewDocuments([FromQuery] int id)
     {
         //var result = _orderDetailsService.
         return Ok();

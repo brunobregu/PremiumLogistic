@@ -17,6 +17,6 @@ public class ContactController : ControllerBase
     public async Task<IActionResult> Add([FromBody] AddContactDto addContactDto)
     {
         await _contactService.AddContact(addContactDto);
-        return Created(nameof(Add), _localizer["ContactAdded"]);
+        return Created(nameof(Add), _localizer["ContactAdded"].Value);
     }
 }

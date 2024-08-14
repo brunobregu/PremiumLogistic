@@ -27,11 +27,11 @@ public class UserService : IUserService
         newUser.CreatedBy = email;
         var resultUser = await _userManager.CreateAsync(newUser, createUserDto.Password);
         if (!resultUser.Succeeded)
-            throw new BadRequestException(string.Format(_localizer["UserNotCreated"], resultUser.Errors?.FirstOrDefault()?.Description));
+            throw new BadRequestException(string.Format(_localizer["UserNotCreated"].Value, resultUser.Errors?.FirstOrDefault()?.Description));
 
         var resultRole = await _userManager.AddToRoleAsync(newUser, createUserDto.RoleName);
         if (!resultRole.Succeeded)
-            throw new BadRequestException(string.Format(_localizer["UserNotCreated"], resultRole.Errors?.FirstOrDefault()?.Description));
+            throw new BadRequestException(string.Format(_localizer["UserNotCreated"].Value, resultRole.Errors?.FirstOrDefault()?.Description));
         
         IEnumerable<string> emails = new string[] { createUserDto.Email };
         Message message = new Message(emails, "Kredencialet tuaja - Your credentials", string.Format(_configuration["GeneralConfigs:AddUser"], createUserDto.Email, createUserDto.Password));
@@ -43,7 +43,7 @@ public class UserService : IUserService
         newUser.UserName = registerDto.Email;
         var result = await _userManager.CreateAsync(newUser, registerDto.Password);
         if (!result.Succeeded)
-            throw new BadRequestException(string.Format(_localizer["UserNotCreated"], result.Errors?.FirstOrDefault()?.Description));
+            throw new BadRequestException(string.Format(_localizer["UserNotCreated"].Value, result.Errors?.FirstOrDefault()?.Description));
 
         await _userManager.AddToRoleAsync(newUser, "Client");
     }
@@ -54,30 +54,30 @@ public class UserService : IUserService
         if (user is not null && await _userManager.CheckPasswordAsync(user, loginDto.Password))
             return await GenerateJwtToken(user);
         else
-            throw new BadRequestException(_localizer["CheckCredentials"]);
+            throw new BadRequestException(_localizer["CheckCredentials"].Value);
     }
 
     public async Task RequestPasswordReset(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"]);
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
         user.TemporaryPassword = GenerateRandomPassword();
         user.TemporaryPasswordExpiration = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["GeneralConfigs:PasswordExpire"]));
         var updateResult = await _userManager.UpdateAsync(user);
         if (updateResult.Succeeded)
         {
             IEnumerable<string> emails = new string[] { email };
-            Message message = new Message(emails, "Reset password", string.Format(_localizer["TempPass"], user.TemporaryPassword));
+            Message message = new Message(emails, "Reset password", string.Format(_localizer["TempPass"].Value, user.TemporaryPassword));
             await _emailSender.SendEmail(message);
         } 
     }
 
     public async Task ResetPassword(ResetPasswordDto resetPasswordDto)
     {
-        var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email) ?? throw new BadRequestException(_localizer["UserNotFound"]);
+        var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
         if(user.TemporaryPassword != resetPasswordDto.TemporaryPassword)
-            throw new BadRequestException(_localizer["TempPassIncorrect"]);
+            throw new BadRequestException(_localizer["TempPassIncorrect"].Value);
         if(user.TemporaryPasswordExpiration <= DateTime.Now)
-            throw new BadRequestException(_localizer["TempPassExpire"]);
+            throw new BadRequestException(_localizer["TempPassExpire"].Value);
 
         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         var resetResult = await _userManager.ResetPasswordAsync(user, resetToken, resetPasswordDto.NewPassword);
@@ -91,15 +91,15 @@ public class UserService : IUserService
 
     public async Task ChangePassword(ChangePasswordDto changePasswordDto, string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"]);
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
         var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
         if(!result.Succeeded)
             throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
     }
     public async Task<List<UsersOfRoleDto>> GetUsersOfRole(string role)
     {
-        var existRole = await _roleManager.FindByNameAsync(role) ?? throw new NotFoundException(_localizer["RoleNotExist"]);
-        var userRoles = await _userManager.GetUsersInRoleAsync(existRole.Name) ?? throw new NotFoundException(string.Format(_localizer["NotUserInRole"], role));
+        var existRole = await _roleManager.FindByNameAsync(role) ?? throw new NotFoundException(_localizer["RoleNotExist"].Value);
+        var userRoles = await _userManager.GetUsersInRoleAsync(existRole.Name) ?? throw new NotFoundException(string.Format(_localizer["NotUserInRole"].Value, role));
 
         return _mapper.Map<List<UsersOfRoleDto>>(userRoles.ToList());
     }
@@ -114,7 +114,7 @@ public class UserService : IUserService
     {
         var existRole = await _roleManager.FindByNameAsync(addRoleDto.Name);
         if (existRole is not null)
-            throw new BadRequestException(string.Format(_localizer["RoleExist"], addRoleDto.Name));
+            throw new BadRequestException(string.Format(_localizer["RoleExist"].Value, addRoleDto.Name));
 
         var addRole = _mapper.Map<ApplicationRole>(addRoleDto);
         addRole.CreatedBy = email;

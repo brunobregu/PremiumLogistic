@@ -14,8 +14,8 @@ public class TransportationService : ITransportationService
     }
     public async Task<TransportationDto> GetPrice(string zip, string terminal)
     {
-        var localPrices = await _unitOfWork.TransportationRepository.GetAsync(x => x.Zip == zip) ?? throw new NotFoundException(string.Format(_localizer["ZipNotExist"], zip));
-        var oceanPrices = await _unitOfWork.OceanRepository.GetAsync(x => x.Port == terminal) ?? throw new NotFoundException(string.Format(_localizer["Terminal doesn't exist"], terminal));
+        var localPrices = await _unitOfWork.TransportationRepository.GetAsync(x => x.Zip == zip) ?? throw new NotFoundException(string.Format(_localizer["ZipNotExist"].Value, zip));
+        var oceanPrices = await _unitOfWork.OceanRepository.GetAsync(x => x.Port == terminal) ?? throw new NotFoundException(string.Format(_localizer["TerminalNotExist"].Value, terminal));
         var transportationDto = new TransportationDto
         {
             Savannah = CreatePriceDto(localPrices.Savannah, oceanPrices.Savannah),

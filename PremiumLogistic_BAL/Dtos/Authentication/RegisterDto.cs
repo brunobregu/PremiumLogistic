@@ -2,7 +2,8 @@
 
 public class RegisterDto
 {
-    [Required(ErrorMessage = "Firstname is required")]
+    [Required(ErrorMessage = "FNRequired")]
+    //[Required(ErrorMessage = "Firstname is required")]
     [StringLength(50, ErrorMessage = "Firstname should be at most 50 characters")]
     public string FirstName { get; set; }
     [Required(ErrorMessage = "Lastname is required")]

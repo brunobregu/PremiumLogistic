@@ -31,7 +31,11 @@ builder.Services.Configure<RouteOptions>(options =>
     options.ConstraintMap.Add("culture", typeof(LanguageRouteConstraint));
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddDataAnnotationsLocalization(options =>
+{
+    options.DataAnnotationLocalizerProvider = (type, factory) =>
+        factory.Create(typeof(Resource));
+}); ;
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.Configure<FormOptions>(o => {

@@ -18,7 +18,7 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         await _userService.Register(registerDto);
-        return Created(nameof(Register), string.Format(_localizer["UserCreated"], registerDto.Email));
+        return Created(nameof(Register), string.Format(_localizer["UserCreated"].Value, registerDto.Email));
     }
 
     [HttpPost("login")]
@@ -33,16 +33,16 @@ public class AuthenticationController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddUser([FromBody] CreateUserDto createUserDto)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _userService.AddUser(createUserDto, email);
-        return Created(nameof(AddUser), string.Format(_localizer["UserCreated"], createUserDto.Email));
+        return Created(nameof(AddUser), string.Format(_localizer["UserCreated"].Value, createUserDto.Email));
     }
 
     [HttpPost("requestResetPassword")]
     public async Task<IActionResult> RequestResetPassword([FromBody] string email)
     {
         await _userService.RequestPasswordReset(email);
-        return Ok(string.Format(_localizer["TempPassSend"], email));
+        return Ok(string.Format(_localizer["TempPassSend"].Value, email));
     }
 
     [HttpPost("resetPassword")]
@@ -56,7 +56,7 @@ public class AuthenticationController : ControllerBase
     [Authorize]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto request)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _userService.ChangePassword(request, email);
         return Ok();
     }
@@ -82,9 +82,9 @@ public class AuthenticationController : ControllerBase
     [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> AddRole(AddRoleDto addRoleDto)
     {
-        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"]);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _userService.AddRole(addRoleDto, email);
-        return Created(nameof(AddRole), string.Format(_localizer["RoleCreated"]));
+        return Created(nameof(AddRole), string.Format(_localizer["RoleCreated"].Value));
     }
 
 }
