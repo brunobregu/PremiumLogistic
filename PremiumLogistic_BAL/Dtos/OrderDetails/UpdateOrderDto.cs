@@ -2,44 +2,43 @@
 
 public class UpdateOrderDto
 {
-    [Required(ErrorMessage = "VIN is required")]
+    [Required(ErrorMessage = "VINRequired")]
     public string VIN { get; set; }
-    [Required(ErrorMessage = "Make is required")]
+    [Required(ErrorMessage = "MakeRequired")]
     public string Make { get; set; }
-    [Required(ErrorMessage = "Model is required")]
+    [Required(ErrorMessage = "ModelRequired")]
     public string Model { get; set; }
-    [Required(ErrorMessage = "Year is required")]
-    [Range(1900, int.MaxValue, ErrorMessage = "Year must be at least 1900")]
+    [Required(ErrorMessage = "YearRequired")]
     public int Year { get; set; }
-    [Required(ErrorMessage = "Lot is required")]
+    [Required(ErrorMessage = "LotRequired")]
     public int Lot { get; set; }
-    [Required(ErrorMessage = "Order id is required")]
+    [Required(ErrorMessage = "OrderIdRequired")]
     public string OrderID { get; set; }
     public string? TrackingNumber { get; set; }
-    [Required(ErrorMessage = "Auction is required")]
+    [Required(ErrorMessage = "AuctionRequired")]
     public string Auction { get; set; }
-    [Required(ErrorMessage = "Port is required")]
+    [Required(ErrorMessage = "PortRequired")]
     public string Port { get; set; }
     public string Provider { get; set; }
-    [Required(ErrorMessage = "Inland price is required")]
-    [Range(1, int.MaxValue, ErrorMessage = "Inland price must be at least 1")]
+    [Required(ErrorMessage = "InlandPriceRequired")]
+    [Range(1, int.MaxValue, ErrorMessage = "InlandPriceMin")]
     public int InlandPrice { get; set; }
-    [Required(ErrorMessage = "Ocean price is required")]
-    [Range(1, int.MaxValue, ErrorMessage = "Ocean price must be at least 1")]
+    [Required(ErrorMessage = "OceanPriceRequired")]
+    [Range(1, int.MaxValue, ErrorMessage = "OceanPriceMin")]
     public int OceanPrice { get; set; }
     public int Broker { get; set; }
     public int ClientStorage { get; set; } = 0;
     public int ClientTotal => InlandPrice + OceanPrice + Broker + ClientStorage;
-    [Required(ErrorMessage = "Inland cost is required")]
-    [Range(1, int.MaxValue, ErrorMessage = "Inland cost must be at least 1")]
+    [Required(ErrorMessage = "InlandCostRequired")]
+    [Range(1, int.MaxValue, ErrorMessage = "InlandCostMin")]
     public int InlandCost { get; set; }
-    [Required(ErrorMessage = "Ocean cost is required")]
-    [Range(1, int.MaxValue, ErrorMessage = "Ocean cost must be at least 1")]
+    [Required(ErrorMessage = "OceanCostRequired")]
+    [Range(1, int.MaxValue, ErrorMessage = "OceanCostMin")]
     public int OceanCost { get; set; }
     public int StorageCost { get; set; } = 0;
     public int TotalCost => InlandCost + OceanCost + StorageCost;
     public int Profit => ClientTotal - TotalCost;
-    [AllowedValues("Not Paid", "Partly Paid", "Paid")]
+    [AllowedValues("Not Paid", "Partly Paid", "Paid", ErrorMessage = "PaymentStatusAllowedValues")]
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; } = 0;
     public int ToBePaid => PaymentStatus == "Paid" ? 0 : ClientTotal - PartlyPaid;

@@ -143,7 +143,7 @@ public class OrderDetailsController : ControllerBase
 
     //api per te shfaqur fotot
     [HttpGet("viewPhotos")]
-    [Authorize(Roles = "Client, Admin, Account Manager")]
+    [Authorize]
     public async Task<IActionResult> ViewPhotos([FromQuery] int id)
     {
         //var result = _orderDetailsService.
@@ -152,7 +152,7 @@ public class OrderDetailsController : ControllerBase
 
     //api per te shfaqur dokumentat
     [HttpGet("viewDocuments")]
-    [Authorize(Roles = "Client, Admin, Account Manager")]
+    [Authorize]
     public async Task<IActionResult> ViewDocuments([FromQuery] int id)
     {
         //var result = _orderDetailsService.

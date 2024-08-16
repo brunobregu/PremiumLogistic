@@ -9,6 +9,7 @@ public class OrderDetailsByIdDto
     public int Year { get; set; }
     public int Lot { get; set; }
     public string OrderID { get; set; }
+    public string CarStatus { get; set; }
     public string? TrackingNumber { get; set; }
     public string Auction { get; set; }
     public string Port { get; set; }

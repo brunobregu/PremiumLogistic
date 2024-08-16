@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuctionRequired" xml:space="preserve">
+    <value>Ankandi është fushë e detyrueshme!</value>
+  </data>
   <data name="CheckCredentials" xml:space="preserve">
     <value>Ju lutemi verifikoni kredencialet tuaja!</value>
   </data>
@@ -150,6 +153,18 @@
   <data name="FNRequired" xml:space="preserve">
     <value>Emri është fushë e detyrueshme!</value>
   </data>
+  <data name="InlandCostMin" xml:space="preserve">
+    <value>Kostoja tokësore duhet të jetë të paktën 1!</value>
+  </data>
+  <data name="InlandCostRequired" xml:space="preserve">
+    <value>Kostoja tokësore është fushë e detyrueshme!</value>
+  </data>
+  <data name="InlandPriceMin" xml:space="preserve">
+    <value>Çmimi tokësor duhet të jetë të paktën 1!</value>
+  </data>
+  <data name="InlandPriceRequired" xml:space="preserve">
+    <value>Çmimi tokësor është fushë e detyrueshme!</value>
+  </data>
   <data name="InvalidCarStatus" xml:space="preserve">
     <value>Statusi i makinës nuk është i vlefshëm!</value>
   </data>
@@ -158,6 +173,9 @@
   </data>
   <data name="LNRequired" xml:space="preserve">
     <value>Mbiemri është fushë e detyrueshme!</value>
+  </data>
+  <data name="LotRequired" xml:space="preserve">
+    <value>Lot është fushë e detyrueshme!</value>
   </data>
   <data name="MakeRequired" xml:space="preserve">
     <value>Make është fushë e detyrueshme!</value>
@@ -183,11 +201,26 @@
   <data name="NotUserInRole" xml:space="preserve">
     <value>Nuk ndodhet asnjë përdorues në rolin {0}!</value>
   </data>
+  <data name="OceanCostMin" xml:space="preserve">
+    <value>Kostoja oqenike duhet të jetë të paktën 1!</value>
+  </data>
+  <data name="OceanCostRequired" xml:space="preserve">
+    <value>Kostoja oqeanike është fushë e detyrueshme!</value>
+  </data>
+  <data name="OceanPriceMin" xml:space="preserve">
+    <value>Çmimi oqeanik duhet të jetë të paktën 1!</value>
+  </data>
+  <data name="OceanPriceRequired" xml:space="preserve">
+    <value>Çmimi oqeanik është fushë e detyrueshme!</value>
+  </data>
   <data name="OldPassRequired" xml:space="preserve">
     <value>Password-i i vjetër është fushë e detyrueshme!</value>
   </data>
   <data name="OrderAdded" xml:space="preserve">
     <value>Detajet e porosisë u shtuan me sukses!</value>
+  </data>
+  <data name="OrderIdRequired" xml:space="preserve">
+    <value>Id e porosisë është fushë e detyrueshme!</value>
   </data>
   <data name="OrderNotFound" xml:space="preserve">
     <value>Porosia me id {0} nuk u gjet!</value>
@@ -198,11 +231,17 @@
   <data name="PassRequired" xml:space="preserve">
     <value>Password-i është fushë e detyrueshme!</value>
   </data>
+  <data name="PaymentStatusAllowedValues" xml:space="preserve">
+    <value>Vlerat e lejuara për statusin e pagesës janë: Not Paid, Partly Paid, Paid!</value>
+  </data>
   <data name="PhotoAllowedFormat" xml:space="preserve">
     <value>Foto {0} nuk është në formatin e lejuar! Formatet e lejuara janë .jpg, .jpeg, .png!</value>
   </data>
   <data name="PhotoRequired" xml:space="preserve">
     <value>Ju duhet të ngarkoni të paktën një foto!</value>
+  </data>
+  <data name="PortRequired" xml:space="preserve">
+    <value>Porti është fushë e detyrueshme!</value>
   </data>
   <data name="ProviderNotFound" xml:space="preserve">
     <value>Ofruesi me emrin {0} nuk u gjet!</value>
@@ -260,6 +299,9 @@
   </data>
   <data name="VINRequired" xml:space="preserve">
     <value>VIN është fushë e detyrueshme!</value>
+  </data>
+  <data name="YearRequired" xml:space="preserve">
+    <value>Viti është fushë e detyrueshme!</value>
   </data>
   <data name="ZipNotExist" xml:space="preserve">
     <value>Zip {0} nuk ekziston!</value>

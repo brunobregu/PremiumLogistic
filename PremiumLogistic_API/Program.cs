@@ -1,4 +1,24 @@
 var builder = WebApplication.CreateBuilder(args);
+
+string env = "Development";
+try
+{
+    var config = new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json", false)
+        .Build();
+
+    env = config.GetSection("Environment").Value ?? "Development";
+}
+catch (Exception)
+{
+    env = "Development";
+}
+
+// Configure app configuration
+builder.Configuration
+    .AddJsonFile("appsettings.json")
+    .AddJsonFile($"appsettings.{env}.json", optional: true);
+
 // Add services to the container.
 var emailConfig = builder.Configuration
         .GetSection("EmailConfiguration")

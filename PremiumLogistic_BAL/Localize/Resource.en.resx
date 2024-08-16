@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuctionRequired" xml:space="preserve">
+    <value>Auction is required!</value>
+  </data>
   <data name="CheckCredentials" xml:space="preserve">
     <value>Please check your credentials!</value>
   </data>
@@ -150,6 +153,18 @@
   <data name="FNRequired" xml:space="preserve">
     <value>Firstname is required!</value>
   </data>
+  <data name="InlandCostMin" xml:space="preserve">
+    <value>Inland cost must be at least 1!</value>
+  </data>
+  <data name="InlandCostRequired" xml:space="preserve">
+    <value>Inland cost is required!</value>
+  </data>
+  <data name="InlandPriceMin" xml:space="preserve">
+    <value>Inland price must be at least 1!</value>
+  </data>
+  <data name="InlandPriceRequired" xml:space="preserve">
+    <value>Inland price is required!</value>
+  </data>
   <data name="InvalidCarStatus" xml:space="preserve">
     <value>Car status not valid!</value>
   </data>
@@ -158,6 +173,9 @@
   </data>
   <data name="LNRequired" xml:space="preserve">
     <value>Lastname is required!</value>
+  </data>
+  <data name="LotRequired" xml:space="preserve">
+    <value>Lot is required!</value>
   </data>
   <data name="MakeRequired" xml:space="preserve">
     <value>Make is required!</value>
@@ -183,11 +201,26 @@
   <data name="NotUserInRole" xml:space="preserve">
     <value>There are not any users in role {0}!</value>
   </data>
+  <data name="OceanCostMin" xml:space="preserve">
+    <value>Ocean cost must be at least 1!</value>
+  </data>
+  <data name="OceanCostRequired" xml:space="preserve">
+    <value>Ocean cost is required!</value>
+  </data>
+  <data name="OceanPriceMin" xml:space="preserve">
+    <value>Ocean price must be at least 1!</value>
+  </data>
+  <data name="OceanPriceRequired" xml:space="preserve">
+    <value>Ocean price is required!</value>
+  </data>
   <data name="OldPassRequired" xml:space="preserve">
     <value>Old password is required!</value>
   </data>
   <data name="OrderAdded" xml:space="preserve">
     <value>Order details added successfully!</value>
+  </data>
+  <data name="OrderIdRequired" xml:space="preserve">
+    <value>Order id is required!</value>
   </data>
   <data name="OrderNotFound" xml:space="preserve">
     <value>Order with id {0} not found!</value>
@@ -198,11 +231,17 @@
   <data name="PassRequired" xml:space="preserve">
     <value>Password is required!</value>
   </data>
+  <data name="PaymentStatusAllowedValues" xml:space="preserve">
+    <value>Allowed values for payment status are: Not Paid, Partly Paid, Paid!</value>
+  </data>
   <data name="PhotoAllowedFormat" xml:space="preserve">
     <value>Photo {0} is not an allowed format! Allowed formats of photo are .jpg, .jpeg, .png!</value>
   </data>
   <data name="PhotoRequired" xml:space="preserve">
     <value>At least one photo is required!</value>
+  </data>
+  <data name="PortRequired" xml:space="preserve">
+    <value>Port is required!</value>
   </data>
   <data name="ProviderNotFound" xml:space="preserve">
     <value>Provider {0} not found!</value>
@@ -260,6 +299,9 @@
   </data>
   <data name="VINRequired" xml:space="preserve">
     <value>VIN is required!</value>
+  </data>
+  <data name="YearRequired" xml:space="preserve">
+    <value>Year is required!</value>
   </data>
   <data name="ZipNotExist" xml:space="preserve">
     <value>Zip {0} doesn't exist!</value>
