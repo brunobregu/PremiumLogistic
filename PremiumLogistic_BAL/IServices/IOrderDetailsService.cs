@@ -16,4 +16,6 @@ public interface IOrderDetailsService
     Task<string> UpdateCarStatus(int id, UpdateCarStatusDto updateOrderDetail, string email);
     Task<MyOrderDetailsByIdDto> MyOrderDetailsById(int id);
     Task<List<ClientsWithOrdersDto>> ClientsWithOrders();
+    Task<List<FilesDto>> ViewPhotosOfOrder(int id);
+    Task<List<FilesDto>> ViewDocumentsOfOrder(int id);
 }

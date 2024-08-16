@@ -1,18 +1,9 @@
+
+using Microsoft.Extensions.FileProviders;
+
 var builder = WebApplication.CreateBuilder(args);
 
-string env = "Development";
-try
-{
-    var config = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json", false)
-        .Build();
-
-    env = config.GetSection("Environment").Value ?? "Development";
-}
-catch (Exception)
-{
-    env = "Development";
-}
+string env = GetEnvironment();
 
 // Configure app configuration
 builder.Configuration
@@ -134,8 +125,34 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(app.Environment.ContentRootPath, "wwwroot/Photos")),
+//    RequestPath = "/photos"
+//});
+
 app.MapControllers();
 
 app.UseExceptionHandler(options => { });
 
 app.Run();
+
+
+string GetEnvironment()
+{
+    string env = "Development";
+    try
+    {
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false)
+            .Build();
+
+        env = config.GetSection("Environment").Value ?? "Development";
+    }
+    catch (Exception)
+    {
+        env = "Development";
+    }
+    return env;
+}

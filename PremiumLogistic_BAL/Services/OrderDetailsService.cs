@@ -194,9 +194,62 @@ public class OrderDetailsService : IOrderDetailsService
         return nextStatus;
     }
 
-    public async Task ViewPhotosOfOrder(int id)
+    public async Task<List<FilesDto>> ViewPhotosOfOrder(int id)
     {
+        var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
+        string folderPath = orders.PhotosPath;
+        if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
+            throw new NotFoundException("No photos found for the specified ID.");
 
+        var files = Directory.GetFiles(folderPath);
+
+        if (files.Length == 0)
+            throw new NotFoundException("No photos found in the specified folder.");
+
+        var photos = new List<FilesDto>();
+        foreach (var file in files)
+        {
+            var fileName = Path.GetFileName(file);
+            var fileBytes = File.ReadAllBytes(file);
+            var base64Data = Convert.ToBase64String(fileBytes);
+            FilesDto filesDto = new FilesDto()
+            {
+                Filename = fileName,
+                Base64 = base64Data
+            };
+            photos.Add(filesDto);
+        }
+
+        return photos;
+    }
+
+    public async Task<List<FilesDto>> ViewDocumentsOfOrder(int id)
+    {
+        var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
+        string folderPath = orders.DocumentsPath;
+        if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
+            throw new NotFoundException("No documents found for the specified ID.");
+
+        var files = Directory.GetFiles(folderPath);
+
+        if (files.Length == 0)
+            throw new NotFoundException("No documents found in the specified folder.");
+
+        var documents = new List<FilesDto>();
+        foreach (var file in files)
+        {
+            var fileName = Path.GetFileName(file);
+            var fileBytes = File.ReadAllBytes(file);
+            var base64Data = Convert.ToBase64String(fileBytes);
+            FilesDto filesDto = new FilesDto()
+            {
+                Filename = fileName,
+                Base64 = base64Data
+            };
+            documents.Add(filesDto);
+        }
+
+        return documents;
     }
 
     private async Task ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email, string nextStatus)

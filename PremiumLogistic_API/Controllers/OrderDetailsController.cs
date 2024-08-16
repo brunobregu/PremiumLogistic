@@ -146,8 +146,8 @@ public class OrderDetailsController : ControllerBase
     [Authorize]
     public async Task<IActionResult> ViewPhotos([FromQuery] int id)
     {
-        //var result = _orderDetailsService.
-        return Ok();
+        var result = await _orderDetailsService.ViewPhotosOfOrder(id);
+        return Ok(result);
     }
 
     //api per te shfaqur dokumentat
@@ -155,7 +155,7 @@ public class OrderDetailsController : ControllerBase
     [Authorize]
     public async Task<IActionResult> ViewDocuments([FromQuery] int id)
     {
-        //var result = _orderDetailsService.
-        return Ok();
+        var result = await _orderDetailsService.ViewDocumentsOfOrder(id);
+        return Ok(result);
     }
 }
