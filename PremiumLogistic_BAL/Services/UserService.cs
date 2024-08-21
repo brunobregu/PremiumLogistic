@@ -24,13 +24,15 @@ public class UserService
         var newUser = _mapper.Map<ApplicationUser>(createUserDto);
         newUser.UserName = createUserDto.Email;
         newUser.CreatedBy = email;
+
         var resultUser = await _userManager.CreateAsync(newUser, createUserDto.Password);
         if (!resultUser.Succeeded)
-            throw new BadRequestException(string.Format(_localizer["UserNotCreated"].Value, resultUser.Errors?.FirstOrDefault()?.Description));
+            throw new BadRequestException(resultUser.Errors?.FirstOrDefault()?.Description ?? "Please try again");
 
         var resultRole = await _userManager.AddToRoleAsync(newUser, createUserDto.RoleName);
         if (!resultRole.Succeeded)
-            throw new BadRequestException(string.Format(_localizer["UserNotCreated"].Value, resultRole.Errors?.FirstOrDefault()?.Description));
+            throw new BadRequestException(resultRole.Errors?.FirstOrDefault()?.Description ?? "Please try again");
+
         try
         {
             IEnumerable<string> emails = new string[] { createUserDto.Email };
@@ -48,11 +50,14 @@ public class UserService
     {
         var newUser = _mapper.Map<ApplicationUser>(registerDto);
         newUser.UserName = registerDto.Email;
-        var result = await _userManager.CreateAsync(newUser, registerDto.Password);
-        if (!result.Succeeded)
-            throw new BadRequestException(string.Format(_localizer["UserNotCreated"].Value, result.Errors?.FirstOrDefault()?.Description));
+        newUser.CreatedBy = "register";
+        var resultUser = await _userManager.CreateAsync(newUser, registerDto.Password);
+        if (!resultUser.Succeeded)
+            throw new BadRequestException(resultUser.Errors?.FirstOrDefault()?.Description ?? "Please try again");
 
-        await _userManager.AddToRoleAsync(newUser, "Client");
+        var resultRole = await _userManager.AddToRoleAsync(newUser, "Client");
+        if(!resultRole.Succeeded)
+            throw new BadRequestException(resultUser.Errors?.FirstOrDefault()?.Description ?? "Please try again");
     }
 
     public async Task<AuthResultDto> Login(LoginDto loginDto)
@@ -64,25 +69,36 @@ public class UserService
             throw new BadRequestException(_localizer["CheckCredentials"].Value);
     }
 
-    public async Task RequestPasswordReset(string email)
+    public async Task<string> RequestPasswordReset(string email)
     {
         var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
         if (user.Invalidated)
             throw new NotFoundException("Your account is not active!");
+
         user.TemporaryPassword = GenerateRandomPassword();
         user.TemporaryPasswordExpiration = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["GeneralConfigs:PasswordExpire"]));
         var updateResult = await _userManager.UpdateAsync(user);
-        if (updateResult.Succeeded)
+        if (!updateResult.Succeeded)
+            throw new BadRequestException(updateResult.Errors?.FirstOrDefault()?.Description ?? "Please try again");
+
+        try
         {
             IEnumerable<string> emails = new string[] { email };
             Message message = new Message(emails, "Reset password", string.Format(_localizer["TempPass"].Value, user.TemporaryPassword));
             await _emailSender.SendEmail(message);
-        } 
+        }
+        catch
+        {
+            return "User created, but email with credentials not send!";
+        }
+
+        return string.Format(_localizer["TempPassSend"].Value, email);
     }
 
     public async Task ResetPassword(ResetPasswordDto resetPasswordDto)
     {
         var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
+        
         if (user.Invalidated)
             throw new NotFoundException("Your account is not active!");
         if (user.TemporaryPassword != resetPasswordDto.TemporaryPassword)
@@ -93,11 +109,14 @@ public class UserService
         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         var resetResult = await _userManager.ResetPasswordAsync(user, resetToken, resetPasswordDto.NewPassword);
         if (!resetResult.Succeeded)
-            throw new BadRequestException(resetResult.Errors.FirstOrDefault()?.Description);
+            throw new BadRequestException(resetResult.Errors?.FirstOrDefault()?.Description ?? "Please try again");
 
         user.TemporaryPassword = null;
         user.TemporaryPasswordExpiration = null;
-        await _userManager.UpdateAsync(user);
+        var result = await _userManager.UpdateAsync(user);
+
+        if(!result.Succeeded)
+            throw new BadRequestException(resetResult.Errors?.FirstOrDefault()?.Description ?? "Please try again");
     }
 
     public async Task ChangePassword(ChangePasswordDto changePasswordDto, string email)
@@ -105,7 +124,7 @@ public class UserService
         var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
         var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
         if(!result.Succeeded)
-            throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
+            throw new BadRequestException(result.Errors.FirstOrDefault()?.Description ?? "Please try again");
     }
     public async Task<List<UsersOfRoleDto>> GetUsersOfRole(string role)
     {
@@ -123,13 +142,11 @@ public class UserService
 
     public async Task AddRole(AddRoleDto addRoleDto, string email)
     {
-        var existRole = await _roleManager.FindByNameAsync(addRoleDto.Name);
-        if (existRole is not null)
-            throw new BadRequestException(string.Format(_localizer["RoleExist"].Value, addRoleDto.Name));
-
         var addRole = _mapper.Map<ApplicationRole>(addRoleDto);
         addRole.CreatedBy = email;
-        await _roleManager.CreateAsync(addRole);
+        var result = await _roleManager.CreateAsync(addRole);
+        if(!result.Succeeded)
+            throw new BadRequestException(result.Errors?.FirstOrDefault()?.Description);
     }
 
     public async Task<List<UserDto>> ActiveUsers(string email)

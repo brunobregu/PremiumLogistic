@@ -3,16 +3,10 @@
 [ApiController]
 [Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IUserService userService, IStringLocalizer<Resource> localizer) : ControllerBase
 {
-    private readonly IUserService _userService;
-    private readonly IStringLocalizer<Resource> _localizer;
-    public AuthenticationController(IUserService userService, IStringLocalizer<Resource> localizer)
-    {
-        _userService = userService;
-        _localizer = localizer;
-    }
-
+    private readonly IUserService _userService = userService;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
@@ -39,10 +33,10 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("requestResetPassword")]
-    public async Task<IActionResult> RequestResetPassword([FromBody] string email)
+    public async Task<IActionResult> RequestResetPassword([FromBody] RequestResetPasswordDto requestResetPassword)
     {
-        await _userService.RequestPasswordReset(email);
-        return Ok(string.Format(_localizer["TempPassSend"].Value, email));
+        var result = await _userService.RequestPasswordReset(requestResetPassword.Email);
+        return Ok(result);
     }
 
     [HttpPost("resetPassword")]
