@@ -1,32 +1,18 @@
 ﻿namespace PremiumLogistic_DAL.Repository;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork(PremiumLogisticDbContext context) : IUnitOfWork
 {
-    private readonly PremiumLogisticDbContext _context;
-    public IOceanRepository OceanRepository { get; set; }
-    public ITransportationRepository TransportationRepository { get; set; }
-    public IAuditLogsRepository AuditLogsRepository { get; set; }
-    public IContactRepository ContactRepository {  get; set; }
-    public IOrderDetailsRepository OrderDetailsRepository { get; set; }
-    public IProviderRepository ProviderRepository { get; set; }
-    public IAuctionRepository AuctionRepository { get; set; }
-    public IPortRepository PortRepository { get; set; }
-    public IUserRepository UserRepository { get; set; }
+    private readonly PremiumLogisticDbContext _context = context;
+    public IOceanRepository OceanRepository { get; set; } = new OceanRepository(context);
+    public ITransportationRepository TransportationRepository { get; set; } = new TransportationRepository(context);
+    public IAuditLogsRepository AuditLogsRepository { get; set; } = new AuditLogsRepository(context);
+    public IContactRepository ContactRepository { get; set; } = new ContactRepository(context);
+    public IOrderDetailsRepository OrderDetailsRepository { get; set; } = new OrderDetailsRepository(context);
+    public IProviderRepository ProviderRepository { get; set; } = new ProviderRepository(context);
+    public IAuctionRepository AuctionRepository { get; set; } = new AuctionRepository(context);
+    public IPortRepository PortRepository { get; set; } = new PortRepository(context);
+    public IUserRepository UserRepository { get; set; } = new UserRepository(context);
 
-
-    public UnitOfWork(PremiumLogisticDbContext context)
-    {
-        _context = context;
-        OceanRepository = new OceanRepository(context);
-        TransportationRepository = new TransportationRepository(context);
-        AuditLogsRepository = new AuditLogsRepository(context);
-        ContactRepository = new ContactRepository(context);
-        OrderDetailsRepository = new OrderDetailsRepository(context);
-        ProviderRepository = new ProviderRepository(context);
-        AuctionRepository = new AuctionRepository(context);
-        PortRepository = new PortRepository(context);
-        UserRepository = new UserRepository(context);
-    }
     public int Commit()
     {
         return _context.SaveChanges();
