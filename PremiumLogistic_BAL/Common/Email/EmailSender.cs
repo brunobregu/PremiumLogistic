@@ -1,15 +1,8 @@
-﻿using MimeKit;
+﻿namespace PremiumLogistic_BAL.Common.Email;
 
-namespace PremiumLogistic_BAL.Common.Email;
-
-public class EmailSender : IEmailSender
+public class EmailSender(EmailConfiguration emailConfig) : IEmailSender
 {
-    private readonly EmailConfiguration _emailConfig;
-
-    public EmailSender(EmailConfiguration emailConfig)
-    {
-        _emailConfig = emailConfig;
-    }
+    private readonly EmailConfiguration _emailConfig = emailConfig;
 
     public async Task SendEmail(Message message)
     {
@@ -24,7 +17,6 @@ public class EmailSender : IEmailSender
         emailMessage.From.Add(new MailboxAddress(_emailConfig.DisplayName, _emailConfig.From));
         emailMessage.To.AddRange(message.To);
         emailMessage.Subject = message.Subject;
-        //emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
         var bodyBuilder = new BodyBuilder { HtmlBody = message.Content };
         if (message.Attachments != null && message.Attachments.Any())
         {

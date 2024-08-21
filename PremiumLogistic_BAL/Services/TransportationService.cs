@@ -1,17 +1,10 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class TransportationService : ITransportationService
+public class TransportationService(IUnitOfWork unitOfWork, IStringLocalizer<Resource> localizer) : ITransportationService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly IStringLocalizer<Resource> _localizer;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
 
-    public TransportationService(IUnitOfWork unitOfWork, IMapper mapper, IStringLocalizer<Resource> localizer)
-    {
-        _mapper = mapper;
-        _unitOfWork = unitOfWork;
-        _localizer = localizer;
-    }
     public async Task<TransportationDto> GetPrice(string zip, string terminal)
     {
         var localPrices = await _unitOfWork.TransportationRepository.GetAsync(x => x.Zip == zip) ?? throw new NotFoundException(string.Format(_localizer["ZipNotExist"].Value, zip));

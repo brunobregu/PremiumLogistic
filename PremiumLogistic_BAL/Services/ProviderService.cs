@@ -1,14 +1,9 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class ProviderService : IProviderService
+public class ProviderService(IUnitOfWork unitOfWork, IMapper mapper) : IProviderService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    public ProviderService(IUnitOfWork unitOfWork, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<List<ProviderDto>> Get()
     {

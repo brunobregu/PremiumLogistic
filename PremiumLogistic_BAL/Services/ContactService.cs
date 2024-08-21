@@ -1,14 +1,10 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class ContactService : IContactService
+public class ContactService(IUnitOfWork unitOfWork, IMapper mapper) : IContactService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    public ContactService(IUnitOfWork unitOfWork, IMapper mapper)
-    {
-        _mapper = mapper;
-        _unitOfWork = unitOfWork;
-    }
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
+
     public async Task Add(AddContactDto addContactDto)
     {
         var contacts = _mapper.Map<Contact>(addContactDto);

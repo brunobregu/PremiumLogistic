@@ -1,22 +1,22 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class OrderDetailsService : IOrderDetailsService
+public class OrderDetailsService
+(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    UserManager<ApplicationUser> userManager,
+    IStringLocalizer<Resource> localizer,
+    IEmailSender emailSender,
+    IConfiguration configuration
+) : IOrderDetailsService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IStringLocalizer<Resource> _localizer;
-    private readonly IEmailSender _emailSender;
-    private readonly IConfiguration _configuration;
-    public OrderDetailsService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, IStringLocalizer<Resource> localizer, IEmailSender emailSender, IConfiguration configuration)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _userManager = userManager;
-        _localizer = localizer;
-        _emailSender = emailSender;
-        _configuration = configuration;
-    }
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
+    private readonly IEmailSender _emailSender = emailSender;
+    private readonly IConfiguration _configuration = configuration;
+
     public async Task AddOrderDetails(AddOrderDetailsDto orderDetailsDto, string email)
     {
         var orderDetails = _mapper.Map<OrderDetails>(orderDetailsDto);

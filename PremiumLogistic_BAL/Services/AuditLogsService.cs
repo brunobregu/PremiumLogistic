@@ -1,15 +1,10 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class AuditLogsService : IAuditLogsService
+public class AuditLogsService(IUnitOfWork unitOfWork, IMapper mapper) : IAuditLogsService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    public AuditLogsService(IUnitOfWork unitOfWork, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
 
-    }
     public async Task AddLogs(AddAuditLogsDto auditLogsDto)
     {
         var auditLogs = _mapper.Map<AuditLogs>(auditLogsDto);

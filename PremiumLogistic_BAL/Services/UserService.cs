@@ -1,24 +1,23 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class UserService : IUserService
+public class UserService
+(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    UserManager<ApplicationUser> userManager,
+    RoleManager<IdentityRole> roleManager,
+    IConfiguration configuration,
+    IEmailSender emailSender,
+    IStringLocalizer<Resource> localizer
+) : IUserService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly IConfiguration _configuration;
-    private readonly IEmailSender _emailSender;
-    private readonly IStringLocalizer<Resource> _localizer;
-    public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailSender emailSender, IStringLocalizer<Resource> localizer)
-    {
-        _mapper = mapper;
-        _unitOfWork = unitOfWork;
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _configuration = configuration;
-        _emailSender = emailSender;
-        _localizer = localizer;
-    }
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+    private readonly IConfiguration _configuration = configuration;
+    private readonly IEmailSender _emailSender = emailSender;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
 
     public async Task<string> AddUser(CreateUserDto createUserDto, string email)
     {       

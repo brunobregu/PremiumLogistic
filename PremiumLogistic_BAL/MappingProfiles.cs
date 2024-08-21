@@ -5,69 +5,69 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         #region Auction
-        CreateMap<Auction, AuctionDto>();
-        CreateMap<AddAuctionDto, Auction>();
+            CreateMap<Auction, AuctionDto>();
+            CreateMap<AddAuctionDto, Auction>();
 
         #endregion
 
         #region Authentication
-        CreateMap<RegisterDto, ApplicationUser>()
-            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<RegisterDto, ApplicationUser>()
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
 
-        CreateMap<ApplicationUser, UsersOfRoleDto>();
+            CreateMap<ApplicationUser, UsersOfRoleDto>();
 
-        CreateMap<IdentityRole, RolesDto>();
+            CreateMap<IdentityRole, RolesDto>();
 
-        CreateMap<AddRoleDto, ApplicationRole>()
-            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<AddRoleDto, ApplicationRole>()
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
 
-        CreateMap<CreateUserDto, ApplicationUser>()
-            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<CreateUserDto, ApplicationUser>()
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
         #endregion
 
         #region Contact
-        CreateMap<AddContactDto, Contact>()
-            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
-        CreateMap<Contact, AllContactsDto>();
+            CreateMap<AddContactDto, Contact>()
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<Contact, AllContactsDto>();
         #endregion
 
         #region OrderDetails
-        CreateMap<AddOrderDetailsDto, OrderDetails>()
-            .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<AddOrderDetailsDto, OrderDetails>()
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
 
-        CreateMap<OrderDetails, OrderDetailsDto>();
+            CreateMap<OrderDetails, OrderDetailsDto>();
 
-        CreateMap<OrderDetails, AllOrderDetailsDto>()
-            .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+            CreateMap<OrderDetails, AllOrderDetailsDto>()
+                .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
 
-        CreateMap<OrderDetails, ClientsWithOrdersDto>()
-            .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+            CreateMap<OrderDetails, ClientsWithOrdersDto>()
+                .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
 
-        CreateMap<OrderDetails, OrderDetailsByIdDto>()
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+            CreateMap<OrderDetails, OrderDetailsByIdDto>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
 
-        CreateMap<OrderDetails, AdminOrderDetailsByIdDto>()
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+            CreateMap<OrderDetails, AdminOrderDetailsByIdDto>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
 
-        CreateMap<OrderDetails, MyOrderDetailsByIdDto>();
+            CreateMap<OrderDetails, MyOrderDetailsByIdDto>();
         #endregion
 
         #region Port
-        CreateMap<Port, PortDto>();
-        CreateMap<AddPortDto, Port>();
+            CreateMap<Port, PortDto>();
+            CreateMap<AddPortDto, Port>();
         #endregion
 
         #region Provider
-        CreateMap<Provider, ProviderDto>();
-        CreateMap<AddProviderDto, Provider>();
+            CreateMap<Provider, ProviderDto>();
+            CreateMap<AddProviderDto, Provider>();
         #endregion
 
         #region Transportation
-        CreateMap<Transportation, LocalTransportationDto>();
+            CreateMap<Transportation, LocalTransportationDto>();
         #endregion
 
         #region Users
