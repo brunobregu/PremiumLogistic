@@ -6,6 +6,7 @@ public class MappingProfiles : Profile
     {
         #region Auction
         CreateMap<Auction, AuctionDto>();
+        CreateMap<AddAuctionDto, Auction>();
 
         #endregion
 
@@ -57,10 +58,12 @@ public class MappingProfiles : Profile
 
         #region Port
         CreateMap<Port, PortDto>();
+        CreateMap<AddPortDto, Port>();
         #endregion
 
         #region Provider
         CreateMap<Provider, ProviderDto>();
+        CreateMap<AddProviderDto, Provider>();
         #endregion
 
         #region Transportation

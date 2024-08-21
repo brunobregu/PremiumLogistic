@@ -1,6 +1,7 @@
 ﻿namespace PremiumLogistic_BAL.Dtos.Port;
 
-public class PortDto
+public record PortDto
 (
+    int Id,
     string Name
 );

@@ -18,4 +18,20 @@ public class AuctionController : ControllerBase
         var result = await _auctionService.Get();
         return Ok(result);
     }
+
+    [Authorize(Roles = "Admin, Account Manager")]
+    [HttpPost("add")]
+    public async Task<IActionResult> Add([FromBody] AddAuctionDto addAuction)
+    {
+        await _auctionService.Add(addAuction);
+        return Ok("Auction added successfully");
+    }
+
+    [Authorize(Roles = "Admin, Account Manager")]
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete([FromQuery] int id)
+    {
+        await _auctionService.Delete(id);
+        return Ok("Auction deleted successfully");
+    }
 }

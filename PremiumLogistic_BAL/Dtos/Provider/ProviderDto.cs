@@ -2,6 +2,7 @@
 
 public record ProviderDto
 (
+    int Id,
     string Name,
     string Link
 );

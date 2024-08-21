@@ -39,7 +39,7 @@ public class UserController : ControllerBase
         return Ok("User deleted successfully!");
     }
 
-    [HttpDelete("activateUser")]
+    [HttpPost("activateUser")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> ActivateUser([FromQuery] string userId, [FromQuery] string role)
     {

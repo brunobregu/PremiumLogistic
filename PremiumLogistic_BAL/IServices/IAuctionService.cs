@@ -3,4 +3,6 @@
 public interface IAuctionService
 {
     Task<List<AuctionDto>> Get();
+    Task Add(AddAuctionDto addAuction);
+    Task Delete(int id);
 }

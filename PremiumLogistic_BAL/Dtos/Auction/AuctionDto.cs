@@ -2,5 +2,6 @@
 
 public record AuctionDto
 (
+    int Id,
     string Name
 );

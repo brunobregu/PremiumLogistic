@@ -12,6 +12,7 @@ public class Contact
     public string LastName { get; set; }
     [Required]
     [EmailAddress]
+    [StringLength(256)]
     public string Email { get; set; }
     [Required]
     [StringLength(250)]

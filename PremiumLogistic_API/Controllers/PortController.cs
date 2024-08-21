@@ -1,4 +1,6 @@
-﻿namespace PremiumLogistic_API.Controllers;
+﻿using PremiumLogistic_BAL.Dtos.Port;
+
+namespace PremiumLogistic_API.Controllers;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
@@ -17,5 +19,21 @@ public class PortController : ControllerBase
     {
         var result = await _portService.Get();
         return Ok(result);
+    }
+
+    [Authorize(Roles = "Admin, Account Manager")]
+    [HttpPost("add")]
+    public async Task<IActionResult> Add([FromBody] AddPortDto addPort)
+    {
+        await _portService.Add(addPort);
+        return Ok("Port added successfully");
+    }
+
+    [Authorize(Roles = "Admin, Account Manager")]
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete([FromQuery] int id)
+    {
+        await _portService.Delete(id);
+        return Ok("Port deleted successfully");
     }
 }
