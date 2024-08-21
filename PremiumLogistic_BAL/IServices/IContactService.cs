@@ -2,5 +2,6 @@
 
 public interface IContactService
 {
-    Task AddContact(AddContactDto addContactDto);
+    Task Add(AddContactDto addContactDto);
+    Task<List<AllContactsDto>> All();
 }

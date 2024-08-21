@@ -30,3 +30,4 @@ global using PremiumLogistic_BAL.Localize;
 global using PremiumLogistic_BAL.Dtos.Auction;
 global using PremiumLogistic_BAL.Dtos.Port;
 global using PremiumLogistic_BAL.Dtos.Provider;
+global using PremiumLogistic_BAL.Dtos.User;

@@ -34,8 +34,8 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> AddUser([FromBody] CreateUserDto createUserDto)
     {
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
-        await _userService.AddUser(createUserDto, email);
-        return Created(nameof(AddUser), string.Format(_localizer["UserCreated"].Value, createUserDto.Email));
+        var result = await _userService.AddUser(createUserDto, email);
+        return Created(nameof(AddUser), result);
     }
 
     [HttpPost("requestResetPassword")]
@@ -69,7 +69,7 @@ public class AuthenticationController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("getRoles")]
+    [HttpGet("getRoles")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetRoles()
     {
@@ -84,7 +84,7 @@ public class AuthenticationController : ControllerBase
     {
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _userService.AddRole(addRoleDto, email);
-        return Created(nameof(AddRole), string.Format(_localizer["RoleCreated"].Value));
+        return Created(nameof(AddRole), string.Format(_localizer["RoleCreated"].Value, addRoleDto.Name));
     }
 
 }

@@ -20,7 +20,7 @@ public class UserService : IUserService
         _localizer = localizer;
     }
 
-    public async Task AddUser(CreateUserDto createUserDto, string email)
+    public async Task<string> AddUser(CreateUserDto createUserDto, string email)
     {       
         var newUser = _mapper.Map<ApplicationUser>(createUserDto);
         newUser.UserName = createUserDto.Email;
@@ -32,10 +32,18 @@ public class UserService : IUserService
         var resultRole = await _userManager.AddToRoleAsync(newUser, createUserDto.RoleName);
         if (!resultRole.Succeeded)
             throw new BadRequestException(string.Format(_localizer["UserNotCreated"].Value, resultRole.Errors?.FirstOrDefault()?.Description));
-        
-        IEnumerable<string> emails = new string[] { createUserDto.Email };
-        Message message = new Message(emails, "Kredencialet tuaja - Your credentials", string.Format(_configuration["GeneralConfigs:AddUser"], createUserDto.Email, createUserDto.Password));
-        await _emailSender.SendEmail(message);
+        try
+        {
+            IEnumerable<string> emails = new string[] { createUserDto.Email };
+            Message message = new Message(emails, "Kredencialet tuaja - Your credentials", string.Format(_configuration["GeneralConfigs:AddUser"], createUserDto.Email, createUserDto.Password));
+            await _emailSender.SendEmail(message);
+        }
+        catch
+        {
+            return "User created, but email with credentials not send!";
+        }
+
+        return string.Format(_localizer["UserCreated"].Value, createUserDto.Email);
     }
     public async Task Register(RegisterDto registerDto)
     {
@@ -51,7 +59,7 @@ public class UserService : IUserService
     public async Task<AuthResultDto> Login(LoginDto loginDto)
     {
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
-        if (user is not null && await _userManager.CheckPasswordAsync(user, loginDto.Password))
+        if (user is not null && !user.Invalidated && await _userManager.CheckPasswordAsync(user, loginDto.Password))
             return await GenerateJwtToken(user);
         else
             throw new BadRequestException(_localizer["CheckCredentials"].Value);
@@ -60,6 +68,8 @@ public class UserService : IUserService
     public async Task RequestPasswordReset(string email)
     {
         var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
+        if (user.Invalidated)
+            throw new NotFoundException("Your account is not active!");
         user.TemporaryPassword = GenerateRandomPassword();
         user.TemporaryPasswordExpiration = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["GeneralConfigs:PasswordExpire"]));
         var updateResult = await _userManager.UpdateAsync(user);
@@ -74,7 +84,9 @@ public class UserService : IUserService
     public async Task ResetPassword(ResetPasswordDto resetPasswordDto)
     {
         var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
-        if(user.TemporaryPassword != resetPasswordDto.TemporaryPassword)
+        if (user.Invalidated)
+            throw new NotFoundException("Your account is not active!");
+        if (user.TemporaryPassword != resetPasswordDto.TemporaryPassword)
             throw new BadRequestException(_localizer["TempPassIncorrect"].Value);
         if(user.TemporaryPasswordExpiration <= DateTime.Now)
             throw new BadRequestException(_localizer["TempPassExpire"].Value);
@@ -119,6 +131,81 @@ public class UserService : IUserService
         var addRole = _mapper.Map<ApplicationRole>(addRoleDto);
         addRole.CreatedBy = email;
         await _roleManager.CreateAsync(addRole);
+    }
+
+    public async Task<List<UserDto>> ActiveUsers(string email)
+    {
+        var users = await _userManager.Users
+                             .Where(user => !user.Invalidated && user.UserName != email)
+                             .ToListAsync();
+        List<UserDto> result = new List<UserDto>();
+        foreach (var user in users)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            result.Add(new UserDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Role = roles
+            }) ;
+        }
+            return result;
+    }
+
+    public async Task<List<UserDto>> NonActiveUsers()
+    {
+        var users = await _userManager.Users
+                             .Where(user => user.Invalidated)
+                             .ToListAsync();
+        List<UserDto> result = new List<UserDto>();
+        foreach (var user in users)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            result.Add(new UserDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Role = roles
+            });
+        }
+        return result;
+    }
+
+    public async Task DeleteUser(string id, string email)
+    {
+        var user = await _userManager.FindByIdAsync(id) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
+        var roles = await _userManager.GetRolesAsync(user);
+        user.Invalidated = true;
+        user.UpdatedOn = DateTime.Now;
+        user.UpdatedBy = email;
+        _unitOfWork.UserRepository.Update(user);
+        await _unitOfWork.CommitAsync();
+        await _userManager.RemoveFromRoleAsync(user, roles.FirstOrDefault());
+
+    }
+
+    public async Task ActivateUser(string id, string email, string role)
+    {
+        var user = await _userManager.FindByIdAsync(id) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
+        user.Invalidated = false;
+        user.UpdatedOn = DateTime.Now;
+        user.UpdatedBy = email;
+        _unitOfWork.UserRepository.Update(user);
+        await _unitOfWork.CommitAsync();
+        await _userManager.AddToRoleAsync(user, role);
+    }
+
+    public async Task DeleteRole(string role)
+    {
+        var existRole = await _roleManager.FindByNameAsync(role) ?? throw new NotFoundException(_localizer["RoleNotExist"].Value);
+        var userRoles = await _userManager.GetUsersInRoleAsync(existRole.Name) ?? throw new NotFoundException(string.Format(_localizer["NotUserInRole"].Value, role));
+        if (userRoles.Count != 0)
+            throw new BadRequestException("Please delete all users, before deleting role!");
+        var result = await _roleManager.DeleteAsync(existRole);
+        if (!result.Succeeded)
+            throw new BadRequestException(result.Errors?.FirstOrDefault()?.Description);
     }
 
     private async Task<AuthResultDto> GenerateJwtToken(ApplicationUser user)

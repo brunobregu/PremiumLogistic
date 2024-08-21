@@ -4,11 +4,12 @@ public class CustomExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
+        string culture = context.Request.Path.Value.Split('/')[3]?.ToString() ?? "en";
         (string Detail, string Title, int StatusCode) details = exception switch
         {
             InternalServerException =>
             (
-                exception.Message,
+                AppConfig.Configuration[$"Errors:500_{culture}"] ?? "Something wrong!",
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError
             ),
@@ -32,7 +33,7 @@ public class CustomExceptionHandler : IExceptionHandler
             ),
             _ =>
             (
-                exception.Message,
+                AppConfig.Configuration[$"Errors:500_{culture}"] ?? "Something wrong!",
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError
             )

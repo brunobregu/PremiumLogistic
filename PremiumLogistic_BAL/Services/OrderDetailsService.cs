@@ -275,12 +275,20 @@ public class OrderDetailsService : IOrderDetailsService
         order.UpdatedOn = DateTime.Now;
         _unitOfWork.OrderDetailsRepository.Update(order);
         await _unitOfWork.CommitAsync();
+        try
+        {
+            //Send email
+            var users = await _userManager.FindByIdAsync(order.UserId);
+            IEnumerable<string> emails = new string[] { users.Email };
+            Message message = new Message(emails, "Njoftim - Notification", _configuration["GeneralConfigs:AddPhotos"]);
+            await _emailSender.SendEmail(message);
+        }
+        catch
+        {
 
-        //Send email
-        var users = await _userManager.FindByIdAsync(order.UserId);
-        IEnumerable<string> emails = new string[] { users.Email };
-        Message message = new Message(emails, "Njoftim - Notification", _configuration["GeneralConfigs:AddPhotos"]);
-        await _emailSender.SendEmail(message);
+            throw;
+        }
+        
     }
 
     private async Task ChangeStatusToBooked(OrderDetails order, string status, string email)

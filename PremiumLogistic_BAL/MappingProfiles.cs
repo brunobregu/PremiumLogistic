@@ -27,6 +27,7 @@ public class MappingProfiles : Profile
         #region Contact
         CreateMap<AddContactDto, Contact>()
             .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => DateTime.Now));
+        CreateMap<Contact, AllContactsDto>();
         #endregion
 
         #region OrderDetails
@@ -64,6 +65,10 @@ public class MappingProfiles : Profile
 
         #region Transportation
         CreateMap<Transportation, LocalTransportationDto>();
+        #endregion
+
+        #region Users
+        
         #endregion
 
         CreateMap(typeof(PagedResponseOffset<>), typeof(PagedResponseOffsetDto<>));

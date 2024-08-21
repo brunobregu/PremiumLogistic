@@ -1,5 +1,4 @@
-
-using Microsoft.Extensions.FileProviders;
+using PremiumLogistic_API.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +102,8 @@ builder.Services.AddApiVersioning(o =>
         new MediaTypeApiVersionReader("ver"));
 });
 
+AppConfig.Configuration = builder.Configuration;
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -110,6 +111,7 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PremiumLogistic_API v1"));
 //}
+
 
 app.UseCors(builder =>
 {
@@ -124,13 +126,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-//app.UseStaticFiles(new StaticFileOptions
-//{
-//    FileProvider = new PhysicalFileProvider(
-//        Path.Combine(app.Environment.ContentRootPath, "wwwroot/Photos")),
-//    RequestPath = "/photos"
-//});
 
 app.MapControllers();
 
