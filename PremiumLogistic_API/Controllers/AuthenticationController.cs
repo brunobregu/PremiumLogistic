@@ -64,7 +64,7 @@ public class AuthenticationController(IUserService userService, IStringLocalizer
     }
 
     [HttpGet("getRoles")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> GetRoles()
     {
         var result = await _userService.GetRoles();
@@ -72,7 +72,7 @@ public class AuthenticationController(IUserService userService, IStringLocalizer
     }
 
     [HttpPost("addRole")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Account Manager")]
     [ServiceFilter(typeof(AuditLogAttribute))]
     public async Task<IActionResult> AddRole(AddRoleDto addRoleDto)
     {

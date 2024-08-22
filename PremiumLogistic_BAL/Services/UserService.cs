@@ -160,6 +160,7 @@ public class UserService
             var roles = await _userManager.GetRolesAsync(user);
             result.Add(new UserDto
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserName = user.UserName,
@@ -180,6 +181,7 @@ public class UserService
             var roles = await _userManager.GetRolesAsync(user);
             result.Add(new UserDto
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserName = user.UserName,
@@ -198,8 +200,9 @@ public class UserService
         user.UpdatedBy = email;
         _unitOfWork.UserRepository.Update(user);
         await _unitOfWork.CommitAsync();
-        await _userManager.RemoveFromRoleAsync(user, roles.FirstOrDefault());
-
+        var result = await _userManager.RemoveFromRoleAsync(user, roles.FirstOrDefault());
+        if (!result.Succeeded)
+            throw new BadRequestException("Something wrong to delete user!");
     }
 
     public async Task ActivateUser(string id, string email, string role)
@@ -210,7 +213,9 @@ public class UserService
         user.UpdatedBy = email;
         _unitOfWork.UserRepository.Update(user);
         await _unitOfWork.CommitAsync();
-        await _userManager.AddToRoleAsync(user, role);
+        var result = await _userManager.AddToRoleAsync(user, role);
+        if (!result.Succeeded)
+            throw new BadRequestException("Something wrong to activate user!");
     }
 
     public async Task DeleteRole(string role)
@@ -221,7 +226,7 @@ public class UserService
             throw new BadRequestException("Please delete all users, before deleting role!");
         var result = await _roleManager.DeleteAsync(existRole);
         if (!result.Succeeded)
-            throw new BadRequestException(result.Errors?.FirstOrDefault()?.Description);
+            throw new BadRequestException(result.Errors?.FirstOrDefault()?.Description ?? "Please try again!");
     }
 
     private async Task<AuthResultDto> GenerateJwtToken(ApplicationUser user)
