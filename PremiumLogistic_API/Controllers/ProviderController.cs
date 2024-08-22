@@ -2,15 +2,11 @@
 [ApiController]
 [Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
-public class ProviderController : ControllerBase
+[Authorize(Roles = "Admin, Account Manager")]
+public class ProviderController(IProviderService providerService) : ControllerBase
 {
-    private readonly IProviderService _providerService;
-    public ProviderController(IProviderService providerService)
-    {
-        _providerService = providerService;
-    }
+    private readonly IProviderService _providerService = providerService;
 
-    [Authorize(Roles = "Admin, Account Manager")]
     [HttpGet("providers")]
     public async Task<IActionResult> Get()
     {
@@ -18,7 +14,6 @@ public class ProviderController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin, Account Manager")]
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] AddProviderDto addPort)
     {
@@ -26,7 +21,6 @@ public class ProviderController : ControllerBase
         return Ok("Provider added successfully");
     }
 
-    [Authorize(Roles = "Admin, Account Manager")]
     [HttpDelete("delete")]
     public async Task<IActionResult> Delete([FromQuery] int id)
     {

@@ -3,15 +3,10 @@
 [ApiController]
 [Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
-public class ContactController : ControllerBase
+public class ContactController(IContactService contactService, IStringLocalizer<Resource> localizer) : ControllerBase
 {
-    private readonly IContactService _contactService;
-    private readonly IStringLocalizer<Resource> _localizer;
-    public ContactController(IContactService contactService, IStringLocalizer<Resource> localizer)
-    {
-        _contactService = contactService;
-        _localizer = localizer;
-    }
+    private readonly IContactService _contactService = contactService;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
 
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] AddContactDto addContactDto)

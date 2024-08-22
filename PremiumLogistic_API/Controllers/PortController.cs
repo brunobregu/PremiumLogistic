@@ -5,15 +5,11 @@ namespace PremiumLogistic_API.Controllers;
 [ApiController]
 [Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
-public class PortController : ControllerBase
+[Authorize(Roles = "Admin, Account Manager")]
+public class PortController(IPortService portService) : ControllerBase
 {
-    private readonly IPortService _portService;
-    public PortController(IPortService portService)
-    {
-        _portService = portService;
-    }
+    private readonly IPortService _portService = portService;
 
-    [Authorize(Roles = "Admin, Account Manager")]
     [HttpGet("ports")]
     public async Task<IActionResult> Get()
     {
@@ -21,7 +17,6 @@ public class PortController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin, Account Manager")]
     [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] AddPortDto addPort)
     {
@@ -29,7 +24,6 @@ public class PortController : ControllerBase
         return Ok("Port added successfully");
     }
 
-    [Authorize(Roles = "Admin, Account Manager")]
     [HttpDelete("delete")]
     public async Task<IActionResult> Delete([FromQuery] int id)
     {
