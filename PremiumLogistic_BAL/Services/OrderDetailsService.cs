@@ -1,4 +1,6 @@
-﻿namespace PremiumLogistic_BAL.Services;
+﻿using PremiumLogistic_BAL.Dtos.OrderDetails;
+
+namespace PremiumLogistic_BAL.Services;
 
 public class OrderDetailsService
 (
@@ -19,10 +21,14 @@ public class OrderDetailsService
 
     public async Task AddOrderDetails(AddOrderDetailsDto orderDetailsDto, string email)
     {
+        if (orderDetailsDto.PaymentStatus != "Partly Paid" && orderDetailsDto.PartlyPaid != 0)
+            throw new BadRequestException("Partly Paid should be 0!");
+        if (orderDetailsDto.PaymentStatus == "Partly Paid" && orderDetailsDto.PartlyPaid == 0)
+            throw new BadRequestException("Partly Paid cannot be 0!");
+
         var orderDetails = _mapper.Map<OrderDetails>(orderDetailsDto);
-        orderDetails.PartlyPaid = orderDetailsDto.PartlyPaid;
         orderDetails.CreatedBy = email;
-        orderDetails.CarStatus = "Dispatch";
+        var result = orderDetails.CarStatus = "Dispatch";
         _unitOfWork.OrderDetailsRepository.Insert(orderDetails);
         await _unitOfWork.CommitAsync();
     }
@@ -72,9 +78,13 @@ public class OrderDetailsService
         return result;
     }
 
-    public async Task<MyOrderDetailsByIdDto> MyOrderDetailsById(int id)
+    public async Task<MyOrderDetailsByIdDto> MyOrderDetailsById(int id, string email)
     {
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"].Value, email));
+        if (orderDetails.UserId != user.Id)
+            throw new BadRequestException("You don't have permission to get data!");
+
         var link = await _unitOfWork.ProviderRepository.GetAsync(x => x.Name == orderDetails.Provider);
         var result = _mapper.Map<MyOrderDetailsByIdDto>(orderDetails);
         result.Link = link is null ? "" : link.Link;
@@ -84,7 +94,11 @@ public class OrderDetailsService
     public async Task UpdateOrderDetail(int id, UpdateOrderDto updateOrderDetail, string email)
     {
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
-        
+        if (updateOrderDetail.PaymentStatus != "Partly Paid" && updateOrderDetail.PartlyPaid != 0)
+            throw new BadRequestException("Partly Paid should be 0!");
+        if (updateOrderDetail.PaymentStatus == "Partly Paid" && updateOrderDetail.PartlyPaid == 0)
+            throw new BadRequestException("Partly Paid cannot be 0!");
+
         orderDetails.UpdatedOn = DateTime.Now;
         orderDetails.UpdatedBy = email;
         orderDetails.VIN = updateOrderDetail.VIN;
@@ -110,6 +124,7 @@ public class OrderDetailsService
         orderDetails.PartlyPaid = updateOrderDetail.PartlyPaid;
         orderDetails.UserId = updateOrderDetail.UserId;
         orderDetails.Provider = updateOrderDetail.Provider;
+        orderDetails.ToBePaid = updateOrderDetail.ToBePaid;
 
         _unitOfWork.OrderDetailsRepository.Update(orderDetails);
         await _unitOfWork.CommitAsync();
@@ -137,7 +152,7 @@ public class OrderDetailsService
                             ToBePaid = g.Sum(o => o.ToBePaid)
                         })
                         .FirstOrDefault();
-        return details;
+        return details ?? new DetailsDto() { ClientTotal = 0, NumberOfOrders = 0, ToBePaid = 0 };
     }
 
     public async Task<DetailsDto> DetailsByClient(string userId)
@@ -151,7 +166,7 @@ public class OrderDetailsService
                             ToBePaid = g.Sum(o => o.ToBePaid)
                         })
                         .FirstOrDefault();
-        return details;
+        return details ?? new DetailsDto() { ClientTotal = 0, NumberOfOrders = 0, ToBePaid = 0};
     }
 
     public async Task<DetailsDto> MyDetails(string email)
@@ -166,32 +181,32 @@ public class OrderDetailsService
                             ToBePaid = g.Sum(o => o.ToBePaid)
                         })
                         .FirstOrDefault();
-        return details;
+        return details ?? new DetailsDto() { ClientTotal = 0, NumberOfOrders = 0, ToBePaid = 0 };
     }
 
     public async Task<string> UpdateCarStatus(int id, UpdateCarStatusDto updateCarStatus, string email)
     {
         var order = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         string nextStatus = GetNextCarStatus(order.CarStatus);
-
+        string response = string.Empty;
         switch (nextStatus)
         {
             case "At terminal":
-                await ChangeStatusToAtTerminal(order, updateCarStatus, email, nextStatus);
+                response = await ChangeStatusToAtTerminal(order, updateCarStatus, email, nextStatus);
                 break;
             case "Booked":
-                await ChangeStatusToBooked(order, nextStatus, email);
+                response = await ChangeStatusToBooked(order, nextStatus, email);
                 break;
             case "Loaded":
-                await ChangeStatusToLoaded(order, updateCarStatus, email, nextStatus);
+                response = await ChangeStatusToLoaded(order, updateCarStatus, email, nextStatus);
                 break;
             case "Delivered":
-                await ChangeStatusToDelivered(order, nextStatus, email);
+                response = await ChangeStatusToDelivered(order, nextStatus, email);
                 break;
             default:
                 throw new BadRequestException(_localizer["InvalidCarStatus"].Value);
         }
-        return nextStatus;
+        return response;
     }
 
     public async Task<List<FilesDto>> ViewPhotosOfOrder(int id)
@@ -252,7 +267,7 @@ public class OrderDetailsService
         return documents;
     }
 
-    private async Task ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email, string nextStatus)
+    private async Task<string> ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email, string nextStatus)
     {
         ValidatePhotos(updateCarStatus);
         
@@ -285,22 +300,23 @@ public class OrderDetailsService
         }
         catch
         {
-
-            throw;
+            return $"Status updated successfully to {nextStatus}, but failed to send email with photos!";
         }
-        
+
+        return nextStatus;
     }
 
-    private async Task ChangeStatusToBooked(OrderDetails order, string status, string email)
+    private async Task<string> ChangeStatusToBooked(OrderDetails order, string status, string email)
     {
         order.CarStatus = status;
         order.UpdatedBy = email;
         order.UpdatedOn = DateTime.Now;
         _unitOfWork.OrderDetailsRepository.Update(order);
         await _unitOfWork.CommitAsync();
+        return status;
     }
 
-    private async Task ChangeStatusToLoaded(OrderDetails order, UpdateCarStatusDto updatStatusCar, string email, string nextStatus)
+    private async Task<string> ChangeStatusToLoaded(OrderDetails order, UpdateCarStatusDto updatStatusCar, string email, string nextStatus)
     {
         if(string.IsNullOrEmpty(updatStatusCar.TrackingNumber))
             throw new BadRequestException(_localizer["TrackingNrRequired"].Value);
@@ -326,19 +342,27 @@ public class OrderDetailsService
         _unitOfWork.OrderDetailsRepository.Update(order);
         await _unitOfWork.CommitAsync();
 
-        //Send email
-        var users = await _userManager.FindByIdAsync(order.UserId);
-        IEnumerable<string> emails = new string[] { users.Email };
-        var formFileCollection = new FormFileCollection();
-        foreach (var file in updatStatusCar.Documents)
+        try
         {
-            formFileCollection.Add(file);
+            //Send email
+            var users = await _userManager.FindByIdAsync(order.UserId);
+            IEnumerable<string> emails = new string[] { users.Email };
+            var formFileCollection = new FormFileCollection();
+            foreach (var file in updatStatusCar.Documents)
+            {
+                formFileCollection.Add(file);
+            }
+            Message message = new Message(emails, "Njoftim - Notification", _configuration["GeneralConfigs:AddDocuments"], formFileCollection);
+            await _emailSender.SendEmail(message);
         }
-        Message message = new Message(emails, "Njoftim - Notification", _configuration["GeneralConfigs:AddDocuments"], formFileCollection);
-        await _emailSender.SendEmail(message);
+        catch (Exception)
+        {
+            return $"Status updated successfully to {nextStatus}, but failed to send email with documents!";
+        }
+        return nextStatus;
     }
 
-    private async Task ChangeStatusToDelivered(OrderDetails order, string status, string email)
+    private async Task<string> ChangeStatusToDelivered(OrderDetails order, string status, string email)
     {
         //delete photos and docs
         if(Directory.Exists(order.DocumentsPath))
@@ -354,6 +378,7 @@ public class OrderDetailsService
         order.DocumentsPath = null;
         _unitOfWork.OrderDetailsRepository.Update(order);
         await _unitOfWork.CommitAsync();
+        return status;
     }
 
     private string GetNextCarStatus(string currentStatus)

@@ -3,16 +3,11 @@
 [ApiController]
 [Route("api/v{v:apiVersion}/{culture:culture}/[controller]")]
 [ApiVersion("1.0")]
-public class OrderDetailsController : ControllerBase
+public class OrderDetailsController(IOrderDetailsService orderDetailsService, IStringLocalizer<Resource> localizer) : ControllerBase
 {
-    private readonly IOrderDetailsService _orderDetailsService;
-    private readonly IStringLocalizer<Resource> _localizer;
-    public OrderDetailsController(IOrderDetailsService orderDetailsService, IStringLocalizer<Resource> localizer)
-    {
-        _orderDetailsService = orderDetailsService;
-        _localizer = localizer;
+    private readonly IOrderDetailsService _orderDetailsService = orderDetailsService;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
 
-    }
     //api per shtimin e nje porosie
     [ServiceFilter(typeof(AuditLogAttribute))]
     [HttpPost("add")]
@@ -95,7 +90,8 @@ public class OrderDetailsController : ControllerBase
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> MyOrderDetailsById([FromQuery] int id)
     {
-        var result = await _orderDetailsService.MyOrderDetailsById(id);
+        var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
+        var result = await _orderDetailsService.MyOrderDetailsById(id, email);
         return Ok(result);
     }
 
