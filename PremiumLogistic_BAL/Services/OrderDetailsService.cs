@@ -1,6 +1,4 @@
-﻿using PremiumLogistic_BAL.Dtos.OrderDetails;
-
-namespace PremiumLogistic_BAL.Services;
+﻿namespace PremiumLogistic_BAL.Services;
 
 public class OrderDetailsService
 (
@@ -28,7 +26,7 @@ public class OrderDetailsService
 
         var orderDetails = _mapper.Map<OrderDetails>(orderDetailsDto);
         orderDetails.CreatedBy = email;
-        var result = orderDetails.CarStatus = "Dispatch";
+        orderDetails.CarStatus = "Dispatch";
         _unitOfWork.OrderDetailsRepository.Insert(orderDetails);
         await _unitOfWork.CommitAsync();
     }
@@ -188,31 +186,21 @@ public class OrderDetailsService
     {
         var order = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         string nextStatus = GetNextCarStatus(order.CarStatus);
-        string response = string.Empty;
-        switch (nextStatus)
+        string response = nextStatus switch
         {
-            case "At terminal":
-                response = await ChangeStatusToAtTerminal(order, updateCarStatus, email, nextStatus);
-                break;
-            case "Booked":
-                response = await ChangeStatusToBooked(order, nextStatus, email);
-                break;
-            case "Loaded":
-                response = await ChangeStatusToLoaded(order, updateCarStatus, email, nextStatus);
-                break;
-            case "Delivered":
-                response = await ChangeStatusToDelivered(order, nextStatus, email);
-                break;
-            default:
-                throw new BadRequestException(_localizer["InvalidCarStatus"].Value);
-        }
+            "At terminal" => await ChangeStatusToAtTerminal(order, updateCarStatus, email, nextStatus),
+            "Booked" => await ChangeStatusToBooked(order, nextStatus, email),
+            "Loaded" => await ChangeStatusToLoaded(order, updateCarStatus, email, nextStatus),
+            "Delivered" => await ChangeStatusToDelivered(order, nextStatus, email),
+            _ => throw new BadRequestException(_localizer["InvalidCarStatus"].Value),
+        };
         return response;
     }
 
     public async Task<List<FilesDto>> ViewPhotosOfOrder(int id)
     {
         var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
-        string folderPath = orders.PhotosPath;
+        string folderPath = orders.PhotosPath ?? throw new NotFoundException("Path cannot found for photos!");
         if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
             throw new NotFoundException("No photos found for the specified ID.");
 
@@ -227,7 +215,7 @@ public class OrderDetailsService
             var fileName = Path.GetFileName(file);
             var fileBytes = File.ReadAllBytes(file);
             var base64Data = Convert.ToBase64String(fileBytes);
-            FilesDto filesDto = new FilesDto()
+            FilesDto filesDto = new()
             {
                 Filename = fileName,
                 Base64 = base64Data
@@ -241,7 +229,7 @@ public class OrderDetailsService
     public async Task<List<FilesDto>> ViewDocumentsOfOrder(int id)
     {
         var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
-        string folderPath = orders.DocumentsPath;
+        string folderPath = orders.DocumentsPath ?? throw new NotFoundException("Path cannot found for documents!");
         if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
             throw new NotFoundException("No documents found for the specified ID.");
 
@@ -256,7 +244,7 @@ public class OrderDetailsService
             var fileName = Path.GetFileName(file);
             var fileBytes = File.ReadAllBytes(file);
             var base64Data = Convert.ToBase64String(fileBytes);
-            FilesDto filesDto = new FilesDto()
+            FilesDto filesDto = new()
             {
                 Filename = fileName,
                 Base64 = base64Data
@@ -270,12 +258,13 @@ public class OrderDetailsService
     private async Task<string> ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email, string nextStatus)
     {
         ValidatePhotos(updateCarStatus);
-        
-        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Photos", order.Id.ToString());
+        var path = _configuration["GeneralConfigs:PhotoPath"] ?? throw new NotFoundException("Path cannot find!");
+        var uploadPath = Path.Combine(path, order.Id.ToString());
         if(!Directory.Exists(uploadPath))
             Directory.CreateDirectory(uploadPath);
 
-        foreach(var item in updateCarStatus.Photos)
+        var photos = updateCarStatus.Photos ?? throw new NotFoundException("No photos uploaded!");
+        foreach (var item in photos)
         {
             var fileName = Path.GetFileName(item.FileName);
             var filePath = Path.Combine(uploadPath, fileName);
@@ -293,9 +282,11 @@ public class OrderDetailsService
         try
         {
             //Send email
-            var users = await _userManager.FindByIdAsync(order.UserId);
-            IEnumerable<string> emails = new string[] { users.Email };
-            Message message = new Message(emails, "Njoftim - Notification", _configuration["GeneralConfigs:AddPhotos"]);
+            var users = await _userManager.FindByIdAsync(order.UserId) ?? throw new NotFoundException("User not found!");
+            string userEmail = users.Email ?? throw new NotFoundException("Email not found!");
+            IEnumerable<string> emails = [userEmail];
+            string addPhotos = _configuration["GeneralConfigs:AddPhotos"] ?? throw new NotFoundException("Cannot get the error message!");
+            Message message = new(emails, "Njoftim - Notification", addPhotos);
             await _emailSender.SendEmail(message);
         }
         catch
@@ -322,11 +313,13 @@ public class OrderDetailsService
             throw new BadRequestException(_localizer["TrackingNrRequired"].Value);
         ValidateDocuments(updatStatusCar);
 
-        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Documents", order.Id.ToString());
+        var docPath = _configuration["GeneralConfigs:DocumentPath"] ?? throw new NotFoundException("Documents path not found!");
+        var uploadPath = Path.Combine(docPath, order.Id.ToString());
         if(!Directory.Exists(uploadPath))
             Directory.CreateDirectory(uploadPath);
 
-        foreach (var item in updatStatusCar.Documents)
+        var documents = updatStatusCar.Documents ?? throw new NotFoundException("Documents not found!");
+        foreach (var item in documents)
         {
             var fileName = Path.GetFileName(item.FileName);
             var filePath = Path.Combine(uploadPath, fileName);
@@ -345,14 +338,16 @@ public class OrderDetailsService
         try
         {
             //Send email
-            var users = await _userManager.FindByIdAsync(order.UserId);
-            IEnumerable<string> emails = new string[] { users.Email };
+            var users = await _userManager.FindByIdAsync(order.UserId) ?? throw new NotFoundException("User not found!");
+            var userEmail = users.Email ?? throw new NotFoundException("User email not found!");
+            IEnumerable<string> emails = [userEmail];
             var formFileCollection = new FormFileCollection();
             foreach (var file in updatStatusCar.Documents)
             {
                 formFileCollection.Add(file);
             }
-            Message message = new Message(emails, "Njoftim - Notification", _configuration["GeneralConfigs:AddDocuments"], formFileCollection);
+            var addDocs = _configuration["GeneralConfigs:AddDocuments"] ?? throw new NotFoundException("Message not found!");
+            Message message = new(emails, "Njoftim - Notification", addDocs, formFileCollection);
             await _emailSender.SendEmail(message);
         }
         catch (Exception)
@@ -405,7 +400,7 @@ public class OrderDetailsService
             throw new BadRequestException(_localizer["MaxPhotoRequired"].Value);
         if(updateCarStatus.Photos.Sum(file => file.Length) > 5 * 1024 * 1024)
             throw new BadRequestException(_localizer["MaxPhotosSize"].Value);
-        string[] allowedExtensions = new string[] { ".jpg", ".jpeg", ".png" };
+        string[] allowedExtensions = [".jpg", ".jpeg", ".png"];
         foreach (var file in updateCarStatus.Photos)
         {
             var extension = Path.GetExtension(file.FileName).ToLower();
@@ -421,7 +416,7 @@ public class OrderDetailsService
         if (updateCarStatus.Documents.Sum(file => file.Length) > 5 * 1024 * 1024)
             throw new BadRequestException(_localizer["DocsMaxSize"].Value);
 
-        string[] allowedExtensions = new string[] { ".pdf" };
+        string[] allowedExtensions = [".pdf"];
         foreach (var file in updateCarStatus.Documents)
         {
             var extension = Path.GetExtension(file.FileName).ToLower();
