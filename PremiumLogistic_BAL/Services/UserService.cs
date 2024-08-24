@@ -229,6 +229,13 @@ public class UserService
             throw new BadRequestException(result.Errors?.FirstOrDefault()?.Description ?? "Please try again!");
     }
 
+    public async Task<PersonalDataDto> PersonalData(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
+        var result = _mapper.Map<PersonalDataDto>(user);
+        return result;
+    }
+
     private async Task<AuthResultDto> GenerateJwtToken(ApplicationUser user)
     {
         var authClaims = new List<Claim>()

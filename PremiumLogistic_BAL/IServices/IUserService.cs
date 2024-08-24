@@ -18,4 +18,5 @@ public interface IUserService
     Task DeleteUser(string id, string email);
     Task ActivateUser(string id, string email, string role);
     Task DeleteRole(string role);
+    Task<PersonalDataDto> PersonalData(string email);
 }

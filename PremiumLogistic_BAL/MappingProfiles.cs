@@ -71,7 +71,7 @@ public class MappingProfiles : Profile
         #endregion
 
         #region Users
-        
+            CreateMap<ApplicationUser, PersonalDataDto>();
         #endregion
 
         CreateMap(typeof(PagedResponseOffset<>), typeof(PagedResponseOffsetDto<>));
