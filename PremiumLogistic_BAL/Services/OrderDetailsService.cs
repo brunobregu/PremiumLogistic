@@ -200,14 +200,14 @@ public class OrderDetailsService
     public async Task<List<FilesDto>> ViewPhotosOfOrder(int id)
     {
         var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
-        string folderPath = orders.PhotosPath ?? throw new NotFoundException("Path cannot found for photos!");
+        string folderPath = orders.PhotosPath ?? throw new NotFoundException("No photos found!");
         if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
-            throw new NotFoundException("No photos found for the specified ID.");
+            throw new NotFoundException("No photos found!");
 
         var files = Directory.GetFiles(folderPath);
 
         if (files.Length == 0)
-            throw new NotFoundException("No photos found in the specified folder.");
+            throw new NotFoundException("No photos found!");
 
         var photos = new List<FilesDto>();
         foreach (var file in files)
@@ -229,14 +229,14 @@ public class OrderDetailsService
     public async Task<List<FilesDto>> ViewDocumentsOfOrder(int id)
     {
         var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
-        string folderPath = orders.DocumentsPath ?? throw new NotFoundException("Path cannot found for documents!");
+        string folderPath = orders.DocumentsPath ?? throw new NotFoundException("No documents found!");
         if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
-            throw new NotFoundException("No documents found for the specified ID.");
+            throw new NotFoundException("No documents found!");
 
         var files = Directory.GetFiles(folderPath);
 
         if (files.Length == 0)
-            throw new NotFoundException("No documents found in the specified folder.");
+            throw new NotFoundException("No documents found!");
 
         var documents = new List<FilesDto>();
         foreach (var file in files)

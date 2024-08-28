@@ -27,7 +27,8 @@ public class AddOrderDetailsDto
     public int OceanPrice { get; set; }
     public int Broker { get; set; } = 0;
     public int ClientStorage { get; set; } = 0;
-    public int ClientTotal => InlandPrice + OceanPrice + Broker + ClientStorage;
+    public int CarPrice { get; set; } = 0;
+    public int ClientTotal => InlandPrice + OceanPrice + Broker + ClientStorage + CarPrice;
     [Required(ErrorMessage = "InlandCostRequired")]
     [Range(1, int.MaxValue, ErrorMessage = "InlandCostMin")]
     public int InlandCost { get; set; }

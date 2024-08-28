@@ -194,6 +194,9 @@ public class UserService
     public async Task DeleteUser(string id, string email)
     {
         var user = await _userManager.FindByIdAsync(id) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
+        var orders = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId ==  user.Id);
+        if (orders.Count != 0)
+            throw new BadRequestException("User can not delete because has orders!");
         var roles = await _userManager.GetRolesAsync(user);
         user.Invalidated = true;
         user.UpdatedOn = DateTime.Now;

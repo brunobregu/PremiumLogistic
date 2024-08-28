@@ -45,6 +45,7 @@ public class OrderDetails
     public int OceanPrice { get; set; }
     public int Broker { get; set; } //komision qe mban kompania
     public int ClientStorage { get; set; } //vonesat ne pagese
+    public int CarPrice { get; set; }  //cmimi i makines
     [Required]
     public int ClientTotal { get; set; }
     [Required]

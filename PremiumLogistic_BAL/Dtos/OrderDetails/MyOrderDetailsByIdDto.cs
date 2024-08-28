@@ -17,6 +17,7 @@ public class MyOrderDetailsByIdDto
     public int OceanPrice { get; set; }
     public int Broker { get; set; }
     public int ClientStorage { get; set; }
+    public int CarPrice { get; set; }
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; }
 }

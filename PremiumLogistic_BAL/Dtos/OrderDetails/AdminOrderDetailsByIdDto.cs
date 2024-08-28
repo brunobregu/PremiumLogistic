@@ -22,6 +22,7 @@ public class AdminOrderDetailsByIdDto
     public int OceanPrice { get; set; }
     public int Broker { get; set; }
     public int ClientStorage { get; set; }
+    public int CarPrice { get; set; }
     public int ClientTotal { get; set; }
     public int InlandCost { get; set; }
     public int OceanCost { get; set; }
