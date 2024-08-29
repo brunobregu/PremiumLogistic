@@ -112,6 +112,7 @@ public class OrderDetailsService
         orderDetails.OceanPrice = updateOrderDetail.OceanPrice;
         orderDetails.Broker = updateOrderDetail.Broker;
         orderDetails.ClientStorage = updateOrderDetail.ClientStorage;
+        orderDetails.CarPrice = updateOrderDetail.CarPrice;
         orderDetails.ClientTotal = updateOrderDetail.ClientTotal;
         orderDetails.InlandCost = updateOrderDetail.InlandCost;
         orderDetails.OceanCost = updateOrderDetail.OceanCost;
