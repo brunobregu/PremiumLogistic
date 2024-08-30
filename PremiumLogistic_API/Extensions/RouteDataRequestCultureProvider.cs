@@ -10,8 +10,8 @@ public class RouteDataRequestCultureProvider : RequestCultureProvider
         if (httpContext == null)
             throw new ArgumentNullException(nameof(httpContext));
 
-        string culture = null;
-        string uiCulture = null;
+        string culture = string.Empty;
+        string uiCulture = string.Empty;
 
         culture = uiCulture = httpContext.Request.Path.Value.Split('/')[IndexOfCulture]?.ToString();
 

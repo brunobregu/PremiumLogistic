@@ -2,7 +2,7 @@
 
 public class AddPortDto
 {
-    [Required(ErrorMessage = "Port is required")]
-    [StringLength(50, ErrorMessage = "Port name should be at most 50 characteres")]
+    [Required(ErrorMessage = "PortRequired")]
+    [StringLength(50, ErrorMessage = "PortChar")]
     public string Name { get; set; }
 }

@@ -41,7 +41,7 @@ public class UserService
         }
         catch
         {
-            return "User created, but email with credentials not send!";
+            return _localizer["UserEmailNotSend"].Value;
         }
 
         return string.Format(_localizer["UserCreated"].Value, createUserDto.Email);
@@ -73,7 +73,7 @@ public class UserService
     {
         var user = await _userManager.FindByEmailAsync(email) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
         if (user.Invalidated)
-            throw new NotFoundException("Your account is not active!");
+            throw new NotFoundException(_localizer["AccountNotActive"].Value);
 
         user.TemporaryPassword = GenerateRandomPassword();
         user.TemporaryPasswordExpiration = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["GeneralConfigs:PasswordExpire"]));
@@ -89,7 +89,7 @@ public class UserService
         }
         catch
         {
-            return "User created, but email with credentials not send!";
+            return _localizer["TempPassEmailFailed"].Value;
         }
 
         return string.Format(_localizer["TempPassSend"].Value, email);
@@ -165,7 +165,7 @@ public class UserService
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Role = roles
-            }) ;
+            });
         }
             return result;
     }
@@ -196,7 +196,7 @@ public class UserService
         var user = await _userManager.FindByIdAsync(id) ?? throw new BadRequestException(_localizer["UserNotFound"].Value);
         var orders = await _unitOfWork.OrderDetailsRepository.GetManyAsync(x => x.UserId ==  user.Id);
         if (orders.Count != 0)
-            throw new BadRequestException("User can not delete because has orders!");
+            throw new BadRequestException(_localizer["UserHasOrders"].Value);
         var roles = await _userManager.GetRolesAsync(user);
         user.Invalidated = true;
         user.UpdatedOn = DateTime.Now;
@@ -226,7 +226,7 @@ public class UserService
         var existRole = await _roleManager.FindByNameAsync(role) ?? throw new NotFoundException(_localizer["RoleNotExist"].Value);
         var userRoles = await _userManager.GetUsersInRoleAsync(existRole.Name) ?? throw new NotFoundException(string.Format(_localizer["NotUserInRole"].Value, role));
         if (userRoles.Count != 0)
-            throw new BadRequestException("Please delete all users, before deleting role!");
+            throw new BadRequestException(_localizer["DeleteUsers"].Value);
         var result = await _roleManager.DeleteAsync(existRole);
         if (!result.Succeeded)
             throw new BadRequestException(result.Errors?.FirstOrDefault()?.Description ?? "Please try again!");

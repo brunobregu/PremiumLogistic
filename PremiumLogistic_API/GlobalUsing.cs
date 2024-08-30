@@ -36,3 +36,4 @@ global using PremiumLogistic_BAL.Common;
 global using System.Globalization;
 global using PremiumLogistic_BAL.Dtos.Provider;
 global using PremiumLogistic_BAL.Dtos.Auction;
+global using PremiumLogistic_BAL.Dtos.Port;

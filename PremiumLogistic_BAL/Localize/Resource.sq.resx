@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountNotActive" xml:space="preserve">
+    <value>Llogaria juaj nuk është aktive!</value>
+  </data>
+  <data name="AssignClient" xml:space="preserve">
+    <value>Ju duhet të caktoni një klient për porosinë!</value>
+  </data>
+  <data name="AuctionAdded" xml:space="preserve">
+    <value>Ankandi u shtua me sukses!</value>
+  </data>
+  <data name="AuctionChar" xml:space="preserve">
+    <value>Emri i ankandit duhet të jetë maksimumi 50 karaktere i gjatë!</value>
+  </data>
+  <data name="AuctionDeleted" xml:space="preserve">
+    <value>Ankandi u fshi me sukses!</value>
+  </data>
+  <data name="AuctionNotFound" xml:space="preserve">
+    <value>Ankandi nuk u gjet!</value>
+  </data>
   <data name="AuctionRequired" xml:space="preserve">
     <value>Ankandi është fushë e detyrueshme!</value>
   </data>
@@ -132,6 +150,9 @@
   <data name="DeleteOrder" xml:space="preserve">
     <value>Porosia me id {0} u fshi me sukses!</value>
   </data>
+  <data name="DeleteUsers" xml:space="preserve">
+    <value>Ju duhet të fshini të gjithë përdoruesit, para se të fshini rolin!</value>
+  </data>
   <data name="DocsAllowedFormat" xml:space="preserve">
     <value>Dokumenti {0} nuk është një format i lejuar. Formati i lejuar i dokumentit është .pdf!</value>
   </data>
@@ -141,11 +162,17 @@
   <data name="DocumentsNrUpload" xml:space="preserve">
     <value>Ju duhet të ngarkoni 2 dokumenta!</value>
   </data>
+  <data name="EmailChar" xml:space="preserve">
+    <value>Email duhet të jetë maksimumi 256 karaktere i gjatë!</value>
+  </data>
   <data name="EmailNotFound" xml:space="preserve">
     <value>Email {0} nuk u gjet!</value>
   </data>
   <data name="EmailRequired" xml:space="preserve">
     <value>Email është fushë e detyrueshme!</value>
+  </data>
+  <data name="FailSendingMail" xml:space="preserve">
+    <value>Statusi u përditësua me sukses në {0}, por nuk u arrit të dërgohet email!</value>
   </data>
   <data name="FNMaxChar" xml:space="preserve">
     <value>Fusha emri duhet të jetë deri në 50 karaktere i gjatë!</value>
@@ -167,6 +194,9 @@
   </data>
   <data name="InvalidCarStatus" xml:space="preserve">
     <value>Statusi i makinës nuk është i vlefshëm!</value>
+  </data>
+  <data name="LinkRequired" xml:space="preserve">
+    <value>Link është fushë e detyrueshme!</value>
   </data>
   <data name="LNMaxChar" xml:space="preserve">
     <value>Fusha mbiemri duhet të jetë deri në 50 karaktere i gjatë!</value>
@@ -198,6 +228,15 @@
   <data name="NewPassRequired" xml:space="preserve">
     <value>Password-i i ri është fushë e detyrueshme!</value>
   </data>
+  <data name="NoDocuments" xml:space="preserve">
+    <value>Nuk u gjetën dokumenta!</value>
+  </data>
+  <data name="NoPhotos" xml:space="preserve">
+    <value>Nuk u gjetën foto!</value>
+  </data>
+  <data name="NotPermission" xml:space="preserve">
+    <value>Ju nuk keni akses për të marrë këto të dhëna!</value>
+  </data>
   <data name="NotUserInRole" xml:space="preserve">
     <value>Nuk ndodhet asnjë përdorues në rolin {0}!</value>
   </data>
@@ -228,8 +267,17 @@
   <data name="OrderUpdated" xml:space="preserve">
     <value>Porosia me id {0} u përditësua me sukses!</value>
   </data>
+  <data name="PartlyPaid0" xml:space="preserve">
+    <value>Paguar pjesërisht duhet të jetë 0!</value>
+  </data>
+  <data name="PartlyPaidNot0" xml:space="preserve">
+    <value>Paguar pjesërisht nuk duhet të jetë 0!</value>
+  </data>
   <data name="PassRequired" xml:space="preserve">
     <value>Password-i është fushë e detyrueshme!</value>
+  </data>
+  <data name="PathNotFound" xml:space="preserve">
+    <value>Path nuk u gjet!</value>
   </data>
   <data name="PaymentStatusAllowedValues" xml:space="preserve">
     <value>Vlerat e lejuara për statusin e pagesës janë: Not Paid, Partly Paid, Paid!</value>
@@ -240,14 +288,47 @@
   <data name="PhotoRequired" xml:space="preserve">
     <value>Ju duhet të ngarkoni të paktën një foto!</value>
   </data>
+  <data name="PortAdded" xml:space="preserve">
+    <value>Porti u shtua me sukses!</value>
+  </data>
+  <data name="PortChar" xml:space="preserve">
+    <value>Emri i portit duhet të jetë maksimumi 50 karaktere i gjatë!</value>
+  </data>
+  <data name="PortDeleted" xml:space="preserve">
+    <value>Porti u fshi me sukses!</value>
+  </data>
+  <data name="PortNotFound" xml:space="preserve">
+    <value>Porti nuk u gjet!</value>
+  </data>
   <data name="PortRequired" xml:space="preserve">
     <value>Porti është fushë e detyrueshme!</value>
+  </data>
+  <data name="ProviderAdded" xml:space="preserve">
+    <value>Ofruesi u shtua me sukses!</value>
+  </data>
+  <data name="ProviderChar" xml:space="preserve">
+    <value>Emri i ofruesit duhet të jetë maksimumi 50 karaktere i gjatë!</value>
+  </data>
+  <data name="ProviderDeleted" xml:space="preserve">
+    <value>Ofruesi u fshi me sukses!</value>
   </data>
   <data name="ProviderNotFound" xml:space="preserve">
     <value>Ofruesi me emrin {0} nuk u gjet!</value>
   </data>
+  <data name="ProviderNotFounded" xml:space="preserve">
+    <value>Ofruesi nuk u gjet!</value>
+  </data>
+  <data name="ProviderRequired" xml:space="preserve">
+    <value>Ofruesi është fushë e detyrueshme!</value>
+  </data>
+  <data name="RoleChar" xml:space="preserve">
+    <value>Emri i rolit duhet të jetë maksimumi 256 karaktere i gjatë!</value>
+  </data>
   <data name="RoleCreated" xml:space="preserve">
     <value>Roli {0} u krijua me sukses!</value>
+  </data>
+  <data name="RoleDeleted" xml:space="preserve">
+    <value>Roli u fshi me sukses!</value>
   </data>
   <data name="RoleExist" xml:space="preserve">
     <value>Roli {0} ekziston!</value>
@@ -263,6 +344,9 @@
   </data>
   <data name="TempPass" xml:space="preserve">
     <value>Password-i juaj i përkohshëm është {0}.</value>
+  </data>
+  <data name="TempPassEmailFailed" xml:space="preserve">
+    <value>Nuk u arrit të dërgohet email me password-in e përkohshëm!</value>
   </data>
   <data name="TempPassExpire" xml:space="preserve">
     <value>Password-i i përkohshëm ka skaduar! Lutemi provoni përsëri!</value>
@@ -285,8 +369,20 @@
   <data name="TryAgain" xml:space="preserve">
     <value>Diçka shkoi gabim! Lutemi provoni përsëri më vonë!</value>
   </data>
+  <data name="UserActivated" xml:space="preserve">
+    <value>Përdoruesi u aktivizua me sukses!</value>
+  </data>
   <data name="UserCreated" xml:space="preserve">
     <value>Përdoruesi {0} u krijua me sukses!</value>
+  </data>
+  <data name="UserDeleted" xml:space="preserve">
+    <value>Përdoruesi u fshi me sukses!</value>
+  </data>
+  <data name="UserEmailNotSend" xml:space="preserve">
+    <value>Përdoruesi u krijua, por email me kredencialet nuk u dërgua!</value>
+  </data>
+  <data name="UserHasOrders" xml:space="preserve">
+    <value>Përdoruesi nuk mund të fshihet pasi ka porosi aktive!</value>
   </data>
   <data name="UserNotCreated" xml:space="preserve">
     <value>Përdoruesi nuk mund të regjistrohet!{0}</value>

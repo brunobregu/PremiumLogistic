@@ -1,6 +1,4 @@
-﻿using PremiumLogistic_BAL.Dtos.User;
-
-namespace PremiumLogistic_BAL.IServices;
+﻿namespace PremiumLogistic_BAL.IServices;
 
 public interface IUserService
 {

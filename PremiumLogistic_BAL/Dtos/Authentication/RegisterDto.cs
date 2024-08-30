@@ -10,7 +10,7 @@ public class RegisterDto
     public string LastName { get; set; }
     [Required(ErrorMessage = "EmailRequired")]
     [EmailAddress(ErrorMessage = "ValidEmail")]
-    [StringLength(256, ErrorMessage = "Email should be at most 256 characteres")]
+    [StringLength(256, ErrorMessage = "EmailChar")]
     public string Email { get; set; }
     public string? PhoneNumber { get; set; }
 

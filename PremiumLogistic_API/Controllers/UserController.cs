@@ -31,7 +31,7 @@ public class UserController(IUserService userService, IStringLocalizer<Resource>
     {
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _userService.DeleteUser(userId, email);
-        return Ok("User deleted successfully!");
+        return Ok(_localizer["UserDeleted"].Value);
     }
 
     [HttpPost("activateUser")]
@@ -40,7 +40,7 @@ public class UserController(IUserService userService, IStringLocalizer<Resource>
     {
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
         await _userService.ActivateUser(userId, email, role);
-        return Ok("User activated successfully!");
+        return Ok(_localizer["UserActivated"].Value);
     }
 
     [HttpDelete("deleteRole")]
@@ -48,7 +48,7 @@ public class UserController(IUserService userService, IStringLocalizer<Resource>
     public async Task<IActionResult> DeleteRole([FromQuery] string role)
     {
         await _userService.DeleteRole(role);
-        return Ok("Role deleted successfully!");
+        return Ok(_localizer["RoleDeleted"].Value);
     }
 
     [HttpGet("personalData")]

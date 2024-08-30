@@ -1,9 +1,10 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class AuctionService(IUnitOfWork unitOfWork, IMapper mapper) : IAuctionService
+public class AuctionService(IUnitOfWork unitOfWork, IMapper mapper, IStringLocalizer<Resource> localizer) : IAuctionService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
 
     public async Task<List<AuctionDto>> Get()
     {
@@ -21,7 +22,7 @@ public class AuctionService(IUnitOfWork unitOfWork, IMapper mapper) : IAuctionSe
 
     public async Task Delete(int id)
     {
-        var auction = await _unitOfWork.AuctionRepository.GetByIdAsync(id) ?? throw new NotFoundException("Auction not found!");
+        var auction = await _unitOfWork.AuctionRepository.GetByIdAsync(id) ?? throw new NotFoundException(_localizer["AuctionNotFound"].Value);
         _unitOfWork.AuctionRepository.Delete(auction.Id);
         await _unitOfWork.CommitAsync();
     }

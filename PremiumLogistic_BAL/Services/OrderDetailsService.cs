@@ -20,9 +20,9 @@ public class OrderDetailsService
     public async Task AddOrderDetails(AddOrderDetailsDto orderDetailsDto, string email)
     {
         if (orderDetailsDto.PaymentStatus != "Partly Paid" && orderDetailsDto.PartlyPaid != 0)
-            throw new BadRequestException("Partly Paid should be 0!");
+            throw new BadRequestException(_localizer["PartlyPaid0"].Value);
         if (orderDetailsDto.PaymentStatus == "Partly Paid" && orderDetailsDto.PartlyPaid == 0)
-            throw new BadRequestException("Partly Paid cannot be 0!");
+            throw new BadRequestException(_localizer["PartlyPaidNot0"].Value);
 
         var orderDetails = _mapper.Map<OrderDetails>(orderDetailsDto);
         orderDetails.CreatedBy = email;
@@ -81,7 +81,7 @@ public class OrderDetailsService
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException(string.Format(_localizer["EmailNotFound"].Value, email));
         if (orderDetails.UserId != user.Id)
-            throw new BadRequestException("You don't have permission to get data!");
+            throw new BadRequestException(_localizer["NotPermission"].Value);
 
         var link = await _unitOfWork.ProviderRepository.GetAsync(x => x.Name == orderDetails.Provider);
         var result = _mapper.Map<MyOrderDetailsByIdDto>(orderDetails);
@@ -93,9 +93,9 @@ public class OrderDetailsService
     {
         var orderDetails = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         if (updateOrderDetail.PaymentStatus != "Partly Paid" && updateOrderDetail.PartlyPaid != 0)
-            throw new BadRequestException("Partly Paid should be 0!");
+            throw new BadRequestException(_localizer["PartlyPaid0"].Value);
         if (updateOrderDetail.PaymentStatus == "Partly Paid" && updateOrderDetail.PartlyPaid == 0)
-            throw new BadRequestException("Partly Paid cannot be 0!");
+            throw new BadRequestException(_localizer["PartlyPaidNot0"].Value);
 
         orderDetails.UpdatedOn = DateTime.Now;
         orderDetails.UpdatedBy = email;
@@ -201,14 +201,14 @@ public class OrderDetailsService
     public async Task<List<FilesDto>> ViewPhotosOfOrder(int id)
     {
         var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
-        string folderPath = orders.PhotosPath ?? throw new NotFoundException("No photos found!");
+        string folderPath = orders.PhotosPath ?? throw new NotFoundException(_localizer["NoPhotos"].Value);
         if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
-            throw new NotFoundException("No photos found!");
+            throw new NotFoundException(_localizer["NoPhotos"].Value);
 
         var files = Directory.GetFiles(folderPath);
 
         if (files.Length == 0)
-            throw new NotFoundException("No photos found!");
+            throw new NotFoundException(_localizer["NoPhotos"].Value);
 
         var photos = new List<FilesDto>();
         foreach (var file in files)
@@ -230,14 +230,14 @@ public class OrderDetailsService
     public async Task<List<FilesDto>> ViewDocumentsOfOrder(int id)
     {
         var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
-        string folderPath = orders.DocumentsPath ?? throw new NotFoundException("No documents found!");
+        string folderPath = orders.DocumentsPath ?? throw new NotFoundException(_localizer["NoDocuments"].Value);
         if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
-            throw new NotFoundException("No documents found!");
+            throw new NotFoundException(_localizer["NoDocuments"].Value);
 
         var files = Directory.GetFiles(folderPath);
 
         if (files.Length == 0)
-            throw new NotFoundException("No documents found!");
+            throw new NotFoundException(_localizer["NoDocuments"].Value);
 
         var documents = new List<FilesDto>();
         foreach (var file in files)
@@ -259,12 +259,12 @@ public class OrderDetailsService
     private async Task<string> ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email, string nextStatus)
     {
         ValidatePhotos(updateCarStatus);
-        var path = _configuration["GeneralConfigs:PhotoPath"] ?? throw new NotFoundException("Path cannot find!");
+        var path = _configuration["GeneralConfigs:PhotoPath"] ?? throw new NotFoundException(_localizer["PathNotFound"].Value);
         var uploadPath = Path.Combine(path, order.Id.ToString());
         if(!Directory.Exists(uploadPath))
             Directory.CreateDirectory(uploadPath);
 
-        var photos = updateCarStatus.Photos ?? throw new NotFoundException("No photos uploaded!");
+        var photos = updateCarStatus.Photos ?? throw new NotFoundException(_localizer["NoPhotos"].Value);
         foreach (var item in photos)
         {
             var fileName = Path.GetFileName(item.FileName);
@@ -283,16 +283,16 @@ public class OrderDetailsService
         try
         {
             //Send email
-            var users = await _userManager.FindByIdAsync(order.UserId) ?? throw new NotFoundException("User not found!");
-            string userEmail = users.Email ?? throw new NotFoundException("Email not found!");
+            var users = await _userManager.FindByIdAsync(order.UserId) ?? throw new NotFoundException(_localizer["UserNotFound"].Value);
+            string userEmail = users.Email ?? throw new NotFoundException(_localizer["EmailNotFound"].Value);
             IEnumerable<string> emails = [userEmail];
-            string addPhotos = _configuration["GeneralConfigs:AddPhotos"] ?? throw new NotFoundException("Cannot get the error message!");
+            string addPhotos = _configuration["GeneralConfigs:AddPhotos"] ?? throw new NotFoundException("Cannot get the message!");
             Message message = new(emails, "Njoftim - Notification", addPhotos);
             await _emailSender.SendEmail(message);
         }
         catch
         {
-            return $"Status updated successfully to {nextStatus}, but failed to send email with photos!";
+            return string.Format(_localizer["FailSendingMail"].Value, nextStatus);
         }
 
         return nextStatus;
@@ -319,7 +319,7 @@ public class OrderDetailsService
         if(!Directory.Exists(uploadPath))
             Directory.CreateDirectory(uploadPath);
 
-        var documents = updatStatusCar.Documents ?? throw new NotFoundException("Documents not found!");
+        var documents = updatStatusCar.Documents ?? throw new NotFoundException(_localizer["NoDocuments"].Value);
         foreach (var item in documents)
         {
             var fileName = Path.GetFileName(item.FileName);
@@ -339,8 +339,8 @@ public class OrderDetailsService
         try
         {
             //Send email
-            var users = await _userManager.FindByIdAsync(order.UserId) ?? throw new NotFoundException("User not found!");
-            var userEmail = users.Email ?? throw new NotFoundException("User email not found!");
+            var users = await _userManager.FindByIdAsync(order.UserId) ?? throw new NotFoundException(_localizer["UserNotFound"].Value);
+            var userEmail = users.Email ?? throw new NotFoundException(_localizer["EmailNotFound"].Value);
             IEnumerable<string> emails = [userEmail];
             var formFileCollection = new FormFileCollection();
             foreach (var file in updatStatusCar.Documents)
@@ -353,7 +353,7 @@ public class OrderDetailsService
         }
         catch (Exception)
         {
-            return $"Status updated successfully to {nextStatus}, but failed to send email with documents!";
+            return string.Format(_localizer["FailSendingMail"].Value, nextStatus);
         }
         return nextStatus;
     }

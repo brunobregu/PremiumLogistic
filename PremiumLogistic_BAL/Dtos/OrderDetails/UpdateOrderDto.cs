@@ -43,5 +43,6 @@ public class UpdateOrderDto
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; } = 0;
     public int ToBePaid => PaymentStatus == "Paid" ? 0 : ClientTotal - PartlyPaid;
+    [Required(ErrorMessage = "AssignClient")]
     public string UserId { get; set; }
 }

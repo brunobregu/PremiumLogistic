@@ -2,9 +2,9 @@
 
 public class AddProviderDto
 {
-    [Required(ErrorMessage = "Provider is required")]
-    [StringLength(50, ErrorMessage = "Provider name should be at most 50 characteres")]
+    [Required(ErrorMessage = "ProviderRequired")]
+    [StringLength(50, ErrorMessage = "ProviderChar")]
     public string Name { get; set; }
-    [Required(ErrorMessage = "Link is required")]
+    [Required(ErrorMessage = "LinkRequired")]
     public string Link { get; set; }
 }

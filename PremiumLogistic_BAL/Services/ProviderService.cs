@@ -1,9 +1,10 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class ProviderService(IUnitOfWork unitOfWork, IMapper mapper) : IProviderService
+public class ProviderService(IUnitOfWork unitOfWork, IMapper mapper, IStringLocalizer<Resource> localizer) : IProviderService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
 
     public async Task<List<ProviderDto>> Get()
     {
@@ -20,7 +21,7 @@ public class ProviderService(IUnitOfWork unitOfWork, IMapper mapper) : IProvider
 
     public async Task Delete(int id)
     {
-        var port = await _unitOfWork.ProviderRepository.GetByIdAsync(id) ?? throw new NotFoundException("Provider not found!");
+        var port = await _unitOfWork.ProviderRepository.GetByIdAsync(id) ?? throw new NotFoundException(_localizer["ProviderNotFounded"].Value);
         _unitOfWork.ProviderRepository.Delete(port.Id);
         await _unitOfWork.CommitAsync();
     }

@@ -42,6 +42,6 @@ public class AddOrderDetailsDto
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; } = 0;
     public int ToBePaid => PaymentStatus == "Paid" ? 0 : ClientTotal - PartlyPaid;
-    [Required(ErrorMessage = "Please assign a client to the order")]
+    [Required(ErrorMessage = "AssignClient")]
     public string UserId { get; set; }
 }

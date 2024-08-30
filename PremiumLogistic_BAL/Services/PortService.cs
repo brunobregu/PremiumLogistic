@@ -1,9 +1,10 @@
 ﻿namespace PremiumLogistic_BAL.Services;
 
-public class PortService(IUnitOfWork unitOfWork, IMapper mapper) : IPortService
+public class PortService(IUnitOfWork unitOfWork, IMapper mapper, IStringLocalizer<Resource> localizer) : IPortService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
+    private readonly IStringLocalizer<Resource> _localizer = localizer;
 
     public async Task<List<PortDto>> Get()
     {
@@ -21,7 +22,7 @@ public class PortService(IUnitOfWork unitOfWork, IMapper mapper) : IPortService
 
     public async Task Delete(int id)
     {
-        var port = await _unitOfWork.PortRepository.GetByIdAsync(id) ?? throw new NotFoundException("Port not found");
+        var port = await _unitOfWork.PortRepository.GetByIdAsync(id) ?? throw new NotFoundException(_localizer["PortNotFound"].Value);
         _unitOfWork.PortRepository.Delete(port.Id);
         await _unitOfWork.CommitAsync();
     }

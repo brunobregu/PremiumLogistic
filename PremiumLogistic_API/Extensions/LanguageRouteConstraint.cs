@@ -8,7 +8,7 @@ public class LanguageRouteConstraint : IRouteConstraint
         if (!values.ContainsKey("culture"))
             return false;
 
-        var culture = values["culture"].ToString();
+        var culture = values["culture"]?.ToString() ?? "en";
         return culture == "en" || culture == "sq";
     }
 }

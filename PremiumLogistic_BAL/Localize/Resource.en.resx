@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountNotActive" xml:space="preserve">
+    <value>Your account is not active!</value>
+  </data>
+  <data name="AssignClient" xml:space="preserve">
+    <value>Please assign a client to the order!</value>
+  </data>
+  <data name="AuctionAdded" xml:space="preserve">
+    <value>Auction added successfully!</value>
+  </data>
+  <data name="AuctionChar" xml:space="preserve">
+    <value>Auction name should be at most 50 characteres!</value>
+  </data>
+  <data name="AuctionDeleted" xml:space="preserve">
+    <value>Auction deleted successfully!</value>
+  </data>
+  <data name="AuctionNotFound" xml:space="preserve">
+    <value>Auction not found!</value>
+  </data>
   <data name="AuctionRequired" xml:space="preserve">
     <value>Auction is required!</value>
   </data>
@@ -132,6 +150,9 @@
   <data name="DeleteOrder" xml:space="preserve">
     <value>Order with id {0} is deleted successully!</value>
   </data>
+  <data name="DeleteUsers" xml:space="preserve">
+    <value>Please delete all users, before deleting role!</value>
+  </data>
   <data name="DocsAllowedFormat" xml:space="preserve">
     <value>Document {0} is not an allowed format! Allowed format of file is .pdf!</value>
   </data>
@@ -141,11 +162,17 @@
   <data name="DocsNrUpload" xml:space="preserve">
     <value>Two documents are required to upload!</value>
   </data>
+  <data name="EmailChar" xml:space="preserve">
+    <value>Email should be at most 256 characteres!</value>
+  </data>
   <data name="EmailNotFound" xml:space="preserve">
     <value>Email {0} not found!</value>
   </data>
   <data name="EmailRequired" xml:space="preserve">
     <value>Email is required!</value>
+  </data>
+  <data name="FailSendingMail" xml:space="preserve">
+    <value>Status updated successfully to {0}, but failed to send email!</value>
   </data>
   <data name="FNMaxChar" xml:space="preserve">
     <value>Firstname should be at most 50 characters!</value>
@@ -167,6 +194,9 @@
   </data>
   <data name="InvalidCarStatus" xml:space="preserve">
     <value>Car status not valid!</value>
+  </data>
+  <data name="LinkRequired" xml:space="preserve">
+    <value>Link is required!</value>
   </data>
   <data name="LNMaxChar" xml:space="preserve">
     <value>Lastname should be at most 50 characters!</value>
@@ -198,6 +228,15 @@
   <data name="NewPassRequired" xml:space="preserve">
     <value>New password is required!</value>
   </data>
+  <data name="NoDocuments" xml:space="preserve">
+    <value>No documents uploaded!</value>
+  </data>
+  <data name="NoPhotos" xml:space="preserve">
+    <value>No photos uploaded!</value>
+  </data>
+  <data name="NotPermission" xml:space="preserve">
+    <value>You don't have permission to get data!</value>
+  </data>
   <data name="NotUserInRole" xml:space="preserve">
     <value>There are not any users in role {0}!</value>
   </data>
@@ -228,8 +267,17 @@
   <data name="OrderUpdated" xml:space="preserve">
     <value>Order with id {0} is updated successully!</value>
   </data>
+  <data name="PartlyPaid0" xml:space="preserve">
+    <value>Partly Paid should be 0!</value>
+  </data>
+  <data name="PartlyPaidNot0" xml:space="preserve">
+    <value>Partly Paid cannot be 0!</value>
+  </data>
   <data name="PassRequired" xml:space="preserve">
     <value>Password is required!</value>
+  </data>
+  <data name="PathNotFound" xml:space="preserve">
+    <value>Path cannot find!</value>
   </data>
   <data name="PaymentStatusAllowedValues" xml:space="preserve">
     <value>Allowed values for payment status are: Not Paid, Partly Paid, Paid!</value>
@@ -240,14 +288,47 @@
   <data name="PhotoRequired" xml:space="preserve">
     <value>At least one photo is required!</value>
   </data>
+  <data name="PortAdded" xml:space="preserve">
+    <value>Port added successfully!</value>
+  </data>
+  <data name="PortChar" xml:space="preserve">
+    <value>Port name should be at most 50 characteres!</value>
+  </data>
+  <data name="PortDeleted" xml:space="preserve">
+    <value>Port deleted successfully!</value>
+  </data>
+  <data name="PortNotFound" xml:space="preserve">
+    <value>Port not found!</value>
+  </data>
   <data name="PortRequired" xml:space="preserve">
     <value>Port is required!</value>
+  </data>
+  <data name="ProviderAdded" xml:space="preserve">
+    <value>Provider added successfully!</value>
+  </data>
+  <data name="ProviderChar" xml:space="preserve">
+    <value>Provider name should be at most 50 characteres!</value>
+  </data>
+  <data name="ProviderDeleted" xml:space="preserve">
+    <value>Provider deleted successfully!</value>
   </data>
   <data name="ProviderNotFound" xml:space="preserve">
     <value>Provider {0} not found!</value>
   </data>
+  <data name="ProviderNotFounded" xml:space="preserve">
+    <value>Provider not found!</value>
+  </data>
+  <data name="ProviderRequired" xml:space="preserve">
+    <value>Provider is required!</value>
+  </data>
+  <data name="RoleChar" xml:space="preserve">
+    <value>Role name should be at most 256 characteres!</value>
+  </data>
   <data name="RoleCreated" xml:space="preserve">
     <value>Role {0} created!</value>
+  </data>
+  <data name="RoleDeleted" xml:space="preserve">
+    <value>Role deleted successfully!</value>
   </data>
   <data name="RoleExist" xml:space="preserve">
     <value>Role {0} exist!</value>
@@ -263,6 +344,9 @@
   </data>
   <data name="TempPass" xml:space="preserve">
     <value>Your temporary password is {0}.</value>
+  </data>
+  <data name="TempPassEmailFailed" xml:space="preserve">
+    <value>Failed to send temporary password!</value>
   </data>
   <data name="TempPassExpire" xml:space="preserve">
     <value>Temporary password has expired.Please try again!</value>
@@ -285,8 +369,20 @@
   <data name="TryAgain" xml:space="preserve">
     <value>Something wrong! Please try again later!</value>
   </data>
+  <data name="UserActivated" xml:space="preserve">
+    <value>User activated successfully!</value>
+  </data>
   <data name="UserCreated" xml:space="preserve">
     <value>User {0} created!</value>
+  </data>
+  <data name="UserDeleted" xml:space="preserve">
+    <value>User deleted successfully!</value>
+  </data>
+  <data name="UserEmailNotSend" xml:space="preserve">
+    <value>User created, but email with credentials not send!</value>
+  </data>
+  <data name="UserHasOrders" xml:space="preserve">
+    <value>User can not delete because has orders!</value>
   </data>
   <data name="UserNotCreated" xml:space="preserve">
     <value>User could not be created!{0}</value>
