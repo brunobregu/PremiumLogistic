@@ -53,6 +53,7 @@ public class OrderDetails
     [Required]
     public int OceanCost { get; set; }
     public int StorageCost { get; set; } //vonesat ne pagese
+    public int CarCost { get; set; }  //kostoja e makines
     [Required]
     public int TotalCost { get; set; }
     [Required]

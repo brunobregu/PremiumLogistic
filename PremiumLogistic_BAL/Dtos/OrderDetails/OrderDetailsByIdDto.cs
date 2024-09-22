@@ -22,6 +22,7 @@ public class OrderDetailsByIdDto
     public int InlandCost { get; set; }
     public int OceanCost { get; set; }
     public int StorageCost { get; set; } = 0;
+    public int CarCost { get; set; } = 0;
     public string PaymentStatus { get; set; }
     public int PartlyPaid { get; set; } = 0;
     public string UserId { get; set; }

@@ -19,7 +19,7 @@ public class UpdateOrderDto
     public string Auction { get; set; }
     [Required(ErrorMessage = "PortRequired")]
     public string Port { get; set; }
-    public string Provider { get; set; }
+    public string? Provider { get; set; }
     [Required(ErrorMessage = "InlandPriceRequired")]
     [Range(1, int.MaxValue, ErrorMessage = "InlandPriceMin")]
     public int InlandPrice { get; set; }
