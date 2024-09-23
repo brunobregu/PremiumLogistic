@@ -24,7 +24,7 @@ public class AuthenticationController(IUserService userService, IStringLocalizer
 
     [ServiceFilter(typeof(AuditLogAttribute))]
     [HttpPost("addUser")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> AddUser([FromBody] CreateUserDto createUserDto)
     {
         var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new BadRequestException(_localizer["TryAgain"].Value);
@@ -56,7 +56,7 @@ public class AuthenticationController(IUserService userService, IStringLocalizer
     }
 
     [HttpGet("getUsersOfRole")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Account Manager")]
     public async Task<IActionResult> Get([FromQuery] string role)
     {
         var result = await _userService.GetUsersOfRole(role);
