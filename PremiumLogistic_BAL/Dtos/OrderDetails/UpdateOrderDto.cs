@@ -37,7 +37,8 @@ public class UpdateOrderDto
     [Range(1, int.MaxValue, ErrorMessage = "OceanCostMin")]
     public int OceanCost { get; set; }
     public int StorageCost { get; set; } = 0;
-    public int TotalCost => InlandCost + OceanCost + StorageCost;
+    public int CarCost { get; set; } = 0;
+    public int TotalCost => InlandCost + OceanCost + StorageCost + CarCost;
     public int Profit => ClientTotal - TotalCost;
     [AllowedValues("Not Paid", "Partly Paid", "Paid", ErrorMessage = "PaymentStatusAllowedValues")]
     public string PaymentStatus { get; set; }

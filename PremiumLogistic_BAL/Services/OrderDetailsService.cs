@@ -117,6 +117,7 @@ public class OrderDetailsService
         orderDetails.InlandCost = updateOrderDetail.InlandCost;
         orderDetails.OceanCost = updateOrderDetail.OceanCost;
         orderDetails.StorageCost = updateOrderDetail.StorageCost;
+        orderDetails.CarCost = updateOrderDetail.CarCost;
         orderDetails.TotalCost = updateOrderDetail.TotalCost;
         orderDetails.Profit = updateOrderDetail.Profit;
         orderDetails.PaymentStatus = updateOrderDetail.PaymentStatus;
@@ -198,7 +199,7 @@ public class OrderDetailsService
         return response;
     }
 
-    public async Task<List<FilesDto>> ViewPhotosOfOrder(int id)
+    public async Task<FilesDataDto> ViewPhotosOfOrder(int id)
     {
         var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         string folderPath = orders.PhotosPath ?? throw new NotFoundException(_localizer["NoPhotos"].Value);
@@ -209,6 +210,11 @@ public class OrderDetailsService
 
         if (files.Length == 0)
             throw new NotFoundException(_localizer["NoPhotos"].Value);
+
+        var dataToReturn = new FilesDataDto()
+        {
+            VIN = orders.VIN
+        };
 
         var photos = new List<FilesDto>();
         foreach (var file in files)
@@ -223,11 +229,11 @@ public class OrderDetailsService
             };
             photos.Add(filesDto);
         }
-
-        return photos;
+        dataToReturn.Files = photos;
+        return dataToReturn;
     }
 
-    public async Task<List<FilesDto>> ViewDocumentsOfOrder(int id)
+    public async Task<FilesDataDto> ViewDocumentsOfOrder(int id)
     {
         var orders = await _unitOfWork.OrderDetailsRepository.GetByIdAsync(id) ?? throw new NotFoundException(string.Format(_localizer["OrderNotFound"].Value, id));
         string folderPath = orders.DocumentsPath ?? throw new NotFoundException(_localizer["NoDocuments"].Value);
@@ -238,6 +244,11 @@ public class OrderDetailsService
 
         if (files.Length == 0)
             throw new NotFoundException(_localizer["NoDocuments"].Value);
+
+        var dataToReturn = new FilesDataDto()
+        {
+            VIN = orders.VIN
+        };
 
         var documents = new List<FilesDto>();
         foreach (var file in files)
@@ -252,8 +263,8 @@ public class OrderDetailsService
             };
             documents.Add(filesDto);
         }
-
-        return documents;
+        dataToReturn.Files = documents;
+        return dataToReturn;
     }
 
     private async Task<string> ChangeStatusToAtTerminal(OrderDetails order, UpdateCarStatusDto updateCarStatus, string email, string nextStatus)
