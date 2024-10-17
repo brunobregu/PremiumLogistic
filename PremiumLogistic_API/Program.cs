@@ -106,11 +106,11 @@ AppConfig.Configuration = builder.Configuration;
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
+if (!app.Environment.IsProduction())
+{
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PremiumLogistic_API v1"));
-//}
+}
 
 
 app.UseCors(builder =>
@@ -136,7 +136,7 @@ app.Run();
 
 string GetEnvironment()
 {
-    string env = "Development";
+    string env = "Production";
     try
     {
         var config = new ConfigurationBuilder()
@@ -147,7 +147,7 @@ string GetEnvironment()
     }
     catch (Exception)
     {
-        env = "Development";
+        env = "Production";
     }
     return env;
 }
