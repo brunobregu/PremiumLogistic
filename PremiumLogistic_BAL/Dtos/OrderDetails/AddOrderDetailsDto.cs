@@ -18,6 +18,7 @@ public class AddOrderDetailsDto
     public string Auction { get; set; }
     [Required(ErrorMessage = "PortRequired")]
     public string Port { get; set; }
+    public DateTime OrderDate { get; set; }
     public string? Provider { get; set; }
     [Required(ErrorMessage = "InlandPriceRequired")]
     [Range(1, int.MaxValue, ErrorMessage = "InlandPriceMin")]

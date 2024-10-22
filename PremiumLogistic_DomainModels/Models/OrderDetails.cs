@@ -16,6 +16,7 @@ public class OrderDetails
     [Required]
     [StringLength(100)]
     public string Make { get; set; }
+    public DateTime OrderDate { get; set; }
     [Required]
     [StringLength(100)]
     public string Model { get; set; }
