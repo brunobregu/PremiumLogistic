@@ -159,8 +159,8 @@
   <data name="DocsMaxSize" xml:space="preserve">
     <value>Dokumentat duhet të jenë më pak se 5MB!</value>
   </data>
-  <data name="DocumentsNrUpload" xml:space="preserve">
-    <value>Ju duhet të ngarkoni 2 dokumenta!</value>
+  <data name="DocsNrUpload" xml:space="preserve">
+    <value>Ju duhet të ngarkoni të paktën një foto!</value>
   </data>
   <data name="EmailChar" xml:space="preserve">
     <value>Email duhet të jetë maksimumi 256 karaktere i gjatë!</value>

@@ -160,7 +160,7 @@
     <value>Documents must be less than 5MB!</value>
   </data>
   <data name="DocsNrUpload" xml:space="preserve">
-    <value>Two documents are required to upload!</value>
+    <value>At least one documet is required!</value>
   </data>
   <data name="EmailChar" xml:space="preserve">
     <value>Email should be at most 256 characteres!</value>

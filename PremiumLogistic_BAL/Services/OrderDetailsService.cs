@@ -253,9 +253,9 @@ public class OrderDetailsService
         var documents = new List<FilesDto>();
         foreach (var file in files)
         {
-            var fileName = Path.GetFileName(file);
-            var fileBytes = File.ReadAllBytes(file);
-            var base64Data = Convert.ToBase64String(fileBytes);
+            string fileName = Path.GetFileName(file);
+            byte[] fileBytes = File.ReadAllBytes(file);
+            string base64Data = Convert.ToBase64String(fileBytes);
             FilesDto filesDto = new()
             {
                 Filename = fileName,
@@ -408,10 +408,10 @@ public class OrderDetailsService
     {
         if (updateCarStatus.Photos is null)
             throw new BadRequestException(_localizer["PhotoRequired"].Value);
-        if (updateCarStatus.Photos.Count > 10)
-            throw new BadRequestException(_localizer["MaxPhotoRequired"].Value);
-        if(updateCarStatus.Photos.Sum(file => file.Length) > 5 * 1024 * 1024)
-            throw new BadRequestException(_localizer["MaxPhotosSize"].Value);
+        //if (updateCarStatus.Photos.Count > 10)
+        //    throw new BadRequestException(_localizer["MaxPhotoRequired"].Value);
+        //if(updateCarStatus.Photos.Sum(file => file.Length) > 10 * 1024 * 1024)
+        //    throw new BadRequestException(_localizer["MaxPhotosSize"].Value);
         string[] allowedExtensions = [".jpg", ".jpeg", ".png"];
         foreach (var file in updateCarStatus.Photos)
         {
@@ -423,10 +423,10 @@ public class OrderDetailsService
 
     private void ValidateDocuments(UpdateCarStatusDto updateCarStatus)
     {
-        if(updateCarStatus.Documents is null || updateCarStatus.Documents.Count != 2)
+        if(updateCarStatus.Documents is null)//|| updateCarStatus.Documents.Count != 2
             throw new BadRequestException(_localizer["DocsNrUpload"].Value);
-        if (updateCarStatus.Documents.Sum(file => file.Length) > 5 * 1024 * 1024)
-            throw new BadRequestException(_localizer["DocsMaxSize"].Value);
+        //if (updateCarStatus.Documents.Sum(file => file.Length) > 10 * 1024 * 1024)
+        //    throw new BadRequestException(_localizer["DocsMaxSize"].Value);
 
         string[] allowedExtensions = [".pdf"];
         foreach (var file in updateCarStatus.Documents)
